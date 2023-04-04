@@ -1,6 +1,6 @@
 const LIMIT = process.env.SQL_LIMIT
 
-const MotoristaGetAll = ({ offset = 0 }) => `SELECT mot.codmotorista, 
+const MotoristaGetAll = (offset) => `SELECT mot.codmotorista, 
 coalesce(mot.dataatual, mot.datainclusao) AS dataatual,
 mot.cpf,
 mot.liberado,
