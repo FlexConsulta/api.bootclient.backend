@@ -1,0 +1,6 @@
+.env*
+*.exe
+node_modules
+settings/*
+DATA/*
+keys/*
