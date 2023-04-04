@@ -18,17 +18,17 @@ class SincronizacaoAutomatica {
                   try {
 
                         schedule.gracefulShutdown();
-                        const empresa = await pegarUmaEmpresa()
-                        if (!empresa) return;
+                        // const empresa = await pegarUmaEmpresa()
+                        // if (!empresa) return;
 
                         const fn = () => {
-                              if (!empresa) return;
+                              // if (!empresa) return;
                               sincronizacao()
                               console.log(`[i] Sincronizando: ${moment().format('LLL')}`);
                         }
 
                         fn()
-                        schedule.scheduleJob(`0 */${empresa?.intervaloSincronizacao || 1} * * *`, fn);
+                        schedule.scheduleJob(`*/12 * * * * *`, fn);
 
                   } catch (error) {
                         console.log({ error });
