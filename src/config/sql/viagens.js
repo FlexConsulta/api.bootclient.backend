@@ -1,6 +1,6 @@
 const LIMIT = process.env.SQL_LIMIT
 
-const ViagemSetData = ({ offset = 0, data }) => `SELECT c.data,
+const ViagemSetData = (data) => `SELECT c.data,
 coalesce(c.dataatual, c.datadigitacao) AS dataatual,
 c.numero,
 c.cancelado,
@@ -39,7 +39,7 @@ LEFT OUTER JOIN cidade cidd ON (c.codcidadedestino = cidd.codcidade)
 WHERE c.data >= '${data}' AND c.data <= now() AT TIME ZONE 'AST'
 AND c.tipocte IN ('0','1','2','B','D')
 ORDER BY c.data ASC
-OFFSET ${offset} LIMIT ${LIMIT};`
+LIMIT {LIMIT} OFFSET {offset};`;
 
 
 const ViagemSetDataFiltred = ({ offset = 0, data }) => `SELECT c.data,
