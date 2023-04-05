@@ -5,11 +5,12 @@ const Veiculos = require('./veiculos.controller');
 const Viagens = require('./viagens.controller');
 const { apiFlex } = require("../../API/api.js");
 const { decryptApiResponse } = require('../../utils/decryptApiResponse');
-const { CNPJ, DATAINICIAL } = process.env;
+const { CNPJ } = process.env;
 
 module.exports = async (req, res) => {
 
       const empresa = await apiFlex.get(`/connection/?cnpj=${CNPJ}`)
+
       const data_empresa = decryptApiResponse(empresa.data.data);
 
       if (res && !empresa) res.status(404).send('Nenhuma empresa foi cadastrada!')
@@ -18,16 +19,16 @@ module.exports = async (req, res) => {
             return;
       }
 
-      const dt = empresa?.datasincronizacao || null
-      datasincronizacao = dt && moment(dt, ['DD/MM/YYY HH:mm', "YYYY/MM/DD HH:mm"]).isValid()
-            ? moment(dt, ['DD/MM/YYY HH:mm', "YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm") : null;
+      if (!data_empresa?.ativo) {
+            console.log(`A empresa [${data_empresa.nomefantasia_empresa}] foi desativada!`)
+            return;
+      }
 
-      const logs = await apiFlex.get(`/bootclient/log?cnpj=${CNPJ}`);
-      // const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
+      const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
 
       Promise.all([
             // new Motoristas(logs.data?.data || null, data_empresa),
-            new Motoristas(logs.data["motoristas"]?.data || null, data_empresa),
+            new Motoristas(data_empresa, logs.data["motoristas"]),
             // new Proprietarios(logs["proprietarios"]?.data || null),
             // new Veiculos(logs["veiculos"]?.data || null),
             // new Viagens(logs["viagens"]?.data || DATAINICIAL),
@@ -40,3 +41,6 @@ module.exports = async (req, res) => {
 
 
 }
+
+
+

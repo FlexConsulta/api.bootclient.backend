@@ -1,12 +1,9 @@
 const moment = require("moment");
-moment.locale("pt-br");
-
-const { pegarUmaEmpresa } = require("../../models/empresa");
+const schedule = require('node-schedule');
 const sincronizacao = require("../sincronizacao");
 
-const schedule = require('node-schedule');
-
-
+moment.locale("pt-br");
+const { JOB_SINCRONIZACAO_AUTO } = process.env
 
 class SincronizacaoAutomatica {
 
@@ -18,17 +15,13 @@ class SincronizacaoAutomatica {
                   try {
 
                         schedule.gracefulShutdown();
-                        // const empresa = await pegarUmaEmpresa()
-                        // if (!empresa) return;
-
                         const fn = () => {
-                              // if (!empresa) return;
                               sincronizacao()
                               console.log(`[i] Sincronizando: ${moment().format('LLL')}`);
                         }
 
                         fn()
-                        schedule.scheduleJob(`*/30 * * * * *`, fn);
+                        schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || '*/2 * * * *', fn);
 
                   } catch (error) {
                         console.log({ error });
