@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
       const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
 
       Promise.all([
-            new Motoristas(logs.data["motoristas"]?.data || null, data_empresa),
+            // new Motoristas(logs.data["motoristas"]?.data || null, data_empresa),
             // new Proprietarios(logs["proprietarios"]?.data || null, data_empresa),
             // new Veiculos(logs["veiculos"]?.data || null, data_empresa),
             // new Viagens(logs["viagens"]?.data || DATAINICIAL, data_empresa),
