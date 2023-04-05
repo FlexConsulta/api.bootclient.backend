@@ -1,15 +1,13 @@
 const fs = require('fs');
 const moment = require('moment');
-const { pegarUmaEmpresa } = require('../models/empresa');
 
 class GerarArquivo {
 
       constructor() { }
 
-      async fnGeradorArquivos(arr, tipo, pasta) {
-            let resultado = await pegarUmaEmpresa({})
-            if (resultado) resultado = resultado.cnpj.replace(/\D/g, "");
-            const nomeArquivo = `${tipo}_${resultado}_${moment().valueOf()}`
+      async fnGeradorArquivos(arr, tipo, CNPJ, pasta) {
+            CNPJ = CNPJ.replace(/\D/g, "");
+            const nomeArquivo = `${tipo}_${CNPJ}_${moment().valueOf()}`;
             this.fnGeradorArquivo(pasta, nomeArquivo, arr)
       }
 
