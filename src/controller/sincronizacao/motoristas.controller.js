@@ -72,7 +72,7 @@ class Motoristas extends GerarArquivo {
                                     cnpj_cliente: CNPJ,
                                     error: false,
                                     nome_arquivo: `SYNCz_MOTORISTAS_${CNPJ}`,
-                                    entidade: "MOTORISTAS",
+                                    entidade: "motoristas",
                               };
 
                               // gera o log
