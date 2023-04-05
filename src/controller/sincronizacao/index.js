@@ -22,11 +22,9 @@ module.exports = async (req, res) => {
       datasincronizacao = dt && moment(dt, ['DD/MM/YYY HH:mm', "YYYY/MM/DD HH:mm"]).isValid()
             ? moment(dt, ['DD/MM/YYY HH:mm', "YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm") : null;
 
-      const logs = await apiFlex.get(`/bootclient/log?cnpj=${CNPJ}`);
-      // const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
+      const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
 
       Promise.all([
-            // new Motoristas(logs.data?.data || null, data_empresa),
             new Motoristas(logs.data["motoristas"]?.data || null, data_empresa),
             // new Proprietarios(logs["proprietarios"]?.data || null),
             // new Veiculos(logs["veiculos"]?.data || null),
