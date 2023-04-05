@@ -2,69 +2,90 @@ const moment = require('moment');
 const { VeiculosGetAll, VeiculosSetData } = require('../../config/sql/veiculos');
 const GerarArquivo = require('../../utils/gerador.arquivo.js');
 const sequelizePostgres = require('../../services/sequelize.service');
-const { pegarUmaEmpresa } = require('../../models/empresa');
-const { criarLogSincronizacao } = require('../../models/log.sincronizacao');
 const { encryptedData } = require('../../utils/encriptacao')
+const { apiFlex } = require("../../API/api.js");
+const { CNPJ, SQL_LIMIT } = process.env;
 
 class Veiculos extends GerarArquivo {
 
-      constructor(value) {
+      constructor(value, empresa) {
             super()
 
             this.pastaSync = process.env.FOLDER_SYNC_SUCCESS
-            this.empresa = null
+            this.empresa = empresa;
+
             return new Promise(async resolve => {
                   await this.fnStart(value)
                   resolve(true)
             })
-
       }
 
       async fnStart(value) {
 
             const data = { data: value }
             data.query_sql = value ? VeiculosSetData(moment(value, ['DD/MM/YYY HH:mm', "YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm")) : VeiculosGetAll()
-            this.empresa = await pegarUmaEmpresa()
 
-            await this.sincronizar(data)
-
+            await this.sincronizar(data);
       }
 
       async sincronizar(data) {
             return new Promise(async (resolve) => {
-                  if (!this.empresa) return false;
 
-                  const dados = this.empresa
+                  const dados = this.empresa;
 
                   const dataConexao = {
-                        nome_banco: dados.nomebancodados,
-                        usuario_banco: dados.usuarioservidor,
-                        senha_banco: dados.senhaservidor,
-                        host_banco: dados.urlservidor,
-                        dialect: "postgres",
-                        porta_banco: dados.portaservidor
-                  }
+                    nome_banco: dados.banco_server,
+                    usuario_banco: dados.usuario_server,
+                    senha_banco: dados.senha_server,
+                    host_banco: dados.url_server,
+                    dialect: dados.tipo_banco,
+                    porta_banco: Number(dados.porta_server),
+                  };
 
-                  const resultadoSequelize = await new sequelizePostgres(dataConexao)
-                  const arrayDados = await resultadoSequelize.obterDados(data.query_sql)
+                  let arquivos = 0
+                  let offset = 0;
+                  while(true){
 
-                  let dadosLogs = null;
-                  if (arrayDados?.length > 0) {
-                        const dataEncriptado = await encryptedData(arrayDados)
-                        await this.fnGeradorArquivos(dataEncriptado, 'SYNCz_VEICULOS', this.pastaSync)
+                        // setar a query
+                        let query;
+                        if(!data.data){
+                          const replaceParameters = (string, offset) => {
+                            const arr = string.split("{");
+                            arr.splice(1, 1, `${SQL_LIMIT} OFFSET `);
+                            arr.splice(2, 1, `${offset}`);
+                            string = String(arr.join(""));
+                            return string;
+                          };
+                          query = replaceParameters(data.query_sql, offset);
+                        } else query = data.query_sql;
 
-                        dadosLogs = {
-                              data: moment().format("YYYY/MM/DD HH:mm:ss"),
-                              qtd: arrayDados?.length || 0,
-                              tipo: 'SYNCz_VEICULOS',
-                              count: moment().format("YYYY/MM/DD HH:mm:ss").valueOf()
+                        // faz a query
+                        const resultadoSequelize = await new sequelizePostgres(dataConexao)
+                        const arrayDados = await resultadoSequelize.obterDados(query);
+
+                        // criar arquivo
+                        if (arrayDados?.length > 0) {
+                              const dataEncriptado = await encryptedData(arrayDados)
+                              await this.fnGeradorArquivos(dataEncriptado, 'SYNCz_VEICULOS', CNPJ , this.pastaSync)
+
+                              const dadosLogs = {
+                                    cnpj_cliente: CNPJ,
+                                    error: false,
+                                    nome_arquivo: `SYNCz_VEICULOS_${CNPJ}`,
+                                    entidade: "veiculos",
+                              };
+
+                              // gera o log
+                              // await apiFlex.post(`/bootclient/log?cnpj=${CNPJ}`, dadosLogs)
                         }
 
-                        await criarLogSincronizacao(dadosLogs)
+                        console.log(`[VEICULOS X] || ${arrayDados?.length || 0}`);
+                        arquivos++;
+                        if(arrayDados.length < SQL_LIMIT ) break 
+                        offset += SQL_LIMIT;
                   }
-
-                  console.log(`[VEICULOS X] || ${dadosLogs?.qtd || 0}`);
-                  resolve(true)
+                  console.log({arquivos})
+                  resolve(true);
 
             })
 
