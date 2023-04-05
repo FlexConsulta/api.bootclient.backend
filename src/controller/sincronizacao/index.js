@@ -1,6 +1,4 @@
 const moment = require('moment');
-const log_sincronizacao = require('../../models/log.sincronizacao').pegarUltimoLogSincronizacao;
-const pegarUmaEmpresa = require('../../models/empresa').pegarUmaEmpresa;
 const Motoristas = require('./motoristas.controller');
 const Proprietarios = require('./proprietarios.controller');
 const Veiculos = require('./veiculos.controller');
@@ -26,10 +24,10 @@ module.exports = async (req, res) => {
 
       const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
       Promise.all([
-            new Motoristas(logs.data["motoristas"].data || null, data_empresa),
-            // new Proprietarios(logs["proprietarios"].data || null),
-            // new Veiculos(logs["veiculos"].data || null),
-            // new Viagens(logs["viagens"].data || DATAINICIAL),
+            new Motoristas(logs.data["motoristas"]?.data || null, data_empresa),
+            // new Proprietarios(logs["proprietarios"]?.data || null),
+            // new Veiculos(logs["veiculos"]?.data || null),
+            // new Viagens(logs["viagens"]?.data || DATAINICIAL),
       ]).then(data => {
             if (res) res.status(202).send()
             console.log('Sincronização concluída com sucesso!');
