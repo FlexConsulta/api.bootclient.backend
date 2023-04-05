@@ -28,7 +28,7 @@ class SincronizacaoAutomatica {
                         }
 
                         fn()
-                        schedule.scheduleJob(`*/30 * * * * *`, fn);
+                        schedule.scheduleJob(`* */5 * * * *`, fn);
 
                   } catch (error) {
                         console.log({ error });
