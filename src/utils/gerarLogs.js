@@ -1,15 +1,19 @@
 const { apiFlex } = require("../API/api");
 
-const fnGerarLogs = async (cnpj_cliente, nome_arquivo, entidade) => {
+const fnGerarLogs = async (cnpj_cliente, nome_arquivo, error, entidade, quantidade) => {
   try {
     const dadosLogs = {
       cnpj_cliente,
-      error: false,
+      error,
       nome_arquivo,
       entidade,
+      categoria: "sync concluida",
+      mensagem: "Tudo certo!",
+      quantidade: String(quantidade),
     };
 
-    await apiFlex.post(`/bootclient/log?cnpj=${cnpj_cliente}`, dadosLogs);
+    await apiFlex.post(`/bootclient/log`, dadosLogs);
+    console.log({dadosLogs});
   } catch (error) {
     console.log({ error, where: "fnGerarLogs" });
   }
