@@ -20,71 +20,66 @@ ORDER BY coalesce(mot.dataatual, mot.datainclusao) ASC`
 // ====================================================================================
 
 class Motoristas extends GerarArquivo {
+  constructor(empresa) {
+    super();
+    this.empresa = empresa;
+    return new Promise(async (resolve) => {
+      await this.sincronizar();
+      resolve(true);
+    });
+  }
 
-      constructor(empresa) {
-            super()
-            this.empresa = empresa;
-            return new Promise(async resolve => {
-                  await this.sincronizar();
-                  resolve(true)
-            })
+  async sincronizar() {
+    return new Promise(async (resolve) => {
+      const dataConexao = {
+        nome_banco: this.empresa.banco_server,
+        usuario_banco: this.empresa.usuario_server,
+        senha_banco: this.empresa.senha_server,
+        host_banco: this.empresa.url_server,
+        dialect: this.empresa.tipo_banco,
+        porta_banco: Number(this.empresa.porta_server),
+      };
+
+      let offset = 0;
+      for (let i = 0; ; i++) {
+        // SETAR SQL
+        // =========================================================
+        const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
+        // =========================================================
+
+        // get dados
+        const resultadoSequelize = await new sequelizePostgres(dataConexao);
+        const arrayDados = await resultadoSequelize.obterDados(_sql);
+
+        // encripta
+        const dataEncriptado = await encryptedData(arrayDados);
+
+        // gerar arquivo
+        await this.fnGeradorArquivos(
+          dataEncriptado,
+          "SYNCz_MOTORISTAS",
+          this.empresa.cnpj_empresa,
+          FOLDER_SYNC_SUCCESS
+        );
+
+        // gerar log
+        if (arrayDados?.length > 0)
+          await fnGerarLogs(
+            this.empresa.cnpj_empresa,
+            "SYNCz_MOTORISTAS",
+            false,
+            "motoristas",
+            arrayDados.length
+          );
+
+        console.log(`[MOTORISTAS X] || ${arrayDados?.length || 0}`);
+        if (arrayDados.length < SQL_LIMIT) break;
+        offset += SQL_LIMIT;
       }
 
-      async sincronizar() {
-            return new Promise(async (resolve) => {
-
-                  const dataConexao = {
-                        nome_banco: this.empresa.banco_server,
-                        usuario_banco: this.empresa.usuario_server,
-                        senha_banco: this.empresa.senha_server,
-                        host_banco: this.empresa.url_server,
-                        dialect: this.empresa.tipo_banco,
-                        porta_banco: Number(this.empresa.porta_server),
-                  };
-
-                  const resultadoSequelize = await new sequelizePostgres(dataConexao)
-                  let __resultCount = await resultadoSequelize.obterDados(SQL);
-                  __resultCount = __resultCount.length
-                  console.log({ Dados_sync: __resultCount });
-                  let offset = 0;
-
-                  if (__resultCount > SQL_LIMIT) {
-                    // qtd de arquivos
-                    const totalArquivos = Math.ceil(__resultCount / SQL_LIMIT);
-
-                    for (let i = 0; i < totalArquivos; i++) {
-                      //setar sql
-                      const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
-
-                      // get dados
-                      const resultadoSequelize = await new sequelizePostgres( dataConexao );
-                      const arrayDados = await resultadoSequelize.obterDados( _sql );
-
-                      // encripta
-                      const dataEncriptado = await encryptedData(arrayDados);
-
-                      // gerar arquivo
-                      await this.fnGeradorArquivos( dataEncriptado, "SYNCz_MOTORISTAS", this.empresa.cnpj_empresa, FOLDER_SYNC_SUCCESS );
-
-                      // gerar log
-                      if (arrayDados?.length > 0) await fnGerarLogs( this.empresa.cnpj_empresa, "SYNCz_MOTORISTAS", "motoristas" );
-
-                      console.log( `[MOTORISTAS X] || ${arrayDados?.length || 0}`);
-                      offset += SQL_LIMIT;
-                    }
-                  }else{
-
-                    const resultadoSequelize = await new sequelizePostgres(dataConexao)
-                    const arrayDados = await resultadoSequelize.obterDados( SQL );
-                    const dataEncriptado = await encryptedData(arrayDados)
-                    await this.fnGeradorArquivos(dataEncriptado, 'SYNCz_MOTORISTAS', this.empresa.cnpj_empresa, FOLDER_SYNC_SUCCESS)
-                    if(arrayDados?.length > 0) fnGerarLogs(this.empresa.cnpj_empresa, "SYNCz_MOTORISTAS", "motoristas");
-                    console.log(`[MOTORISTAS X] || ${arrayDados?.length || 0}`);
-                    
-            }
-              resolve(true);
-            })
-      }
+      resolve(true);
+    });
+  }
 }
 
 module.exports = Motoristas
