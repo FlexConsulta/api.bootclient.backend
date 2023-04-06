@@ -23,10 +23,10 @@ module.exports = async (req, res) => {
       }
 
       Promise.all([
-            new Motoristas(data_empresa),
-            // new Proprietarios(logs["proprietarios"]?.data || null),
-            // new Veiculos(logs["veiculos"]?.data || null),
-            // new Viagens(logs["viagens"]?.data || DATAINICIAL),
+            // new Motoristas(data_empresa),
+            // new Proprietarios(data_empresa),
+            // new Veiculos(data_empresa),
+            // new Viagens(data_empresa),
       ]).then(data => {
             if (res) res.status(202).send()
             console.log('Sincronização concluída com sucesso!');
