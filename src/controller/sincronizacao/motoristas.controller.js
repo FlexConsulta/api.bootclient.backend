@@ -34,8 +34,7 @@ class Motoristas extends GerarArquivo {
       const lastSyncDate = logs.data["motoristas"].data
 
       // sql json -> obj
-      const String_SQL = this.empresa.sql_motoristas
-      let SQL_object = String_SQL.substring(1, String_SQL.length - 1);
+      let SQL_object = this.empresa.sql_motoristas;
       SQL_object = JSON.parse(SQL_object)
 
       // definir sql
