@@ -45,7 +45,6 @@ class Motoristas extends GerarArquivo {
          SQL = SQL.replace("[$]", data_query);
       }else SQL = SQL_object.getAll;
 
-
       let offset = 0;
       for (let i = 0; ; i++) {
         // SETAR SQL
@@ -58,16 +57,16 @@ class Motoristas extends GerarArquivo {
         // encripta
         const dataEncriptado = await encryptedData(arrayDados);
 
-        // gerar arquivo
-        await this.fnGeradorArquivos(
-          dataEncriptado,
-          "SYNCz_MOTORISTAS",
-          this.empresa.cnpj_empresa,
-          FOLDER_SYNC_SUCCESS
-        );
+        if (arrayDados?.length > 0){
+          // gerar arquivo
+          await this.fnGeradorArquivos(
+            dataEncriptado,
+            "SYNCz_MOTORISTAS",
+            this.empresa.cnpj_empresa,
+            FOLDER_SYNC_SUCCESS
+          );
 
-        // gerar log
-        if (arrayDados?.length > 0)
+          // gerar log
           await fnGerarLogs(
             this.empresa.cnpj_empresa,
             "SYNCz_MOTORISTAS",
@@ -75,6 +74,7 @@ class Motoristas extends GerarArquivo {
             "motoristas",
             arrayDados.length
           );
+        }
 
         console.log(`[MOTORISTAS X] || ${arrayDados?.length || 0}`);
         if (arrayDados.length < SQL_LIMIT) break;
