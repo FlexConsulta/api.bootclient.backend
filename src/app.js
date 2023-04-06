@@ -31,9 +31,22 @@ app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
+/**
+ * TODO: Sincronização Automática dos dados
+ * TODO: Verificar o funcionamento do Bootclient
+ * TODO: Verificar a conexão com o banco de dados do cliente
+ * TODO: Verificar os arquivos gerados na pasta do bootclient
+ * TODO: Coletar dados estatísticos dos dados do clientes
+ *      TODO: Total registros das tabelas (Diariamente -1)
+ *      TODO: Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1)
+ *      TODO: Total viagens cancelados  (Diariamente -1)
+ */
+
+
 // new MonitoramentoArquivos(new Date())
 new SincronizacaoAutomatica(new Date())
 // new SincronizacaoAutomaticaBackup(new Date())
 // new LimpezaLogsSistema(new Date())
+
 
 module.exports = app;

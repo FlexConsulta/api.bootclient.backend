@@ -1,4 +1,3 @@
-const moment = require('moment');
 const Motoristas = require('./motoristas.controller');
 const Proprietarios = require('./proprietarios.controller');
 const Veiculos = require('./veiculos.controller');
@@ -54,11 +53,8 @@ module.exports = async (req, res) => {
             return;
       }
 
-      const logs = await apiFlex.get(`/bootclient/log/last?cnpj=${CNPJ}`);
-
       Promise.all([
-            // new Motoristas(logs.data?.data || null, data_empresa),
-            new Motoristas(data_empresa, logs.data["motoristas"]),
+            new Motoristas(data_empresa),
             // new Proprietarios(logs["proprietarios"]?.data || null),
             // new Veiculos(logs["veiculos"]?.data || null),
             // new Viagens(logs["viagens"]?.data || DATAINICIAL),
@@ -68,9 +64,4 @@ module.exports = async (req, res) => {
       }).catch(error => {
             console.log(error);
       })
-
-
 }
-
-
-
