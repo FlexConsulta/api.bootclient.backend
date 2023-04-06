@@ -34,10 +34,6 @@ class Proprietarios extends GerarArquivo {
         porta_banco: Number(this.empresa.porta_server),
       };
 
-      const resultadoSequelize = await new sequelizePostgres(dataConexao);
-      const arrayDados = await resultadoSequelize.obterDados(SQL);
-      console.log({qtd_dados: arrayDados.length})
-
       let offset = 0;
       for (let i = 0; ; i++) {
         // SETAR SQL
