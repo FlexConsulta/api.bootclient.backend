@@ -3,21 +3,8 @@ const GerarArquivo = require('../../utils/gerador.arquivo.js');
 const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
+const { apiFlex } = require('../../API/api.js');
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS } = process.env;
-
-// ====================================================================================
-let SQL = `SELECT mot.codmotorista, 
-coalesce(mot.dataatual, mot.datainclusao) AS dataatual,
-mot.cpf,
-mot.liberado,
-mot.nome,
-mot.celular,
-mot.fone,
-mot.bloqueadoadm
-FROM motorista mot 
-WHERE mot.codmotorista = (select mot2.codmotorista from motorista mot2 where mot.cpf = mot2.cpf order by coalesce(mot2.dataatual, mot2.datainclusao) desc limit 1 )
-ORDER BY coalesce(mot.dataatual, mot.datainclusao) ASC`
-// ====================================================================================
 
 class Motoristas extends GerarArquivo {
   constructor(empresa) {
@@ -40,11 +27,30 @@ class Motoristas extends GerarArquivo {
         porta_banco: Number(this.empresa.porta_server),
       };
 
+      // req last log
+      const logs = await apiFlex.get(
+        `bootclient/log/last?cnpj=${this.empresa.cnpj_empresa}`
+      );
+      const lastSyncDate = logs.data["motoristas"].data
+
+      // sql json -> obj
+      const String_SQL = this.empresa.sql_motoristas
+      let SQL_object = String_SQL.substring(1, String_SQL.length - 1);
+      SQL_object = JSON.parse(SQL_object)
+
+      // definir sql
+      let SQL;
+      if(lastSyncDate){
+         SQL = SQL_object.getByDate;
+         const data_query = moment(lastSyncDate, [ "DD/MM/YYY HH:mm", "YYYY/MM/DD HH:mm",]).format("YYYY/MM/DD HH:mm");
+         SQL = SQL.replace("[$]", data_query);
+      }else SQL = SQL_object.getAll;
+
+
       let offset = 0;
-      
       for (let i = 0; ; i++) {
         // SETAR SQL
-        const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
+        const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
 
         // get dados
         const resultadoSequelize = await new sequelizePostgres(dataConexao);
