@@ -28,10 +28,8 @@ class Motoristas extends GerarArquivo {
       };
 
       // req last log
-      const logs = await apiFlex.get(
-        `bootclient/log/last?cnpj=${this.empresa.cnpj_empresa}`
-      );
-      const lastSyncDate = logs.data["motoristas"].data
+      const logs = await apiFlex.get(`bootclient/log/last?cnpj=${this.empresa.cnpj_empresa}`);
+      const lastSyncDate = logs.data["motoristas"].data;
 
       // sql json -> obj
       let SQL_object = this.empresa.sql_motoristas;
@@ -46,6 +44,7 @@ class Motoristas extends GerarArquivo {
       }else SQL = SQL_object.getAll;
 
       let offset = 0;
+
       for (let i = 0; ; i++) {
         // SETAR SQL
         const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
