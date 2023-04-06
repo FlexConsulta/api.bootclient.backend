@@ -1,17 +1,10 @@
-const GerarArquivo = require('../../utils/gerador.arquivo.js');
-const sequelizePostgres = require('../../services/sequelize.service');
-const { encryptedData } = require('../../utils/encriptacao');
-const { fnGerarLogs } = require('../../utils/gerarLogs.js');
+const moment = require("moment");
+const GerarArquivo = require("../../utils/gerador.arquivo.js");
+const sequelizePostgres = require("../../services/sequelize.service");
+const { encryptedData } = require("../../utils/encriptacao");
+const { fnGerarLogs } = require("../../utils/gerarLogs.js");
+const { apiFlex } = require("../../API/api.js");
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS } = process.env;
-
-const SQL = `SELECT coalesce(prop.dataatual, prop.datainclusao) AS dataatual,
-prop.cgccpf,
-prop.nome,
-prop.liberado,
-prop.bloqueadoadm
-FROM proprietario prop 
-WHERE prop.codproprietario = (select prop2.codproprietario from proprietario prop2 where prop.cgccpf = prop2.cgccpf order by coalesce(prop2.dataatual, prop2.datainclusao) desc limit 1)
-ORDER BY coalesce(prop.dataatual, prop.datainclusao) ASC`;
 
 class Proprietarios extends GerarArquivo {
   constructor(empresa) {
@@ -34,8 +27,24 @@ class Proprietarios extends GerarArquivo {
         porta_banco: Number(this.empresa.porta_server),
       };
 
+      // req last log
+      const logs = await apiFlex.get( `bootclient/log/last?cnpj=${this.empresa.cnpj_empresa}`);
+      const lastSyncDate = logs.data["proprietarios"].data;
+
+      // sql json -> obj
+      let SQL_object = this.empresa.sql_proprietarios;
+      SQL_object = JSON.parse(SQL_object);
+
+      // definir sql
+      let SQL;
+      if (lastSyncDate) {
+        SQL = SQL_object.getByDate;
+        const data_query = moment(lastSyncDate, [ "DD/MM/YYY HH:mm", "YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
+        SQL = SQL.replace("[$]", data_query);
+      } else SQL = SQL_object.getAll;
+
       let offset = 0;
-      
+
       for (let i = 0; ; i++) {
         // SETAR SQL
         const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
@@ -47,16 +56,16 @@ class Proprietarios extends GerarArquivo {
         // encripta
         const dataEncriptado = await encryptedData(arrayDados);
 
-        // gerar arquivo
-        await this.fnGeradorArquivos(
-          dataEncriptado,
-          "SYNCz_PROPRIETARIOS",
-          this.empresa.cnpj_empresa,
-          FOLDER_SYNC_SUCCESS
-        );
+        if (arrayDados?.length > 0){
+          // gerar arquivo
+          await this.fnGeradorArquivos(
+            dataEncriptado,
+            "SYNCz_PROPRIETARIOS",
+            this.empresa.cnpj_empresa,
+            FOLDER_SYNC_SUCCESS
+          );
 
-        // gerar log
-        if (arrayDados?.length > 0)
+          // gerar log
           await fnGerarLogs(
             this.empresa.cnpj_empresa,
             "SYNCz_PROPRIETARIOS",
@@ -64,6 +73,7 @@ class Proprietarios extends GerarArquivo {
             "proprietarios",
             arrayDados.length
           );
+        }
 
         console.log(`[PROPRIETARIOS X] || ${arrayDados?.length || 0}`);
         if (arrayDados.length < SQL_LIMIT) break;
@@ -75,4 +85,4 @@ class Proprietarios extends GerarArquivo {
   }
 }
 
-module.exports = Proprietarios
+module.exports = Proprietarios;

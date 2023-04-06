@@ -1,16 +1,11 @@
+const moment = require('moment');
 const GerarArquivo = require('../../utils/gerador.arquivo.js');
 const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao')
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
+const { apiFlex } = require('../../API/api.js');
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS } = process.env;
 
-const SQL = `SELECT coalesce(veic.dataatual, veic.datainclusao) AS dataatual,
-veic.placa,
-veic.liberado,
-veic.bloqueadoadm
-FROM veiculo veic 
-WHERE veic.codveiculo = (select veic2.codveiculo from veiculo veic2 where veic.placa = veic2.placa order by coalesce(veic2.dataatual, veic2.datainclusao) desc limit 1 )
-ORDER BY coalesce(veic.dataatual, veic.datainclusao) ASC`;
 
 class Veiculos extends GerarArquivo {
   constructor(empresa) {
@@ -33,8 +28,23 @@ class Veiculos extends GerarArquivo {
         porta_banco: Number(this.empresa.porta_server),
       };
 
+      // req last log
+      const logs = await apiFlex.get(`bootclient/log/last?cnpj=${this.empresa.cnpj_empresa}`);
+      const lastSyncDate = logs.data["veiculos"].data;
+
+      // sql json -> obj
+      let SQL_object = this.empresa.sql_veiculos;
+      SQL_object = JSON.parse(SQL_object)
+
+      // definir sql
+      let SQL;
+      if(lastSyncDate){
+         SQL = SQL_object.getByDate;
+         const data_query = moment(lastSyncDate, [ "DD/MM/YYY HH:mm", "YYYY/MM/DD HH:mm",]).format("YYYY/MM/DD HH:mm");
+         SQL = SQL.replace("[$]", data_query);
+      }else SQL = SQL_object.getAll;
+
       let offset = 0;
-      
       for (let i = 0; ; i++) {
         // SETAR SQL
         const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
@@ -46,16 +56,16 @@ class Veiculos extends GerarArquivo {
         // encripta
         const dataEncriptado = await encryptedData(arrayDados);
 
-        // gerar arquivo
-        await this.fnGeradorArquivos(
-          dataEncriptado,
-          "SYNCz_VEICULOS",
-          this.empresa.cnpj_empresa,
-          FOLDER_SYNC_SUCCESS
-        );
+        if (arrayDados?.length > 0){
+          // gerar arquivo
+          await this.fnGeradorArquivos(
+            dataEncriptado,
+            "SYNCz_VEICULOS",
+            this.empresa.cnpj_empresa,
+            FOLDER_SYNC_SUCCESS
+          );
 
-        // gerar log
-        if (arrayDados?.length > 0)
+          // gerar log
           await fnGerarLogs(
             this.empresa.cnpj_empresa,
             "SYNCz_VEICULOS",
@@ -63,6 +73,7 @@ class Veiculos extends GerarArquivo {
             "veiculos",
             arrayDados.length
           );
+        }
 
         console.log(`[VEICULOS X] || ${arrayDados?.length || 0}`);
         if (arrayDados.length < SQL_LIMIT) break;
