@@ -24,10 +24,10 @@ module.exports = async (req, res) => {
   }
 
   Promise.all([
-//     new Motoristas(data_empresa),
-//     new Proprietarios(data_empresa),
-//     new Veiculos(data_empresa),
-//     new Viagens(data_empresa),
+    new Motoristas(data_empresa),
+    new Proprietarios(data_empresa),
+    new Veiculos(data_empresa),
+    new Viagens(data_empresa),
   ])
     .then((data) => {
       if (res) res.status(202).send();
