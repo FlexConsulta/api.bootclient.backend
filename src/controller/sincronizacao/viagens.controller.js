@@ -30,7 +30,6 @@ class Viagens extends GerarArquivo {
       // req last log
       const logs = await apiFlex.get(`bootclient/log/last?cnpj=${this.empresa.cnpj_empresa}`);
       const lastSyncDate = logs.data["viagens"].data;
-      console.log(lastSyncDate)
 
       // sql json -> obj
       let SQL_object = this.empresa.sql_viagens;
