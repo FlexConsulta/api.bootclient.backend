@@ -37,10 +37,7 @@ class Proprietarios extends GerarArquivo {
       let offset = 0;
       for (let i = 0; ; i++) {
         // SETAR SQL
-        // =========================================================
-        // const _sql = `${this.empresa.sql_proprietarios} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
         const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset}`;
-        // =========================================================
 
         // get dados
         const resultadoSequelize = await new sequelizePostgres(dataConexao);
