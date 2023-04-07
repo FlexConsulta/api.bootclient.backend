@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {API} = process.env
+const { API } = process.env
 
 const apiURLs = {
   development: "http://127.0.0.1:3333/_api",

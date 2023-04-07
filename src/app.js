@@ -10,7 +10,7 @@ const MonitoramentoArquivos = require('./controller/monitoramento')
 const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
 const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
 const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
-const MonitoramentoArquivosNaoEnviados = require("./controller/coletar.informacoes/arquivos.pendentes") 
+const MonitoramentoArquivosNaoEnviados = require("./controller/coletar.informacoes/arquivos.pendentes")
 
 const app = express()
 
@@ -33,10 +33,10 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 /**
- * TODO: Sincronização Automática dos dados
+ * FIXME: Sincronização Automática dos dados
  * TODO: Verificar o funcionamento do Bootclient
  * TODO: Verificar a conexão com o banco de dados do cliente
- * TODO: Verificar os arquivos gerados na pasta do bootclient
+ * FIXME: Verificar os arquivos gerados na pasta do bootclient
  * TODO: Coletar dados estatísticos dos dados do clientes
  *      TODO: Total registros das tabelas (Diariamente -1)
  *      TODO: Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1)

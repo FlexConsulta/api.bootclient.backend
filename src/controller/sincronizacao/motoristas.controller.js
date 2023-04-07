@@ -3,6 +3,7 @@ const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const { apiFlex } = require('../../API/api.js');
+const moment = require("moment")
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS } = process.env;
 
 class Motoristas extends GerarArquivo {
