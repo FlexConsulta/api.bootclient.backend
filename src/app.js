@@ -36,7 +36,6 @@ app.use(RouteLogs)
  * FIXME: Sincronização Automática dos dados
  * TODO: Verificar o funcionamento do Bootclient
  * TODO: Verificar a conexão com o banco de dados do cliente
- * FIXME: Verificar os arquivos gerados na pasta do bootclient
  * TODO: Coletar dados estatísticos dos dados do clientes
  *      TODO: Total registros das tabelas (Diariamente -1)
  *      TODO: Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1)
@@ -45,8 +44,8 @@ app.use(RouteLogs)
 
 
 // new MonitoramentoArquivos(new Date())
-// new SincronizacaoAutomatica(new Date())
-new MonitoramentoArquivosNaoEnviados()
+new SincronizacaoAutomatica(new Date())
+// new MonitoramentoArquivosNaoEnviados()
 
 // new SincronizacaoAutomaticaBackup(new Date())
 // new LimpezaLogsSistema(new Date())
