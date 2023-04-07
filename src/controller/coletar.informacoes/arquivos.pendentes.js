@@ -38,7 +38,6 @@ class MonitoramentoArquivosNaoEnviados {
                 nomes_arquivos: arrayListFiles
             })
 
-            console.log({ rsltLogsRegister });
 
         } catch (error) {
             console.log({ error });

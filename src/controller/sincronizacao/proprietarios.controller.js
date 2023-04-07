@@ -63,7 +63,7 @@ class Proprietarios extends GerarArquivo {
                     cnpj_cliente: this.cnpj_empresa,
                     nome_arquivo: fileName,
                     error: false,
-                    entidade: "PROPRIETARIOS",
+                    entidade: "proprietarios",
                     quantidade: String(arrayDados.length),
                     categoria: "SINCRONIZACAO_DADOS",
                     mensagem: "Sincronização dos dados do proprietários concluídos com sucesso!",

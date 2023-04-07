@@ -62,7 +62,7 @@ class Motoristas extends GerarArquivo {
                               cnpj_cliente: this.cnpj_empresa,
                               nome_arquivo: fileName,
                               error: false,
-                              entidade: "MOTORISTAS",
+                              entidade: "motoristas",
                               quantidade: String(arrayDados.length),
                               categoria: "SINCRONIZACAO_DADOS",
                               mensagem: "Sincronização dos dados do motorista concluídos com sucesso!",

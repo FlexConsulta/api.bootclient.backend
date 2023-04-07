@@ -1,6 +1,7 @@
 const log_sincronizacao = require('../../models/log.sincronizacao').pegarUltimoLogSincronizacao;
 const { deletarTodosLogSincronizacao, criarLogSincronizacao } = require('../../models/log.sincronizacao');
 const { deletarTodosLogEnvioArquivos } = require('../../models/log.envio.arquivos');
+const { FILE_VERSION } = process.env
 
 class LimpezaAutomaticaLogs {
 
@@ -11,11 +12,10 @@ class LimpezaAutomaticaLogs {
             const interval = 60 * 60 * 48000; // 48 hours in msec);
             setInterval(async () => {
 
-                  const log_motorista = await log_sincronizacao({ tipo: "SYNCz_MOTORISTAS" })
-                  const log_proprietario = await log_sincronizacao({ tipo: "SYNCz_PROPRIETARIOS" })
-                  const log_veiculos = await log_sincronizacao({ tipo: "SYNCz_VEICULOS" })
-                  const log_viagens = await log_sincronizacao({ tipo: "SYNCz_VIAGENS" })
-
+                  const log_motorista = await log_sincronizacao({ tipo: `${FILE_VERSION}_MOTORISTAS` })
+                  const log_proprietario = await log_sincronizacao({ tipo: `${FILE_VERSION}_PROPRIETARIOS` })
+                  const log_veiculos = await log_sincronizacao({ tipo: `${FILE_VERSION}_VEICULOS` })
+                  const log_viagens = await log_sincronizacao({ tipo: `${FILE_VERSION}_VIAGENS` })
 
                   const array = []
                   if (log_motorista) {

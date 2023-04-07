@@ -65,7 +65,7 @@ class Veiculos extends GerarArquivo {
                     cnpj_cliente: this.cnpj_empresa,
                     nome_arquivo: fileName,
                     error: false,
-                    entidade: "VEICULOS",
+                    entidade: "veiculos",
                     quantidade: String(arrayDados.length),
                     categoria: "SINCRONIZACAO_DADOS",
                     mensagem: "Sincronização dos dados do veículo concluídos com sucesso!",

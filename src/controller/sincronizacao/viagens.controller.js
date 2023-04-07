@@ -66,7 +66,7 @@ class Viagens extends GerarArquivo {
                     cnpj_cliente: this.cnpj_empresa,
                     nome_arquivo: fileName,
                     error: false,
-                    entidade: "VIAGENS",
+                    entidade: "viagens",
                     quantidade: String(arrayDados.length),
                     categoria: "SINCRONIZACAO_DADOS",
                     mensagem: "Sincronização dos dados das viagens concluídos com sucesso!",
