@@ -1,15 +1,8 @@
 const fs = require('fs');
-const moment = require('moment');
 
 class GerarArquivo {
 
       constructor() { }
-
-      async fnGeradorArquivos(arr, tipo, CNPJ, pasta) {
-            CNPJ = CNPJ.replace(/\D/g, "");
-            const nomeArquivo = `${tipo}_${CNPJ}_${moment().valueOf()}`;
-            this.fnGeradorArquivo(pasta, nomeArquivo, arr)
-      }
 
       async fnGeradorArquivo(dir, file, data) {
 
