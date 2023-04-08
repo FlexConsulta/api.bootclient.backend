@@ -12,6 +12,7 @@ const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automa
 const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
 const MonitoramentoArquivosNaoEnviados = require("./controller/coletar.informacoes/arquivos.pendentes")
 const FuncionamentoBootclient = require("./controller/coletar.informacoes/funcionamento.bootclient")
+const ColetaDadosEstatisticos = require("./controller/coletar.informacoes/coleta.dados.estatisticos")
 
 const app = express()
 
@@ -34,8 +35,7 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 /**
- * TODO: Verificar a conexão com o banco de dados do cliente
- * TODO: Coletar dados estatísticos dos dados do clientes
+ * FIXME: Coletar dados estatísticos dos dados do clientes
  *      TODO: Total registros das tabelas (Diariamente -1)
  *      TODO: Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1)
  *      TODO: Total viagens cancelados  (Diariamente -1)
@@ -45,18 +45,9 @@ new MonitoramentoArquivos(new Date())
 new SincronizacaoAutomatica(new Date())
 new MonitoramentoArquivosNaoEnviados()
 new FuncionamentoBootclient(new Date())
+new ColetaDadosEstatisticos(new Date())
 
 // new SincronizacaoAutomaticaBackup(new Date())
 // new LimpezaLogsSistema(new Date())
 
 module.exports = app;
-
-// {
-//     getAll: SELECT
-//     getByDate: SELECT
-//     count: SELECT count(mot.codmotorista) FROM motorista mot LIMIT 1
-// }
-// SELECT count(mot.codmotorista) FROM motorista mot LIMIT 1
-// SELECT count(c.numero) FROM conhecimento c LIMIT 1
-// SELECT count(veic.placa) FROM veiculo veic  LIMIT 1
-// SELECT count(prop.cgccpf) FROM proprietario prop  LIMIT 1
