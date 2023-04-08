@@ -38,7 +38,6 @@ class MonitoramentoArquivosNaoEnviados {
                 nomes_arquivos: arrayListFiles
             })
 
-
         } catch (error) {
             console.log({ error });
         }
