@@ -21,7 +21,7 @@ class Veiculos {
       if (Number(arrayDados[0]?.count) > 0) {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
-          nome_arquivo: "NO FILE",
+          nome_arquivo: null,
           error: false,
           entidade: "veiculos",
           quantidade: arrayDados[0]?.count,
@@ -32,7 +32,7 @@ class Veiculos {
       } else {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
-          nome_arquivo: "NO FILE",
+          nome_arquivo: null,
           error: true,
           entidade: "veiculos",
           quantidade: "1",
