@@ -53,11 +53,10 @@ class Veiculos extends GerarArquivo {
                 const convertedCNPJ = String(this.cnpj_empresa).replaceAll(/\D/g, '')
                 const fileName = `${filePrefix}_VEICULOS_${convertedCNPJ}_${moment().valueOf()}`
                 if (arrayDados?.length > 0) {
-                    await this.fnGeradorArquivos(
-                        dataEncriptado,
-                        fileName,
-                        this.cnpj_empresa,
-                        FOLDER_SYNC_SUCCESS
+                    await this.fnGeradorArquivo(
+                      FOLDER_SYNC_SUCCESS,
+                      fileName,
+                      dataEncriptado
                     );
                 }
 
