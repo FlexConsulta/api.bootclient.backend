@@ -13,6 +13,7 @@ class ColetaDadosEstatisticos {
     async start() {
         try {
             const { dbObjectConnection, data_empresa } = await getInfoCompany();
+            
             let sqls = {
                 count_motoristas: JSON.parse(data_empresa.sql_motoristas).countAll,
                 count_proprietarios: JSON.parse(data_empresa.sql_proprietarios).countAll,
