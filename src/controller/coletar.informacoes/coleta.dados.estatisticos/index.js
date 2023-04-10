@@ -14,19 +14,19 @@ class ColetaDadosEstatisticos {
         try {
             const { dbObjectConnection, data_empresa } = await getInfoCompany();
             let sqls = {
-                count_motoristas: JSON.parse(data_empresa.sql_motoristas).count,
-                count_proprietarios: JSON.parse(data_empresa.sql_proprietarios).count,
-                count_veiculos: JSON.parse(data_empresa.sql_veiculos).count,
-                count_viagens: JSON.parse(data_empresa.sql_viagens).count,
+                count_motoristas: JSON.parse(data_empresa.sql_motoristas).countAll,
+                count_proprietarios: JSON.parse(data_empresa.sql_proprietarios).countAll,
+                count_veiculos: JSON.parse(data_empresa.sql_veiculos).countAll,
+                count_viagens: JSON.parse(data_empresa.sql_viagens).countAll,
             };
 
-            const arraySqls = []
-
+            const arraySqls = [];
+            
             for (const key in sqls) {
                 let sql = sqls[key]
                 const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
                 const query_result = await resultadoSequelize.obterDados(sql)
-                arraySqls.push({ key: query_result })
+                arraySqls.push({ [key]: query_result[0].count });
             }
 
             const rsltLogsRegister = await fnGerarLogs({
