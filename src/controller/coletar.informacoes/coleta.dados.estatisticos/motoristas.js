@@ -1,7 +1,4 @@
 const moment = require("moment")
-const sequelizePostgres = require("../../../services/sequelize.service");
-const { fnGerarLogs } = require("../../../utils/gerarLogs.js");
-const { DATAINICIAL } = process.env;
 
 class Motoristas {
   constructor({ dbObjectConnection, cnpj_empresa, dbSQL, lastSyncDate }) {
