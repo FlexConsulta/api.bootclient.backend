@@ -48,7 +48,7 @@ new VerificacaoAutomatica();
 new SincronizacaoAutomaticaBackup(new Date())
 new LimpezaLogsSistema(new Date())
 
-
+console.log(new Date());
 /*
 Atualizado 
 */
