@@ -42,14 +42,14 @@ app.use(RouteLogs)
  *      TODO: Total viagens cancelados  (Diariamente -1)
  */
 
-// new MonitoramentoArquivos(new Date())
-// new SincronizacaoAutomatica(new Date())
-// new MonitoramentoArquivosNaoEnviados()
-// new FuncionamentoBootclient(new Date())
+new MonitoramentoArquivos(new Date())
+new SincronizacaoAutomatica(new Date())
+new MonitoramentoArquivosNaoEnviados()
+new FuncionamentoBootclient(new Date())
 new ColetaDadosEstatisticosAutomatica();
-// new VerificacaoAutomatica();
+new VerificacaoAutomatica();
 
-// new SincronizacaoAutomaticaBackup(new Date())
-// new LimpezaLogsSistema(new Date())
+new SincronizacaoAutomaticaBackup(new Date())
+new LimpezaLogsSistema(new Date())
 
 module.exports = app;
