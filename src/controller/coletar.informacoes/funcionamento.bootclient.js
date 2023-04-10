@@ -12,15 +12,15 @@ class FuncionamentoBootclient {
         try {
 
             const __CNPJ_EMPRESA = process.env.CNPJ
-            // const rsltLogsRegister = await fnGerarLogs({
-            //     cnpj_cliente: __CNPJ_EMPRESA,
-            //     nome_arquivo: null,
-            //     error: false,
-            //     entidade: null,
-            //     quantidade: null,
-            //     categoria: "FUNCIONAMENTO_BOOTCLIENT",
-            //     mensagem: "O sistema está funcionando normal.",
-            // });
+            const rsltLogsRegister = await fnGerarLogs({
+                cnpj_cliente: __CNPJ_EMPRESA,
+                nome_arquivo: null,
+                error: false,
+                entidade: null,
+                quantidade: null,
+                categoria: "FUNCIONAMENTO_BOOTCLIENT",
+                mensagem: "O sistema está funcionando normal.",
+            });
 
         } catch (error) {
             console.log({ error });

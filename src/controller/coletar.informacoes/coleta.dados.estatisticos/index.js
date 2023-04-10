@@ -39,7 +39,7 @@ class ColetaDadosEstatisticos {
                 mensagem: "coleta de dados estatísticos concluída com sucesso!",
             });
 
-            console.log({ rsltLogsRegister });
+            
 
         } catch (error) {
             console.log({ error });

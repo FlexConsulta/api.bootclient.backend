@@ -28,7 +28,7 @@ class Proprietarios {
           categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
           mensagem: `A entidade está funcionando!`,
         });
-        console.log({ rsltLogsRegister });
+
       } else {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
@@ -39,7 +39,7 @@ class Proprietarios {
           categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
           mensagem: `A entidade NÃO funciona!`,
         });
-        console.log({ rsltLogsRegister });
+
       }
 
       resolve(true);

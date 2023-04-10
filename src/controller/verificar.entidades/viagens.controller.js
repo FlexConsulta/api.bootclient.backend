@@ -29,7 +29,7 @@ class Viagens {
           categoria: "VERIFICACAO_ENTIDADE_VIAGENS",
           mensagem: `A entidade está funcionando!`,
         });
-        console.log({ rsltLogsRegister });
+        
       } else {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
@@ -40,7 +40,7 @@ class Viagens {
           categoria: "VERIFICACAO_ENTIDADE_VIAGENS",
           mensagem: `A entidade NÃO funciona!`,
         });
-        console.log({ rsltLogsRegister });
+        
       }
 
       resolve(true);

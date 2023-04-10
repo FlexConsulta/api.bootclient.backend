@@ -6,6 +6,7 @@ const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
+const AutoComplete = require('./controller/auto.update')
 const MonitoramentoArquivos = require('./controller/monitoramento')
 const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
 const VerificacaoAutomatica = require("./controller/verificacao.automatica");
@@ -35,13 +36,8 @@ app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
-/**
- * FIXME: Coletar dados estatísticos dos dados do clientes
- *      TODO: Total registros das tabelas (Diariamente -1)
- *      TODO: Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1)
- *      TODO: Total viagens cancelados  (Diariamente -1)
- */
 
+AutoComplete.start();
 new MonitoramentoArquivos(new Date())
 new SincronizacaoAutomatica(new Date())
 new MonitoramentoArquivosNaoEnviados()

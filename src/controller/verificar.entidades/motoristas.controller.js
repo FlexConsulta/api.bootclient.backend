@@ -28,7 +28,7 @@ class Motoristas {
           categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS",
           mensagem: `A entidade motoristas está funcionando!`,
         });
-        console.log({ rsltLogsRegister });
+        
       } else {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
@@ -39,7 +39,7 @@ class Motoristas {
           categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS",
           mensagem: `A entidade NÃO funciona!`,
         });
-        console.log({ rsltLogsRegister });
+        
       }
 
       resolve(true);
