@@ -6,7 +6,7 @@ moment.locale("pt-br");
 const { JOB_SINCRONIZACAO_AUTO } = process.env;
 
 class SincronizacaoAutomatica {
-  constructor(data) {
+  constructor() {
     (async () => {
       try {
         schedule.gracefulShutdown();

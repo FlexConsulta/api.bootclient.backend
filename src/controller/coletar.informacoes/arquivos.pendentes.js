@@ -6,7 +6,6 @@ const { gerarLogsArquivos } = require("../../utils/gerarLogs.js");
 class MonitoramentoArquivosNaoEnviados {
 
     constructor() {
-        console.log(`[i] Monitoramento de arquivos não enviados: ${moment().format("LLLL")}`);
         this.start()
     }
 

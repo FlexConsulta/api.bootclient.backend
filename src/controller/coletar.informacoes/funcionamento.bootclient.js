@@ -4,7 +4,6 @@ const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 class FuncionamentoBootclient {
 
     constructor() {
-        console.log(`[i] Monitoramento funcionamento do bootclient: ${moment().format("LLLL")}`);
         this.start()
     }
 
