@@ -48,4 +48,8 @@ new VerificacaoAutomatica();
 new SincronizacaoAutomaticaBackup(new Date())
 new LimpezaLogsSistema(new Date())
 
+console.log("Data: ", new Date());
+/*
+Atualizado 
+*/
 module.exports = app;
