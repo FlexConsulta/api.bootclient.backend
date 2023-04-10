@@ -11,7 +11,7 @@ class FuncionamentoBootclientAutomatico {
       try {
         schedule.gracefulShutdown();
         const fn = () => {
-          console.log(`[i] Monitoramento funcionamento do bootclient: ${moment().format("LLLL")}`);
+          console.log(`[i] Monitoramento funcionamento do bootclient AUTO: ${moment().format("LLLL")}`);
           new FuncionamentoBootclient();
         };
 

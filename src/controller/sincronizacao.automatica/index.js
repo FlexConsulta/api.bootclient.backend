@@ -12,7 +12,7 @@ class SincronizacaoAutomatica {
         schedule.gracefulShutdown();
         const fn = () => {
           sincronizacao();
-          console.log(`[i] Sincronizando: ${moment().format("LLL")}`);
+          console.log(`[i] Sincronizando AUTO: ${moment().format("LLL")}`);
         };
 
         fn();

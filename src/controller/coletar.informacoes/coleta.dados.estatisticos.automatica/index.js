@@ -11,7 +11,7 @@ class ColetaDadosEstatisticosAutomatica {
       try {
         schedule.gracefulShutdown();
         const fn = () => {
-          console.log(`[i] Coleta de dados estatísticos: ${moment().format("LLL")}`);
+          console.log(`[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`);
           new ColetaDadosEstatisticos();
         };
 

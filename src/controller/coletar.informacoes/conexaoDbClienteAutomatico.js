@@ -12,7 +12,7 @@ class ConexaoDbClienteAutomatico {
       try {
         schedule.gracefulShutdown();
         const fn = () => {
-          console.log(`[i] Monitoramento db connection: ${moment().format("LLLL")}`);
+          console.log(`[i] Monitoramento db connection AUTO: ${moment().format("LLLL")}`);
           new ConexaoDbCliente();
         };
 

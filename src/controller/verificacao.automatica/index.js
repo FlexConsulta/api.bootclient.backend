@@ -12,7 +12,7 @@ class VerificacaoAutomatica {
         schedule.gracefulShutdown();
         const fn = () => {
           verificacao();
-          console.log(`[i] Verificação: ${moment().format("LLL")}`);
+          console.log(`[i] Monitoramento verificação das entidades AUTO: ${moment().format("LLL")}`);
         };
 
         fn();
