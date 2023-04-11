@@ -1,6 +1,6 @@
 const moment = require("moment");
 const schedule = require("node-schedule");
-const ColetaDadosEstatisticos = require("../coleta.dados.estatisticos");
+const ColetaDadosEstatisticos = require("./coleta.dados.estatisticos");
 
 moment.locale("pt-br");
 const { JOB_COLETA_AUTO } = process.env;
@@ -11,7 +11,9 @@ class ColetaDadosEstatisticosAutomatica {
       try {
         schedule.gracefulShutdown();
         const fn = () => {
-          console.log(`[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`);
+          console.log(
+            `[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`
+          );
           new ColetaDadosEstatisticos();
         };
 
