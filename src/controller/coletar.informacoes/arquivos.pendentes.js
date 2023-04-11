@@ -32,13 +32,13 @@ class MonitoramentoArquivosNaoEnviados {
                     if (dateNow > dateDue) arrayListFiles.push({ file, size, birthtime })
                 }
             }
-
+            
             const rsltLogsRegister = await gerarLogsArquivos({
                 cnpj_cliente: __CNPJ_EMPRESA,
                 quantidade_arquivos: arrayListFiles.length,
                 nomes_arquivos: arrayListFiles
             })
-
+            
         } catch (error) {
           const rsltLogsRegister = await fnGerarLogs({
             cnpj_cliente: CNPJ,
