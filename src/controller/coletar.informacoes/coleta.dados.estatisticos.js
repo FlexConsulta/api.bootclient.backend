@@ -1,7 +1,7 @@
 const moment = require("moment")
-const getInfoCompany = require("../../../utils/get.info.company.js");
-const sequelizePostgres = require("../../../services/sequelize.service");
-const { fnGerarLogs } = require("../../../utils/gerarLogs.js");
+const sequelizePostgres = require("../../services/sequelize.service");
+const { fnGerarLogs } = require("../../utils/gerarLogs.js");
+const getInfoCompany = require("../../utils/get.info.company");
 
 class ColetaDadosEstatisticos {
 
@@ -37,8 +37,6 @@ class ColetaDadosEstatisticos {
                 categoria: "DADOS_ESTATISTICOS_COUNT",
                 mensagem: "coleta de dados estatísticos concluída com sucesso!",
             });
-
-            
 
         } catch (error) {
             console.log({ error });
