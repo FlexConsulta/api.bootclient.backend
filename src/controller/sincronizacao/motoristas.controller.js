@@ -29,7 +29,7 @@ class Motoristas extends GerarArquivo {
       async sincronizar() {
             return new Promise(async (resolve) => {
               try {
-                throw new Error("Error manual");
+                // throw new Error("Error manual");
 
                 let SQL;
                 if (this.lastSyncDate) {
