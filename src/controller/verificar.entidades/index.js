@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
         await new Veiculos({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_veiculos}),
         await new Viagens({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_viagens}),
     ]).then(() => {
-        throw new Error("Error manual");
+        // throw new Error("Error manual");
 
         if (res) res.status(202).send();
         console.log("Verificação concluída com sucesso!");

@@ -15,28 +15,30 @@ class Motoristas {
   async verificar() {
     return new Promise(async (resolve) => {
       try {
-        throw new Error("Error manual")
+        // throw new Error("Error manual")
 
         const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
-        const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.count);
+        const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.getOne);
 
-        if (Number(arrayDados[0]?.count) > 0) {
-          const rsltLogsRegister = await fnGerarLogs({
+        let rsltLogsRegister;
+
+        if (arrayDados?.length > 0) {
+          rsltLogsRegister = await fnGerarLogs({
             cnpj_cliente: this.cnpj_empresa,
             nome_arquivo: null,
             error: false,
             entidade: "motoristas",
-            quantidade: arrayDados[0]?.count,
+            quantidade: String(arrayDados?.length),
             categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS",
             mensagem: `A entidade motoristas está funcionando!`,
           });
         } else {
-          const rsltLogsRegister = await fnGerarLogs({
+          rsltLogsRegister = await fnGerarLogs({
             cnpj_cliente: this.cnpj_empresa,
             nome_arquivo: null,
             error: true,
             entidade: "motoristas",
-            quantidade: null,
+            quantidade: String(arrayDados?.length),
             categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS",
             mensagem: `A query SQL tem resltado menor que 1!`,
           });
