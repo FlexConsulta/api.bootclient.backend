@@ -12,7 +12,7 @@ class ColetaDadosEstatisticos {
 
     async start() {
       try {
-        throw new Error("Error manual");
+        // throw new Error("Error manual");
 
         const { dbObjectConnection, data_empresa } = await getInfoCompany();
         let sqls = {

@@ -12,7 +12,7 @@ class MonitoramentoArquivosNaoEnviados {
 
     async start() {
         try {
-            throw new Error("Error manual");
+            // throw new Error("Error manual");
 
             const pathFiles = process.env.FOLDER_SYNC_SUCCESS
             const __CNPJ_EMPRESA = process.env.CNPJ

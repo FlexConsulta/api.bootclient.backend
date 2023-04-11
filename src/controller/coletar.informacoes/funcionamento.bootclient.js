@@ -10,7 +10,7 @@ class FuncionamentoBootclient {
 
     async start() {
         try {
-            throw new Error("Error manual");
+            // throw new Error("Error manual");
 
             const rsltLogsRegister = await fnGerarLogs({
               cnpj_cliente: CNPJ,
