@@ -34,7 +34,7 @@ class Viagens extends GerarArquivo {
               let SQL;
               if (this.lastSyncDate) {
                 SQL = this.dbSQL.setByDataFiltred;
-                const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
+                const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
               } else {
                 SQL = this.dbSQL.setByData;

@@ -11,9 +11,9 @@ const options = {
 const repo = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 const intervaloAtualizacao = process.env.JOB_AUTO_UPDATE
 
-const AutoComplete = cron.schedule(intervaloAtualizacao, () => {
+const updateAppAuto = cron.schedule(intervaloAtualizacao, () => {
     
-    console.log("Verificando atualizações...");
+    console.log("[i] Verificando atualizações...");
 
     repo.pull((err, atualizacao) => {
         if (err) {
@@ -28,4 +28,4 @@ const AutoComplete = cron.schedule(intervaloAtualizacao, () => {
     });
 });
 
-module.exports = AutoComplete
+module.exports = updateAppAuto

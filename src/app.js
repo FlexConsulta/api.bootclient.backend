@@ -6,7 +6,7 @@ const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
-// const AutoUpdate = require("./controller/auto.update");
+const updateAppAuto = require("./controller/auto.update");
 const MonitoramentoArquivos = require('./controller/monitoramento')
 const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
 const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
@@ -38,15 +38,15 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 
-// AutoUpdate.start();
-new MonitoramentoArquivos(new Date());
+updateAppAuto.start();
+// new MonitoramentoArquivos(new Date());
 new SincronizacaoAutomatica();
-new MonitoramentoArquivosNaoEnviadosAutomatico();
-new FuncionamentoBootclientAutomatico();
-new ColetaDadosEstatisticosAutomatica();
-new VerificacaoEntidadesAutomatica();
-new ConexaoDbClienteAutomatico();
-new SincronizacaoAutomaticaBackup(new Date());
-new LimpezaLogsSistema(new Date());
+// new MonitoramentoArquivosNaoEnviadosAutomatico();
+// new FuncionamentoBootclientAutomatico();
+// new ColetaDadosEstatisticosAutomatica();
+// new VerificacaoEntidadesAutomatica();
+// new ConexaoDbClienteAutomatico();
+// new SincronizacaoAutomaticaBackup(new Date());
+// new LimpezaLogsSistema(new Date());
 
 module.exports = app;
