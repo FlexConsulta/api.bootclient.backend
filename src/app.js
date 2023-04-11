@@ -39,14 +39,14 @@ app.use(RouteLogs)
 
 
 updateAppAuto.start();
-// new MonitoramentoArquivos(new Date());
+new MonitoramentoArquivos(new Date());
 new SincronizacaoAutomatica();
-// new MonitoramentoArquivosNaoEnviadosAutomatico();
-// new FuncionamentoBootclientAutomatico();
-// new ColetaDadosEstatisticosAutomatica();
-// new VerificacaoEntidadesAutomatica();
-// new ConexaoDbClienteAutomatico();
-// new SincronizacaoAutomaticaBackup(new Date());
-// new LimpezaLogsSistema(new Date());
+new MonitoramentoArquivosNaoEnviadosAutomatico();
+new FuncionamentoBootclientAutomatico();
+new ColetaDadosEstatisticosAutomatica();
+new VerificacaoEntidadesAutomatica();
+new ConexaoDbClienteAutomatico();
+new SincronizacaoAutomaticaBackup(new Date());
+new LimpezaLogsSistema(new Date());
 
 module.exports = app;
