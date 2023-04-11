@@ -38,16 +38,14 @@ app.use(RouteLogs)
 
 
 AutoUpdate.start();
-new MonitoramentoArquivos(new Date())
-new SincronizacaoAutomatica(new Date())
-new MonitoramentoArquivosNaoEnviados()
+// new MonitoramentoArquivos(new Date())
+// new MonitoramentoArquivosNaoEnviados()
+// new SincronizacaoAutomatica(new Date())
 new FuncionamentoBootclient(new Date())
-new ColetaDadosEstatisticosAutomatica();
-new VerificacaoAutomatica();
+// new ColetaDadosEstatisticosAutomatica();
+// new VerificacaoAutomatica();
 
-new SincronizacaoAutomaticaBackup(new Date())
-new LimpezaLogsSistema(new Date())
-
-console.log("Data: ", new Date());
+// new SincronizacaoAutomaticaBackup(new Date())
+// new LimpezaLogsSistema(new Date())
 
 module.exports = app;
