@@ -5,7 +5,7 @@ const verificacao = require("../verificar.entidades");
 moment.locale("pt-br");
 const { JOB_VERIFICACAO_AUTO } = process.env;
 
-class VerificacaoAutomatica {
+class VerificacaoEntidadesAutomatica {
   constructor() {
     (async () => {
       try {
@@ -24,4 +24,4 @@ class VerificacaoAutomatica {
   }
 }
 
-module.exports = VerificacaoAutomatica;
+module.exports = VerificacaoEntidadesAutomatica;
