@@ -1,5 +1,6 @@
 const moment = require("moment")
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
+const { CNPJ } = process.env
 
 class FuncionamentoBootclient {
 
@@ -9,20 +10,29 @@ class FuncionamentoBootclient {
 
     async start() {
         try {
+            throw new Error("Error manual");
 
-            const __CNPJ_EMPRESA = process.env.CNPJ
             const rsltLogsRegister = await fnGerarLogs({
-                cnpj_cliente: __CNPJ_EMPRESA,
-                nome_arquivo: null,
-                error: false,
-                entidade: null,
-                quantidade: null,
-                categoria: "FUNCIONAMENTO_BOOTCLIENT",
-                mensagem: "O sistema está funcionando normal.",
+              cnpj_cliente: CNPJ,
+              nome_arquivo: null,
+              error: false,
+              entidade: null,
+              quantidade: null,
+              categoria: "FUNCIONAMENTO_BOOTCLIENT",
+              mensagem: "O sistema está funcionando normal.",
             });
 
         } catch (error) {
-            console.log({ error });
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: CNPJ,
+            nome_arquivo: null,
+            error: true,
+            entidade: null,
+            quantidade: null,
+            categoria: "FUNCIONAMENTO_BOOTCLIENT_ERRO",
+            mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
+          });
+          console.log({ rsltLogsRegister });
         }
     }
 }

@@ -2,6 +2,7 @@ const moment = require("moment")
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const getInfoCompany = require("../../utils/get.info.company.js");
 const sequelizePostgres = require("../../services/sequelize.service");
+const { CNPJ } = process.env;
 
 class ConexaoDbCliente {
 
@@ -11,6 +12,8 @@ class ConexaoDbCliente {
 
     async start() {
         try {
+            throw new Error("Error manual");
+
             const { dbObjectConnection, data_empresa } = await getInfoCompany();
             let sqls = {
               getOne_motoristas: JSON.parse(data_empresa.sql_motoristas).getOne,
@@ -40,7 +43,16 @@ class ConexaoDbCliente {
             console.log({ rsltLogsRegister });
 
         } catch (error) {
-            console.log({ error });
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: CNPJ,
+            nome_arquivo: null,
+            error: true,
+            entidade: "CONEXAO_DB",
+            quantidade: null,
+            categoria: "CONEXAO_DB_VALIDACAO_ERRO",
+            mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
+          });
+          console.log({ rsltLogsRegister });
         }
     }
 }

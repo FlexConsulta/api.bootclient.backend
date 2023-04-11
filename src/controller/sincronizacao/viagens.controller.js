@@ -28,21 +28,23 @@ class Viagens extends GerarArquivo {
 
     async sincronizar() {
         return new Promise(async (resolve) => {
+            try {
+              throw new Error("Error manual");
 
-            let SQL;
-            if (this.lastSyncDate) {
+              let SQL;
+              if (this.lastSyncDate) {
                 SQL = this.dbSQL.setByDataFiltred;
-                const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm", "YYYY/MM/DD HH:mm",]).format("YYYY/MM/DD HH:mm");
+                const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
-            } else {
+              } else {
                 SQL = this.dbSQL.setByData;
-                const data_query = moment(DATAINICIAL, ["DD/MM/YYY HH:mm", "YYYY/MM/DD HH:mm",]).format("YYYY/MM/DD HH:mm");
+                const data_query = moment(DATAINICIAL, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
-            }
+              }
 
-            let offset = 0;
+              let offset = 0;
 
-            for (let i = 0; ; i++) {
+              for (let i = 0; ; i++) {
 
                 const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
 
@@ -51,32 +53,43 @@ class Viagens extends GerarArquivo {
 
                 const dataEncriptado = await encryptedData(arrayDados);
 
-                const convertedCNPJ = String(this.cnpj_empresa).replaceAll(/\D/g, '')
-                const fileName = `${filePrefix}_VIAGENS_${convertedCNPJ}_${moment().valueOf()}`
+                const convertedCNPJ = String(this.cnpj_empresa).replaceAll(/\D/g, '');
+                const fileName = `${filePrefix}_VIAGENS_${convertedCNPJ}_${moment().valueOf()}`;
                 if (arrayDados?.length > 0) {
-                    await this.fnGeradorArquivo(
-                      FOLDER_SYNC_SUCCESS,
-                      fileName,
-                      dataEncriptado
+                  await this.fnGeradorArquivo(
+                    FOLDER_SYNC_SUCCESS,fileName,dataEncriptado
                     );
                 }
 
                 const rsltLogsRegister = await fnGerarLogs({
-                    cnpj_cliente: this.cnpj_empresa,
-                    nome_arquivo: fileName,
-                    error: false,
-                    entidade: "viagens",
-                    quantidade: String(arrayDados.length),
-                    categoria: "SINCRONIZACAO_DADOS",
-                    mensagem: "Sincronização dos dados das viagens concluídos com sucesso!",
+                  cnpj_cliente: this.cnpj_empresa,
+                  nome_arquivo: fileName,
+                  error: false,
+                  entidade: "viagens",
+                  quantidade: String(arrayDados.length),
+                  categoria: "SINCRONIZACAO_DADOS",
+                  mensagem: "Sincronização dos dados das viagens concluídos com sucesso!",
                 });
 
                 console.log(`[VIAGENS X] || ${arrayDados?.length || 0} ${arrayDados?.length > 0 ? '|| ' + fileName : ''}`);
                 if (arrayDados.length < SQL_LIMIT) break;
                 offset += SQL_LIMIT;
-            }
+              }
 
-            resolve(true)
+              resolve(true);
+            } catch (error) {
+              const rsltLogsRegister = await fnGerarLogs({
+                cnpj_cliente: this.cnpj_empresa,
+                nome_arquivo: null,
+                error: true,
+                entidade: "viagens",
+                quantidade: null,
+                categoria: "SINCRONIZACAO_DADOS_VIAGENS_ERRO",
+                mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
+              });
+              console.log({ rsltLogsRegister });
+              resolve({ error: true, message: error.message });
+            }
         })
     }
 }

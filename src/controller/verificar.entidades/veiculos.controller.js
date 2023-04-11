@@ -14,35 +14,52 @@ class Veiculos {
 
   async verificar() {
     return new Promise(async (resolve) => {
+      try {
+        throw new Error("Error manual");
 
-      const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
-      const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.count);
+        const resultadoSequelize = await new sequelizePostgres(
+          this.dbObjectConnection
+        );
+        const arrayDados = await resultadoSequelize.obterDados(
+          this.dbSQL.count
+        );
 
-      if (Number(arrayDados[0]?.count) > 0) {
-        const rsltLogsRegister = await fnGerarLogs({
-          cnpj_cliente: this.cnpj_empresa,
-          nome_arquivo: null,
-          error: false,
-          entidade: "veiculos",
-          quantidade: arrayDados[0]?.count,
-          categoria: "VERIFICACAO_ENTIDADE_VEICULOS",
-          mensagem: `A entidade está funcionando!`,
-        });
-        
-      } else {
+        if (Number(arrayDados[0]?.count) > 0) {
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: this.cnpj_empresa,
+            nome_arquivo: null,
+            error: false,
+            entidade: "veiculos",
+            quantidade: arrayDados[0]?.count,
+            categoria: "VERIFICACAO_ENTIDADE_VEICULOS",
+            mensagem: `A entidade está funcionando!`,
+          });
+        } else {
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: this.cnpj_empresa,
+            nome_arquivo: null,
+            error: true,
+            entidade: "veiculos",
+            quantidade: null,
+            categoria: "VERIFICACAO_ENTIDADE_VEICULOS",
+            mensagem: `A query SQL tem resltado menor que 1!`,
+          });
+        }
+
+        resolve(true);
+      } catch (error) {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
           nome_arquivo: null,
           error: true,
           entidade: "veiculos",
-          quantidade: "1",
-          categoria: "VERIFICACAO_ENTIDADE_VEICULOS",
-          mensagem: `A entidade NÃO funciona!`,
+          quantidade: null,
+          categoria: "VERIFICACAO_ENTIDADE_VEICULOS_ERRO",
+          mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
-        
+        console.log({ rsltLogsRegister });
+        resolve({ error: true, message: error.message });
       }
-
-      resolve(true);
     });
   }
 }

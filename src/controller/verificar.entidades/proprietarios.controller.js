@@ -14,35 +14,48 @@ class Proprietarios {
 
   async verificar() {
     return new Promise(async (resolve) => {
+      try {
+        throw new Error("Error manual");
 
-      const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
-      const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.count);
+        const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
+        const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.count);
 
-      if (Number(arrayDados[0]?.count) > 0) {
-        const rsltLogsRegister = await fnGerarLogs({
-          cnpj_cliente: this.cnpj_empresa,
-          nome_arquivo: null,
-          error: false,
-          entidade: "proprietarios",
-          quantidade: arrayDados[0]?.count,
-          categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
-          mensagem: `A entidade está funcionando!`,
-        });
+        if (Number(arrayDados[0]?.count) > 0) {
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: this.cnpj_empresa,
+            nome_arquivo: null,
+            error: false,
+            entidade: "proprietarios",
+            quantidade: arrayDados[0]?.count,
+            categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
+            mensagem: `A entidade está funcionando!`,
+          });
+        } else {
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: this.cnpj_empresa,
+            nome_arquivo: null,
+            error: true,
+            entidade: "proprietarios",
+            quantidade: null,
+            categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
+            mensagem: `A query SQL tem resltado menor que 1!`,
+          });
+        }
 
-      } else {
+        resolve(true);
+      } catch (error) {
         const rsltLogsRegister = await fnGerarLogs({
           cnpj_cliente: this.cnpj_empresa,
           nome_arquivo: null,
           error: true,
           entidade: "proprietarios",
-          quantidade: "1",
-          categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
-          mensagem: `A entidade NÃO funciona!`,
+          quantidade: null,
+          categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS_ERRO",
+          mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
-
+        console.log({ rsltLogsRegister });
+        resolve({ error: true, message: error.message });
       }
-
-      resolve(true);
     });
   }
 }

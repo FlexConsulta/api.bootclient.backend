@@ -1,7 +1,8 @@
 const fs = require("fs")
 const moment = require("moment")
 const path = require("path")
-const { gerarLogsArquivos } = require("../../utils/gerarLogs.js");
+const { gerarLogsArquivos, fnGerarLogs } = require("../../utils/gerarLogs.js");
+const { CNPJ } = process.env;
 
 class MonitoramentoArquivosNaoEnviados {
 
@@ -11,6 +12,7 @@ class MonitoramentoArquivosNaoEnviados {
 
     async start() {
         try {
+            throw new Error("Error manual");
 
             const pathFiles = process.env.FOLDER_SYNC_SUCCESS
             const __CNPJ_EMPRESA = process.env.CNPJ
@@ -38,7 +40,16 @@ class MonitoramentoArquivosNaoEnviados {
             })
 
         } catch (error) {
-            console.log({ error });
+          const rsltLogsRegister = await fnGerarLogs({
+            cnpj_cliente: CNPJ,
+            nome_arquivo: null,
+            error: true,
+            entidade: null,
+            quantidade: null,
+            categoria: "ARQUIVOS_PENDENDTES_ERRO",
+            mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
+          });
+          console.log({ rsltLogsRegister });
         }
     }
 }
