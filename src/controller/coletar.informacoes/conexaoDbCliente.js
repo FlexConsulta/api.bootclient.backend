@@ -40,8 +40,6 @@ class ConexaoDbCliente {
               mensagem: "conexão ao db cliente concluída com sucesso!",
             });
 
-            console.log({ rsltLogsRegister });
-
         } catch (error) {
           const rsltLogsRegister = await fnGerarLogs({
             cnpj_cliente: CNPJ,
