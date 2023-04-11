@@ -6,15 +6,15 @@ const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
-const AutoComplete = require('./controller/auto.update')
+// const AutoComplete = require('./controller/auto.update')
 const MonitoramentoArquivos = require('./controller/monitoramento')
 const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
-const VerificacaoAutomatica = require("./controller/verificacao.automatica");
+const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
 const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
 const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
 const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
 const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
-const ColetaDadosEstatisticosAutomatica = require("./controller/coletar.informacoes/coleta.dados.estatisticos.automatica");
+const ColetaDadosEstatisticosAutomatica = require("./controller/coletar.informacoes/coletaDadosEstatisticosAutomatica");
 const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
 
 const app = express()
@@ -38,13 +38,13 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 
-AutoComplete.start();
+// AutoComplete.start();
 new MonitoramentoArquivos(new Date())
 new SincronizacaoAutomatica()
 new MonitoramentoArquivosNaoEnviadosAutomatico();
 new FuncionamentoBootclientAutomatico();
 new ColetaDadosEstatisticosAutomatica();
-new VerificacaoAutomatica();
+new VerificacaoEntidadesAutomatica();
 new ConexaoDbClienteAutomatico();
 new SincronizacaoAutomaticaBackup(new Date())
 new LimpezaLogsSistema(new Date())
