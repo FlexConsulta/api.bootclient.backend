@@ -6,7 +6,7 @@ const encryptedData = async (data) => {
             try {
 
                   data = JSON.stringify(data)
-                  data = Buffer.from(data, 'base64').toString()
+                  data = Buffer.from(data).toString("base64");
                   resolve(data);
 
             } catch (error) {
