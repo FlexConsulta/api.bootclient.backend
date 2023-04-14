@@ -5,7 +5,6 @@ const getInfoCompany = require("../../utils/get.info.company");
 const { CNPJ } = process.env;
 
 class ColetaDadosEstatisticos {
-
     constructor() {
         this.start()
     }
@@ -16,12 +15,15 @@ class ColetaDadosEstatisticos {
 
         const { dbObjectConnection, data_empresa } = await getInfoCompany();
         let sqls = {
-          count_motoristas: JSON.parse(data_empresa.sql_motoristas).countAll,
-          count_proprietarios: JSON.parse(data_empresa.sql_proprietarios).countAll,
-          count_veiculos: JSON.parse(data_empresa.sql_veiculos).countAll,
-          count_viagens: JSON.parse(data_empresa.sql_viagens).countAll,
+            count_motoristas: JSON.parse(data_empresa.sql_motoristas).countLastDay,
+            count_proprietarios: JSON.parse(data_empresa.sql_proprietarios).countLastDay,
+            count_veiculos: JSON.parse(data_empresa.sql_veiculos).countLastDay,
+            count_viagens: JSON.parse(data_empresa.sql_viagens).countLastDay,
         };
-
+        // const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
+        // const query_result = await resultadoSequelize.obterDados(sqls.count_motoristas);
+        // console.log({ query_result });
+        // return; 
         const arraySqls = [];
 
         for (const key in sqls) {
@@ -35,10 +37,10 @@ class ColetaDadosEstatisticos {
           cnpj_cliente: data_empresa.cnpj_empresa,
           nome_arquivo: null,
           error: false,
-          entidade: "DADOS_ESTATISTICOS",
+          entidade: "DADOS_ESTATISTICOS_24_ATRAS",
           quantidade: JSON.stringify(arraySqls),
-          categoria: "DADOS_ESTATISTICOS_COUNT",
-          mensagem: "coleta de dados estatísticos concluída com sucesso!",
+          categoria: "DADOS_ESTATISTICOS_24_ATRAS_COUNT",
+          mensagem: "coleta de dados estatísticos das últimas 24 hroas concluída com sucesso!",
         });
 
       } catch (error) {
@@ -46,9 +48,9 @@ class ColetaDadosEstatisticos {
           cnpj_cliente: CNPJ,
           nome_arquivo: null,
           error: true,
-          entidade: "DADOS_ESTATISTICOS",
+          entidade: "DADOS_ESTATISTICOS_24_ATRAS",
           quantidade: null,
-          categoria: "DADOS_ESTATISTICOS_ERRO",
+          categoria: "DADOS_ESTATISTICOS_24_ATRAS_ERRO",
           mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
         });
         console.log({ rsltLogsRegister });
