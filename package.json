@@ -3,6 +3,11 @@
   "version": "2.0.0",
   "description": "",
   "main": "index.js",
+    "nodemonConfig": {
+    "ext": "js",
+    "ignore": ["databases/*"],
+    "delay": "2"
+  },
   "scripts": {
     "start": "node  --max-old-space-size=2048 ./src/index.js --throw-deprecations  --unhandled-rejections",
     "dev": "nodemon  --max-old-space-size=2048 ./src/index.js --throw-deprecations --unhandled-rejections",
@@ -25,6 +30,8 @@
     "chokidar": "^3.5.2",
     "config": "^3.3.7",
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "db-local": "^2.9.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "ftp": "^0.3.10",
