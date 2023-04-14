@@ -2,7 +2,8 @@ const moment = require("moment")
 const sequelizePostgres = require("../../services/sequelize.service");
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const getInfoCompany = require("../../utils/get.info.company");
-const { CNPJ } = process.env;
+const { apiFlex } = require("../../API/api");
+const { CNPJ, DATAINICIAL } = process.env;
 
 class ColetaDadosEstatisticos {
     constructor() {
@@ -20,14 +21,20 @@ class ColetaDadosEstatisticos {
             count_veiculos: JSON.parse(data_empresa.sql_veiculos).countLastDay,
             count_viagens: JSON.parse(data_empresa.sql_viagens).countLastDay,
         };
-        // const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
-        // const query_result = await resultadoSequelize.obterDados(sqls.count_motoristas);
-        // console.log({ query_result });
-        // return; 
+
+        const logs = await apiFlex.get(`/bootclient/log/last/estatistico?cnpj=${data_empresa.cnpj_empresa}`);
+        const dados_estatisticos = logs.data
+
+        const aDayAgo = moment().subtract(1, 'days').startOf('day').add(1, 'minutes').format("YYYY/MM/DD HH:mm")
+
+        let data
+        dados_estatisticos ? (data = aDayAgo) : (data = DATAINICIAL);
+
         const arraySqls = [];
 
         for (const key in sqls) {
           let sql = sqls[key];
+          sql = sql.replace("[$]", data);
           const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
           const query_result = await resultadoSequelize.obterDados(sql);
           arraySqls.push({ [key]: query_result[0].count });
@@ -37,10 +44,10 @@ class ColetaDadosEstatisticos {
           cnpj_cliente: data_empresa.cnpj_empresa,
           nome_arquivo: null,
           error: false,
-          entidade: "DADOS_ESTATISTICOS_24_ATRAS",
+          entidade: null,
           quantidade: JSON.stringify(arraySqls),
-          categoria: "DADOS_ESTATISTICOS_24_ATRAS_COUNT",
-          mensagem: "coleta de dados estatísticos das últimas 24 hroas concluída com sucesso!",
+          categoria: "dados_estatisticos",
+          mensagem: "coleta de dados estatísticos concluída com sucesso!",
         });
 
       } catch (error) {
@@ -48,9 +55,9 @@ class ColetaDadosEstatisticos {
           cnpj_cliente: CNPJ,
           nome_arquivo: null,
           error: true,
-          entidade: "DADOS_ESTATISTICOS_24_ATRAS",
+          entidade: null,
           quantidade: null,
-          categoria: "DADOS_ESTATISTICOS_24_ATRAS_ERRO",
+          categoria: "dados_estatisticos_erro",
           mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
         });
         console.log({ rsltLogsRegister });

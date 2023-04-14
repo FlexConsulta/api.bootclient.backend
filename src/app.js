@@ -14,8 +14,8 @@ const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automa
 const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
 const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
 const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
-const ColetaDadosEstatisticosAutomatica = require("./controller/coletar.informacoes/coletaDadosEstatisticosAutomatica");
 const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
+const ColetaDadosEstatisticosAutomatica = require('./controller/coletar.informacoes/coletaDadosEstatisticosAutomatica');
 
 const app = express()
 
@@ -36,7 +36,6 @@ app.use(RouteLogin)
 app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
-
 
 // AutoUpdate.start();
 new MonitoramentoArquivos(new Date());
