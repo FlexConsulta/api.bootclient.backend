@@ -9,7 +9,7 @@ const { CNPJ } = process.env;
 
 module.exports = async (req, res) => {
 
-    const { dbObjectConnection, data_empresa } = await getInfoCompany()
+    const { dbObjectConnection, data_empresa } = await getInfoCompany();
     if (!data_empresa) res.status(404).send("Nenhuma empresa foi cadastrada!");
 
     const logs = await apiFlex.get(`bootclient/log/last?cnpj=${data_empresa.cnpj_empresa}`);
