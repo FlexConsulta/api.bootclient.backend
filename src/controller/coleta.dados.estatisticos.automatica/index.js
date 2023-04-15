@@ -14,7 +14,7 @@ class ColetaDadosEstatisticosAutomatica {
           console.log(
             `[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`
           );
-          new ColetaDadosEstatisticos();
+          ColetaDadosEstatisticos();
         };
 
         fn();
