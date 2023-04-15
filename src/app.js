@@ -15,7 +15,7 @@ const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.auto
 const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
 const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
 const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
-const ColetaDadosEstatisticosAutomatica = require('./controller/coletar.informacoes/coletaDadosEstatisticosAutomatica');
+const ColetaDadosEstatisticosAutomatica = require('./controller/coleta.dados.estatisticos.automatica');
 
 const app = express()
 
