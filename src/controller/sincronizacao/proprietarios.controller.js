@@ -37,7 +37,10 @@ class Proprietarios extends GerarArquivo {
                 SQL = this.dbSQL.getByDate;
                 const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
-              } else SQL = this.dbSQL.getAll;
+              } else {
+                  SQL = this.dbSQL.getAll
+                  SQL = SQL.replace("[$]", DATAINICIAL);
+                }
 
               let offset = 0;
 
