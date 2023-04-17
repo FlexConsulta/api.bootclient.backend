@@ -16,7 +16,7 @@ class VerificacaoEntidadesAutomatica {
         };
 
         fn();
-        schedule.scheduleJob(JOB_VERIFICACAO_AUTO || "*/4 * * * *", fn);
+        schedule.scheduleJob(JOB_VERIFICACAO_AUTO || "*/3 * * *", fn);
       } catch (error) {
         console.log({ error });
       }
