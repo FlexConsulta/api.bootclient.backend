@@ -1,6 +1,6 @@
 const moment = require("moment");
 const schedule = require("node-schedule");
-const ColetaDadosEstatisticos = require("./coleta.dados.estatisticos");
+const ColetaDadosEstatisticos = require("../coleta.dados.estatisticos/inedx.js");
 
 moment.locale("pt-br");
 const { JOB_COLETA_AUTO } = process.env;
@@ -14,11 +14,11 @@ class ColetaDadosEstatisticosAutomatica {
           console.log(
             `[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`
           );
-          new ColetaDadosEstatisticos();
+          ColetaDadosEstatisticos();
         };
 
         fn();
-        schedule.scheduleJob(JOB_COLETA_AUTO || "*/4 * * * *", fn);
+        schedule.scheduleJob(JOB_COLETA_AUTO || "/24 * *", fn);
       } catch (error) {
         console.log({ error });
       }

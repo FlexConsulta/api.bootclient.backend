@@ -4,7 +4,7 @@ const { encryptedData } = require('../../utils/encriptacao')
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const moment = require("moment")
 const filePrefix = process.env.FILE_VERSION
-const { SQL_LIMIT, FOLDER_SYNC_SUCCESS } = process.env;
+const { SQL_LIMIT, FOLDER_SYNC_SUCCESS, DATAINICIAL } = process.env;
 
 
 
@@ -39,8 +39,11 @@ class Veiculos extends GerarArquivo {
                 SQL = this.dbSQL.getByDate;
                 const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
-              } else SQL = this.dbSQL.getAll;
-
+              } else {
+                  SQL = this.dbSQL.getAll
+                  SQL = SQL.replace("[$]", DATAINICIAL);
+                }
+                
               let offset = 0;
 
               for (let i = 0; ; i++) {

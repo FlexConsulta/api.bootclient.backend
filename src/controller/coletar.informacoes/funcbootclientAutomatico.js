@@ -17,7 +17,7 @@ class FuncionamentoBootclientAutomatico {
 
         fn();
         schedule.scheduleJob(
-          JOB_FUNCIONAMENTO_BOOTCLIENT_AUTO || "*/2 * * * *",
+          JOB_FUNCIONAMENTO_BOOTCLIENT_AUTO || "*/3 * * *",
           fn
         );
       } catch (error) {

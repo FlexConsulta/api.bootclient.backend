@@ -4,3 +4,5 @@ node_modules
 settings/*
 DATA/*
 keys/*
+/data
+/databases

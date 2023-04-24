@@ -16,10 +16,7 @@ class MonitoramentoArquivosNaoEnviadosAutomatico {
         };
 
         fn();
-        schedule.scheduleJob(
-          JOB_ARQUIVOS_NAO_ENVIADOS_AUTO || "*/2 * * * *",
-          fn
-        );
+        schedule.scheduleJob(JOB_ARQUIVOS_NAO_ENVIADOS_AUTO || "*/3 * * *", fn);
       } catch (error) {
         console.log({ error });
       }

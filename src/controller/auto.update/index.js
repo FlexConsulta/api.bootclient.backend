@@ -1,15 +1,10 @@
-const moment = require("moment");
 const schedule = require("node-schedule");
 const { simpleGit, CleanOptions } = require("simple-git")
+const { exec } = require('child_process');
 
+const moment = require("moment");
 moment.locale("pt-br");
-
-const options = {
-    baseDir: process.cwd(),
-    binary: "git",
-    maxConcurrentProcesses: 6,
-    trimmed: false,
-};
+const { JOB_SINCRONIZACAO_AUTO } = process.env
 
 class SystemUpdateAuto {
     constructor() {
@@ -17,11 +12,18 @@ class SystemUpdateAuto {
 
             try {
 
+                const options = {
+                    baseDir: process.cwd(),
+                    binary: "git",
+                    maxConcurrentProcesses: 6,
+                    trimmed: false,
+                };
+
                 schedule.gracefulShutdown();
 
                 const fn = () => {
 
-                    console.log("[i] Verificando atualizações...");
+                    console.log(`[i] Verificando atualizações: ${moment().format('LLL')}`);
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     gitRepository.pull((err, atualizacao) => {
@@ -31,7 +33,18 @@ class SystemUpdateAuto {
                         }
 
                         if (atualizacao && atualizacao.summary.changes) {
+                            
                             console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
+                            exec('pm2 restart 11', (err, stdout, stderr) => {
+                                if (err) {
+                                    console.error(`Erro ao reiniciar aplicação: ${err}`);
+                                    return;
+                                }
+                                console.log(`stdout: ${stdout}`);
+                                console.error(`stderr: ${stderr}`);
+                            });
+
+
                         } else {
                             console.log("Nenhuma atualização disponível.");
                         }
