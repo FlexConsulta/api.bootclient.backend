@@ -36,10 +36,7 @@ class Motoristas extends GerarArquivo {
                   SQL = this.dbSQL.getByDate;
                   const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
                   SQL = SQL.replace("[$]", data_query);
-                } else {
-                  SQL = this.dbSQL.getAll
-                  SQL = SQL.replace("[$]", DATAINICIAL);
-                }
+                } else SQL = this.dbSQL.getAll
 
                 let offset = 0;
 
