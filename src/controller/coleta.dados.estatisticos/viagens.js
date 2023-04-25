@@ -20,11 +20,15 @@ class Viagens {
       try {
         // throw new Error("Error manual")
 
-        const aDayAgo = moment().subtract(1, "days").startOf("day").add(1, "minutes").format("YYYY/MM/DD HH:mm");
-        let data;
-        this.log ? (data = aDayAgo) : (data = DATAINICIAL);
-        let _sql = this.dbSQL.countLastDay;
-        _sql = _sql.replace("[$]", data);
+        let _sql;
+        if (this.log) {
+          _sql = this.dbSQL.countLastDay;
+          const aDayAgo = moment().subtract(1, "days").startOf("day").add(1, "minutes").format("YYYY/MM/DD HH:mm");
+          _sql = _sql.replace("[$]", aDayAgo);
+        } else {
+          _sql = this.dbSQL.countAll;
+          _sql = _sql.replace("[$]", DATAINICIAL);
+        }
 
         const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
         const sql_result = await resultadoSequelize.obterDados(_sql);
