@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
           error: true,
           entidade: null,
           quantidade: null,
-          categoria: "VERIFICACAO_ENTIDADE_ERRO_GERAL",
+          categoria: "VERIFICACAO_ENTIDADE_GERAL_ERRO",
           mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });

@@ -29,7 +29,7 @@ class Proprietarios {
             error: false,
             entidade: "proprietarios",
             quantidade: String(arrayDados?.length),
-            categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
+            categoria: "VERIFICACAO_ENTIDADE",
             mensagem: `A entidade está funcionando!`,
           });
         } else {
@@ -39,7 +39,7 @@ class Proprietarios {
             error: true,
             entidade: "proprietarios",
             quantidade: String(arrayDados?.length),
-            categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS",
+            categoria: "VERIFICACAO_ENTIDADE",
             mensagem: `A query SQL tem resltado menor que 1!`,
           });
         }
@@ -52,8 +52,11 @@ class Proprietarios {
           error: true,
           entidade: "proprietarios",
           quantidade: null,
-          categoria: "VERIFICACAO_ENTIDADE_PROPRIETARIOS_ERRO",
-          mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
+          categoria: "VERIFICACAO_ENTIDADE_ERRO",
+          mensagem:
+            error && error.message
+              ? JSON.stringify({ error: error.message })
+              : null,
         });
         console.log({ rsltLogsRegister });
         resolve({ error: true, message: error.message });

@@ -29,7 +29,7 @@ class Motoristas {
             error: false,
             entidade: "motoristas",
             quantidade: String(arrayDados?.length),
-            categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS",
+            categoria: "VERIFICACAO_ENTIDADE",
             mensagem: `A entidade motoristas está funcionando!`,
           });
         } else {
@@ -39,7 +39,7 @@ class Motoristas {
             error: true,
             entidade: "motoristas",
             quantidade: String(arrayDados?.length),
-            categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS",
+            categoria: "VERIFICACAO_ENTIDADE",
             mensagem: `A query SQL tem resltado menor que 1!`,
           });
         }
@@ -52,7 +52,7 @@ class Motoristas {
           error:  true,
           entidade: "motoristas",
           quantidade: null,
-          categoria: "VERIFICACAO_ENTIDADE_MOTORISTAS_ERRO",
+          categoria: "VERIFICACAO_ENTIDADE_ERRO",
           mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });
