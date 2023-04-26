@@ -26,7 +26,7 @@ const { CNPJ } = process.env;
          // throw new Error("Error manual");
 
          if (res) res.status(202).send();
-         console.log("Sincronização concluída com sucesso!");
+         console.log("Coleta de dados estatisticos concluída com sucesso!");
        })
        .catch(async (error) => {
          const rsltLogsRegister = await fnGerarLogs({
