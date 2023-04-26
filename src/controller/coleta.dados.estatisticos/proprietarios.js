@@ -22,8 +22,8 @@ class Proprietarios {
         let _sql;
         if (this.log) {
           _sql = this.dbSQL.countLastDay;
-          const aDayAgo = moment().subtract(1, "days").startOf("day").add(1, "minutes").format("YYYY/MM/DD HH:mm");
-          _sql = _sql.replace("[$]", aDayAgo);
+          const data_query = moment(this.log.data, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
+          _sql = _sql.replace("[$]", data_query);
         } else _sql = this.dbSQL.countAll;
 
         const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
