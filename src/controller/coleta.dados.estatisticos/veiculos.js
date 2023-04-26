@@ -1,6 +1,7 @@
 const sequelizePostgres = require('../../services/sequelize.service');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
-const moment = require("moment")
+const moment = require("moment");
+const { formatarData } = require('../../utils/tratamento.dados');
 
 class Veiculos {
   constructor({ dbObjectConnection, cnpj_empresa, dbSQL, log }) {
@@ -22,9 +23,10 @@ class Veiculos {
         let _sql;
         if (this.log) {
           _sql = this.dbSQL.countLastDay;
-          const data_query = moment(this.log.data, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
+          const data_query = formatarData(this.log.data);
           _sql = _sql.replace("[$]", data_query);
         } else _sql = this.dbSQL.countAll;
+
 
         const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
         const sql_result = await resultadoSequelize.obterDados(_sql);
@@ -36,6 +38,7 @@ class Veiculos {
           entidade: "veiculos",
           quantidade: sql_result[0].count,
           categoria: "dados_estatisticos",
+          data: moment().format("YYYY-MM-DD HH:mm:ss"),
           mensagem: "coleta de dados estatísticos concluída com sucesso!",
         });
 
@@ -48,6 +51,7 @@ class Veiculos {
            entidade: "veiculos",
            quantidade: null,
            categoria: "dados_estatisticos_erro",
+           data: moment().format("YYYY-MM-DD HH:mm:ss"),
            mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
          });
         console.log({ rsltLogsRegister });

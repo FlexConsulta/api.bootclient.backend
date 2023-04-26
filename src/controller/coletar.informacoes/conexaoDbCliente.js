@@ -37,6 +37,7 @@ class ConexaoDbCliente {
               entidade: null,
               quantidade: JSON.stringify(arraySqls),
               categoria: "CONEXAO_DB_VALIDACAO",
+              data: moment().format("YYYY-MM-DD HH:mm:ss"),
               mensagem: "conexão ao db cliente concluída com sucesso!",
             });
 
@@ -48,6 +49,7 @@ class ConexaoDbCliente {
             entidade: null,
             quantidade: null,
             categoria: "CONEXAO_DB_VALIDACAO_ERRO",
+            data: moment().format("YYYY-MM-DD HH:mm:ss"),
             mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
           });
           console.log({ rsltLogsRegister });

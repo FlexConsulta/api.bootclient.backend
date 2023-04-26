@@ -2,7 +2,8 @@ const GerarArquivo = require('../../utils/gerador.arquivo.js');
 const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
-const moment = require("moment")
+const moment = require("moment");
+const { formatarData } = require('../../utils/tratamento.dados.js');
 const filePrefix = process.env.FILE_VERSION
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS, DATAINICIAL } = process.env;
 
@@ -34,7 +35,7 @@ class Motoristas extends GerarArquivo {
                 let SQL;
                 if (this.lastSyncDate) {
                   SQL = this.dbSQL.getByDate;
-                  const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
+                  const data_query = formatarData(this.lastSyncDate);
                   SQL = SQL.replace("[$]", data_query);
                 } else SQL = this.dbSQL.getAll
 
@@ -63,6 +64,7 @@ class Motoristas extends GerarArquivo {
                     entidade: "motoristas",
                     quantidade: String(arrayDados.length),
                     categoria: "SINCRONIZACAO_DADOS",
+                    data: moment().format("YYYY-MM-DD HH:mm:ss"),
                     mensagem: "Sincronização dos dados do motorista concluídos com sucesso!",
                   });
 
@@ -80,6 +82,7 @@ class Motoristas extends GerarArquivo {
                   entidade: "motoristas",
                   quantidade: null,
                   categoria: "SINCRONIZACAO_DADOS_MOTORISTAS_ERRO",
+                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
                   mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
                 });
                 console.log({ rsltLogsRegister });

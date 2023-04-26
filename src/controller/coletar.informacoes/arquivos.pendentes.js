@@ -36,7 +36,8 @@ class MonitoramentoArquivosNaoEnviados {
             const rsltLogsRegister = await gerarLogsArquivos({
                 cnpj_cliente: __CNPJ_EMPRESA,
                 quantidade_arquivos: arrayListFiles.length,
-                nomes_arquivos: arrayListFiles
+                nomes_arquivos: arrayListFiles,
+                data: moment().format("YYYY-MM-DD HH:mm:ss")
             })
             
         } catch (error) {
@@ -47,6 +48,7 @@ class MonitoramentoArquivosNaoEnviados {
             entidade: null,
             quantidade: null,
             categoria: "ARQUIVOS_PENDENDTES_ERRO",
+            data: moment().format("YYYY-MM-DD HH:mm:ss"),
             mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
           });
           console.log({ rsltLogsRegister });

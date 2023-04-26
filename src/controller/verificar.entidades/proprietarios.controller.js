@@ -1,4 +1,5 @@
 const sequelizePostgres = require("../../services/sequelize.service");
+const moment = require("moment");
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 
 class Proprietarios {
@@ -30,6 +31,7 @@ class Proprietarios {
             entidade: "proprietarios",
             quantidade: String(arrayDados?.length),
             categoria: "VERIFICACAO_ENTIDADE",
+            data: moment().format("YYYY-MM-DD HH:mm:ss"),
             mensagem: `A entidade está funcionando!`,
           });
         } else {
@@ -40,6 +42,7 @@ class Proprietarios {
             entidade: "proprietarios",
             quantidade: String(arrayDados?.length),
             categoria: "VERIFICACAO_ENTIDADE",
+            data: moment().format("YYYY-MM-DD HH:mm:ss"),
             mensagem: `A query SQL tem resltado menor que 1!`,
           });
         }
@@ -53,10 +56,8 @@ class Proprietarios {
           entidade: "proprietarios",
           quantidade: null,
           categoria: "VERIFICACAO_ENTIDADE_ERRO",
-          mensagem:
-            error && error.message
-              ? JSON.stringify({ error: error.message })
-              : null,
+          data: moment().format("YYYY-MM-DD HH:mm:ss"),
+          mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });
         resolve({ error: true, message: error.message });

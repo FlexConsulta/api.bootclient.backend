@@ -4,6 +4,7 @@ const Motoristas = require('./motoristas.controller');
 const Proprietarios = require('./proprietarios.controller');
 const Veiculos = require('./veiculos.controller');
 const Viagens = require('./viagens.controller');
+const moment = require("moment");
 const { CNPJ } = process.env
 
 
@@ -29,6 +30,7 @@ module.exports = async (req, res) => {
           entidade: null,
           quantidade: null,
           categoria: "VERIFICACAO_ENTIDADE_GERAL_ERRO",
+          data: moment().format("YYYY-MM-DD HH:mm:ss"),
           mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });

@@ -5,6 +5,7 @@ const Viagens = require('./viagens.controller');
 const getInfoCompany = require('../../utils/get.info.company');
 const { apiFlex } = require('../../API/api');
 const { fnGerarLogs } = require('../../utils/gerarLogs');
+const moment = require("moment");
 const { CNPJ } = process.env;
 
 module.exports = async (req, res) => {
@@ -33,6 +34,7 @@ module.exports = async (req, res) => {
           entidade: null,
           quantidade: null,
           categoria: "SINCRONIZACAO_ERRO_GERAL",
+          data: moment().format("YYYY-MM-DD HH:mm:ss"),
           mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });

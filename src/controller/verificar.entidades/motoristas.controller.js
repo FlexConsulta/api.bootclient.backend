@@ -1,4 +1,5 @@
 const sequelizePostgres = require("../../services/sequelize.service");
+const moment = require("moment");
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 
 class Motoristas {
@@ -30,6 +31,7 @@ class Motoristas {
             entidade: "motoristas",
             quantidade: String(arrayDados?.length),
             categoria: "VERIFICACAO_ENTIDADE",
+            data: moment().format("YYYY-MM-DD HH:mm:ss"),
             mensagem: `A entidade motoristas está funcionando!`,
           });
         } else {
@@ -40,6 +42,7 @@ class Motoristas {
             entidade: "motoristas",
             quantidade: String(arrayDados?.length),
             categoria: "VERIFICACAO_ENTIDADE",
+            data: moment().format("YYYY-MM-DD HH:mm:ss"),
             mensagem: `A query SQL tem resltado menor que 1!`,
           });
         }
@@ -53,6 +56,7 @@ class Motoristas {
           entidade: "motoristas",
           quantidade: null,
           categoria: "VERIFICACAO_ENTIDADE_ERRO",
+          data: moment().format("YYYY-MM-DD HH:mm:ss"),
           mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });

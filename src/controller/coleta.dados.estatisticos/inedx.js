@@ -5,6 +5,7 @@ const Motoristas = require("./motoristas.js");
 const Proprietarios = require("./proprietarios.js");
 const Veiculos = require("./veiculos.js");
 const Viagens = require("./viagens.js");
+const moment = require("moment");
 const { CNPJ } = process.env;
 
  const ColetaDadosEstatisticos = async (req, res) => {
@@ -35,6 +36,7 @@ const { CNPJ } = process.env;
            entidade: null,
            quantidade: null,
            categoria: "dados_estatisticos_erro_promisses",
+           data: moment().format("YYYY-MM-DD HH:mm:ss"),
            mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
          });
          console.log({ rsltLogsRegister });
@@ -47,6 +49,7 @@ const { CNPJ } = process.env;
        entidade: null,
        quantidade: null,
        categoria: "dados_estatisticos_erro_geral",
+       data: moment().format("YYYY-MM-DD HH:mm:ss"),
        mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
      });
      console.log({ rsltLogsRegister });
