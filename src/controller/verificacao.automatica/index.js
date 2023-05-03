@@ -15,8 +15,8 @@ class VerificacaoEntidadesAutomatica {
           console.log(`[i] Monitoramento verificação das entidades AUTO: ${moment().format("LLL")}`);
         };
 
-        fn();
-        schedule.scheduleJob(JOB_VERIFICACAO_AUTO || "*/3 * * *", fn);
+        fn()
+        schedule.scheduleJob(JOB_VERIFICACAO_AUTO || '* 4 * * *', () => fn());
       } catch (error) {
         console.log({ error });
       }

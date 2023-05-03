@@ -15,8 +15,8 @@ class SincronizacaoAutomatica {
           console.log(`[i] Sincronizando AUTO: ${moment().format("LLL")}`);
         };
 
-        fn();
-        schedule.scheduleJob('2 * * * *', fn);
+        fn()
+        schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || '* 4 * * *', () => fn());
       } catch (error) {
         console.log({ error });
       }

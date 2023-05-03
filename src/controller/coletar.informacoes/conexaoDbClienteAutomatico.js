@@ -17,7 +17,7 @@ class ConexaoDbClienteAutomatico {
         };
 
         fn();
-        schedule.scheduleJob(JOB_DB_CONNECTION_AUTO || "*/3 * * *", fn);
+        schedule.scheduleJob(JOB_DB_CONNECTION_AUTO || "* 4 * * *", () => fn());
       } catch (error) {
         console.log({ error });
       }

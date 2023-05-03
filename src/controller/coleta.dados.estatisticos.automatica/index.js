@@ -18,7 +18,7 @@ class ColetaDadosEstatisticosAutomatica {
         };
 
         fn();
-        schedule.scheduleJob(JOB_COLETA_AUTO || "/24 * *", fn);
+        schedule.scheduleJob(JOB_COLETA_AUTO || "59 59 23 * * *", () => fn());
       } catch (error) {
         console.log({ error });
       }
