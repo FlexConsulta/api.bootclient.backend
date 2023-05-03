@@ -3,6 +3,7 @@ const sequelizePostgres = require("../../services/sequelize.service");
 const { encryptedData } = require("../../utils/encriptacao");
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const moment = require("moment");
+const { formatarData } = require("../../utils/tratamento.dados.js");
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS, DATAINICIAL } = process.env;
 const filePrefix = process.env.FILE_VERSION
 
@@ -37,10 +38,7 @@ class Proprietarios extends GerarArquivo {
                 SQL = this.dbSQL.getByDate;
                 const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
-              } else {
-                  SQL = this.dbSQL.getAll
-                  SQL = SQL.replace("[$]", DATAINICIAL);
-                }
+              } else SQL = this.dbSQL.getAll
 
               let offset = 0;
 
@@ -67,6 +65,7 @@ class Proprietarios extends GerarArquivo {
                   entidade: "proprietarios",
                   quantidade: String(arrayDados.length),
                   categoria: "SINCRONIZACAO_DADOS",
+                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
                   mensagem: "Sincronização dos dados do proprietários concluídos com sucesso!",
                 });
 
@@ -84,6 +83,7 @@ class Proprietarios extends GerarArquivo {
                 entidade: "proprietarios",
                 quantidade: null,
                 categoria: "SINCRONIZACAO_DADOS_PROPRIETARIOS_ERRO",
+                data: moment().format("YYYY-MM-DD HH:mm:ss"),
                 mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
               });
               console.log({ rsltLogsRegister });

@@ -1,5 +1,6 @@
 const jwt = require('jwt-simple');
 const fs = require('fs');
+const moment = require("moment");
 const { ENCODED } = process.env
 
 /**
@@ -71,5 +72,18 @@ function funcReadFiles(urlFile) {
     })
 }
 
+const formatarData = (date) => {
+  return moment(date).format("YYYY-MM-DD HH:mm:ss");
+}; 
 
-module.exports = { funcaoDeEncriptar, funcaoDeDecriptar, funcaoDeEncriptarSimples, funcReadFiles, funcaoDeDecriptarSimples, funcaoDeDecriptarSemId, funcaoDeEncriptarDados }
+
+module.exports = {
+  funcaoDeEncriptar,
+  funcaoDeDecriptar,
+  funcaoDeEncriptarSimples,
+  funcReadFiles,
+  funcaoDeDecriptarSimples,
+  funcaoDeDecriptarSemId,
+  funcaoDeEncriptarDados,
+  formatarData,
+};

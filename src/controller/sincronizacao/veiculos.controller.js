@@ -2,7 +2,8 @@ const GerarArquivo = require('../../utils/gerador.arquivo.js');
 const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao')
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
-const moment = require("moment")
+const moment = require("moment");
+const { formatarData } = require('../../utils/tratamento.dados.js');
 const filePrefix = process.env.FILE_VERSION
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS, DATAINICIAL } = process.env;
 
@@ -39,11 +40,8 @@ class Veiculos extends GerarArquivo {
                 SQL = this.dbSQL.getByDate;
                 const data_query = moment(this.lastSyncDate, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
-              } else {
-                  SQL = this.dbSQL.getAll
-                  SQL = SQL.replace("[$]", DATAINICIAL);
-                }
-                
+              } else SQL = this.dbSQL.getAll
+                                                  
               let offset = 0;
 
               for (let i = 0; ; i++) {
@@ -70,6 +68,7 @@ class Veiculos extends GerarArquivo {
                   entidade: "veiculos",
                   quantidade: String(arrayDados.length),
                   categoria: "SINCRONIZACAO_DADOS",
+                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
                   mensagem: "Sincronização dos dados do veículo concluídos com sucesso!",
                 }); 
 
@@ -87,6 +86,7 @@ class Veiculos extends GerarArquivo {
                 entidade: "veiculos",
                 quantidade: null,
                 categoria: "SINCRONIZACAO_DADOS_VEICULOS_ERRO",
+                data: moment().format("YYYY-MM-DD HH:mm:ss"),
                 mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
               });
               console.log({ rsltLogsRegister });

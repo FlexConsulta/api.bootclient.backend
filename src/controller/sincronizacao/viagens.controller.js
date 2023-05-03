@@ -3,6 +3,7 @@ const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao')
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const moment = require("moment");
+const { formatarData } = require('../../utils/tratamento.dados.js');
 const { SQL_LIMIT, FOLDER_SYNC_SUCCESS, DATAINICIAL, FILE_VERSION: filePrefix } = process.env;
 
 class Viagens extends GerarArquivo {
@@ -38,7 +39,7 @@ class Viagens extends GerarArquivo {
                 SQL = SQL.replace("[$]", data_query);
               } else {
                 SQL = this.dbSQL.setByData;
-                const data_query = moment(DATAINICIAL, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).format("YYYY/MM/DD HH:mm");
+                const data_query = formatarData(DATAINICIAL);
                 SQL = SQL.replace("[$]", data_query);
               }
 
@@ -68,6 +69,7 @@ class Viagens extends GerarArquivo {
                   entidade: "viagens",
                   quantidade: String(arrayDados.length),
                   categoria: "SINCRONIZACAO_DADOS",
+                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
                   mensagem: "Sincronização dos dados das viagens concluídos com sucesso!",
                 });
 
@@ -85,6 +87,7 @@ class Viagens extends GerarArquivo {
                 entidade: "viagens",
                 quantidade: null,
                 categoria: "SINCRONIZACAO_DADOS_VIAGENS_ERRO",
+                data: moment().format("YYYY-MM-DD HH:mm:ss"),
                 mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
               });
               console.log({ rsltLogsRegister });
