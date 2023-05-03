@@ -16,7 +16,7 @@ class SincronizacaoAutomatica {
         };
 
         fn();
-        schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || '*/3 * * *', fn);
+        schedule.scheduleJob('2 * * * *', fn);
       } catch (error) {
         console.log({ error });
       }
