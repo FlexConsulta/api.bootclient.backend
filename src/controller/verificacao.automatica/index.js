@@ -9,10 +9,12 @@ class VerificacaoEntidadesAutomatica {
   constructor() {
     (async () => {
       try {
-        schedule.gracefulShutdown();
+        process.on("SIGINT", function () {
+          schedule.gracefulShutdown().then(() => process.exit(0));
+        });
         const fn = () => {
           verificacao();
-          console.log(`[i] Monitoramento verificação das entidades AUTO: ${moment().format("LLL")}`);
+          console.log(`[i] Verificação das entidades AUTO: ${moment().format("LLL")}`);
         };
 
         fn()

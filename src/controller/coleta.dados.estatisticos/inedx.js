@@ -23,10 +23,7 @@ const { CNPJ } = process.env;
        await new Viagens({dbObjectConnection,cnpj_empresa: data_empresa.cnpj_empresa,dbSQL: data_empresa.sql_viagens, log: viagens}),
      ])
        .then(() => {
-         // throw new Error("Error manual");
-
          if (res) res.status(202).send();
-         console.log("Coleta de dados estatisticos concluída com sucesso!");
        })
        .catch(async (error) => {
          const rsltLogsRegister = await fnGerarLogs({

@@ -9,7 +9,9 @@ class ColetaDadosEstatisticosAutomatica {
   constructor() {
     (async () => {
       try {
-        schedule.gracefulShutdown();
+        process.on("SIGINT", function () {
+          schedule.gracefulShutdown().then(() => process.exit(0));
+        });
         const fn = () => {
           console.log(
             `[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`

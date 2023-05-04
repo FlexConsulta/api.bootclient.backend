@@ -9,7 +9,10 @@ class SincronizacaoAutomatica {
   constructor() {
     (async () => {
       try {
-        schedule.gracefulShutdown();
+        process.on("SIGINT", function () {
+          schedule.gracefulShutdown().then(() => process.exit(0));
+        });
+        
         const fn = () => {
           sincronizacao();
           console.log(`[i] Sincronizando AUTO: ${moment().format("LLL")}`);

@@ -9,9 +9,11 @@ class FuncionamentoBootclientAutomatico {
   constructor() {
     (async () => {
       try {
-        schedule.gracefulShutdown();
+        process.on("SIGINT", function () {
+          schedule.gracefulShutdown().then(() => process.exit(0));
+        });
         const fn = () => {
-          console.log(`[i] Monitoramento funcionamento do bootclient AUTO: ${moment().format("LLLL")}`);
+          console.log(`[i] Funcionamento do bootclient AUTO: ${moment().format("LLLL")}`);
           new FuncionamentoBootclient();
         };
 

@@ -1,4 +1,3 @@
-
 const moment = require("moment");
 const schedule = require("node-schedule");
 const ConexaoDbCliente = require("./conexaoDbCliente");
@@ -10,9 +9,11 @@ class ConexaoDbClienteAutomatico {
   constructor() {
     (async () => {
       try {
-        schedule.gracefulShutdown();
+        process.on("SIGINT", function () {
+          schedule.gracefulShutdown().then(() => process.exit(0));
+        });
         const fn = () => {
-          console.log(`[i] Monitoramento db connection AUTO: ${moment().format("LLLL")}`);
+          console.log(`[i] DB connection AUTO: ${moment().format("LLLL")}`);
           new ConexaoDbCliente();
         };
 

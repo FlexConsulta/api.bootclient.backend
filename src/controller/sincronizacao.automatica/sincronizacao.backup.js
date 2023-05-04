@@ -19,7 +19,9 @@ class SincronizacaoAutomatica {
 
                   try {
 
-                        schedule.gracefulShutdown();
+                        process.on("SIGINT", function () {
+                        schedule.gracefulShutdown().then(() => process.exit(0));
+                        });
                         const empresa = await pegarUmaEmpresa()
                         if (!empresa) return;
 
