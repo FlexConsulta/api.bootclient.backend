@@ -1,63 +1,83 @@
 const sequelizePostgres = require('../../services/sequelize.service');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const moment = require("moment");
-const { formatarData } = require('../../utils/tratamento.dados');
 
 class Proprietarios {
-  constructor({ dbObjectConnection, cnpj_empresa, dbSQL, log }) {
-    this.dbObjectConnection = dbObjectConnection;
-    this.cnpj_empresa = cnpj_empresa;
-    this.dbSQL = JSON.parse(dbSQL);
-    this.log = log
-    return new Promise(async (resolve) => {
-      await this.verificar();
-      resolve(true);
-    });
-  }
-
-  async verificar() {
-    return new Promise(async (resolve) => {
-      try {
-        // throw new Error("Error manual")
-
-        let _sql;
-        if (this.log) {
-          _sql = this.dbSQL.countLastDay;
-          const data_query = formatarData(this.log.data);
-          _sql = _sql.replace("[$]", data_query);
-        } else _sql = this.dbSQL.countAll;
-
-        const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
-        const sql_result = await resultadoSequelize.obterDados(_sql);
-
-        const rsltLogsRegister = await fnGerarLogs({
-          cnpj_cliente: this.cnpj_empresa,
-          nome_arquivo: null,
-          error: false,
-          entidade: "proprietarios",
-          quantidade: sql_result[0].count,
-          categoria: "dados_estatisticos",
-          data: moment().format("YYYY-MM-DD HH:mm:ss"),
-          mensagem: "coleta de dados estatísticos concluída com sucesso!",
+    constructor({ dbObjectConnection, cnpj_empresa, dbSQL, log }) {
+        this.dbObjectConnection = dbObjectConnection;
+        this.cnpj_empresa = cnpj_empresa;
+        this.dbSQL = JSON.parse(dbSQL);
+        this.log = log
+        return new Promise(async (resolve) => {
+            await this.verificar();
+            resolve(true);
         });
+    }
 
-        resolve(true);
-      } catch (error) {
-         const rsltLogsRegister = await fnGerarLogs({
-           cnpj_cliente: this.cnpj_empresa,
-           nome_arquivo: null,
-           error: true,
-           entidade: "proprietarios",
-           quantidade: null,
-           categoria: "dados_estatisticos_erro",
-           data: moment().format("YYYY-MM-DD HH:mm:ss"),
-           mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
-         });
-        console.log({ rsltLogsRegister });
-        resolve({ error: true, message: error.message });
-      }
-    });
-  }
+    async verificar() {
+        return new Promise(async (resolve) => {
+            try {
+
+
+                const { only_totals, total_by_status_0, total_by_status_1, total_by_status_2, total_by_date } = this.dbSQL
+
+                const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
+
+                const funcGetOnlyTotals = Promise.resolve(resultadoSequelize.obterDados(only_totals));
+                const funcGetTotalByToday = () => new Promise(resolve => {
+                    const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                    const __total_by_date = total_by_date.replace('[$]', date)
+                    resolve(resultadoSequelize.obterDados(__total_by_date))
+                });
+                const funcTotalByStatus0 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_0));
+                const funcTotalByStatus1 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_1));
+                const funcTotalByStatus2 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_2));
+
+                const objAux = {
+                    cnpj_cliente: this.cnpj_empresa,
+                    nome_arquivo: null,
+                    data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                }
+
+                Promise.all([
+                    funcGetOnlyTotals,
+                    funcGetTotalByToday(),
+                    funcTotalByStatus0,
+                    funcTotalByStatus1,
+                    funcTotalByStatus2
+                ]).then(async data => {
+
+                    objAux.error = false
+                    objAux.mensagem = "Coleta dos dados estatísticos concluído com sucesso!"
+
+                    const objTotalNumProprietarios = { entidade: 'PROPRIETARIOS', categoria: "NUMERO_TOTAL_PROPRIETARIOS", quantidade: data[0][0]?.count }
+                    const objTotalDiarioNumProprietarios = { entidade: 'PROPRIETARIOS', categoria: "NUMERO_DIARIO_TOTAL_PROPRIETARIOS", quantidade: data[1][0]?.count }
+                    const objTotalStatusProprietarios0 = { entidade: 'PROPRIETARIOS', categoria: "NUMERO_STATUS_PROPRIETARIOS_ATIVO", quantidade: data[2][0]?.qtd }
+                    const objTotalStatusProprietarios1 = { entidade: 'PROPRIETARIOS', categoria: "NUMERO_STATUS_PROPRIETARIOS_VENCIDO", quantidade: data[3][0]?.qtd }
+                    const objTotalStatusProprietarios2 = { entidade: 'PROPRIETARIOS', categoria: "NUMERO_STATUS_PROPRIETARIOS_BLOQUEADO", quantidade: data[4][0]?.qtd }
+
+                    await fnGerarLogs({ ...objTotalNumProprietarios, ...objAux })
+                    await fnGerarLogs({ ...objTotalDiarioNumProprietarios, ...objAux })
+                    await fnGerarLogs({ ...objTotalStatusProprietarios0, ...objAux })
+                    await fnGerarLogs({ ...objTotalStatusProprietarios1, ...objAux })
+                    await fnGerarLogs({ ...objTotalStatusProprietarios2, ...objAux })
+
+                    resolve(true)
+                }).catch(async error => {
+
+                    objAux.error = true
+                    objAux.mensagem = "Coleta dos dados estatísticos concluído com erro!"
+
+                    await fnGerarLogs({ ...objTotalNumProprietarios, ...objAux })
+                    resolve({ error: true, message: error?.message && JSON.stringify(error?.message) });
+                })
+
+            } catch (error) {
+                await fnGerarLogs({ ...objTotalNumProprietarios, ...objAux })
+                resolve({ error: true, message: error?.message && JSON.stringify(error?.message) });
+            }
+        });
+    }
 }
 
 module.exports = Proprietarios;
