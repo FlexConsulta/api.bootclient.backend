@@ -62,11 +62,6 @@ class Veiculos {
                     await fnGerarLogs({ ...objTotalStatusVeiculos1, ...objAux })
                     await fnGerarLogs({ ...objTotalStatusVeiculos2, ...objAux })
 
-                    console.log({objTotalNumVeiculos,
-                      objTotalDiarioNumVeiculos,
-                      objTotalStatusVeiculos0,
-                      objTotalStatusVeiculos1,
-                      objTotalStatusVeiculos2,});
                     resolve(true)
                 }).catch(async error => {
 

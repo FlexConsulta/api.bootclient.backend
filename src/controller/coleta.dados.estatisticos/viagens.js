@@ -1,6 +1,7 @@
 const sequelizePostgres = require('../../services/sequelize.service');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const moment = require("moment");
+const { DATAINICIAL } = process.env
 
 class Viagens {
     constructor({ dbObjectConnection, cnpj_empresa, dbSQL, log }) {
@@ -19,69 +20,76 @@ class Viagens {
             try {
 
 
-                // const { only_totals, total_by_status_0, total_by_status_1, total_by_status_2, total_by_date } = this.dbSQL
+                let { only_totals, daily_sync, total_by_date, total_by_canceled_true, total_by_canceled_false } = this.dbSQL
+                only_totals = only_totals.replace('[$]', DATAINICIAL);
+                total_by_canceled_true = total_by_canceled_true.replace('[$]', DATAINICIAL);
+                total_by_canceled_false = total_by_canceled_false.replace('[$]', DATAINICIAL);
 
-                // const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
+                const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
 
-                // const funcGetOnlyTotals = Promise.resolve(resultadoSequelize.obterDados(only_totals));
-                // const funcGetTotalByToday = () => new Promise(resolve => {
-                //     const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
-                //     const __total_by_date = total_by_date.replace('[$]', date)
-                //     resolve(resultadoSequelize.obterDados(__total_by_date))
-                // });
-                // const funcTotalByStatus0 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_0));
-                // const funcTotalByStatus1 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_1));
-                // const funcTotalByStatus2 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_2));
+                const funcGetOnlyTotals = Promise.resolve(resultadoSequelize.obterDados(only_totals));
+                const funcGetTotalByToday = () => new Promise(resolve => {
+                    const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                    const __total_by_date = total_by_date.replace('[$]', date)
+                    resolve(resultadoSequelize.obterDados(__total_by_date))
+                });
+                const funcDailySync = () => new Promise(resolve => {
+                    const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                    const __daily_sync = daily_sync.replace("[$]", date);
+                    resolve(resultadoSequelize.obterDados(__daily_sync));
+                });
+                const funcTotalByCanceledTrue = Promise.resolve(resultadoSequelize.obterDados(total_by_canceled_true));
+                const funcTotalByCanceledFalse = Promise.resolve(resultadoSequelize.obterDados(total_by_canceled_false));
 
-                // const objAux = {
-                //     cnpj_cliente: this.cnpj_empresa,
-                //     nome_arquivo: null,
-                //     data: moment().format("YYYY-MM-DD HH:mm:ss"),
-                // }
+                const objAux = {
+                    cnpj_cliente: this.cnpj_empresa,
+                    nome_arquivo: null,
+                    data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                }
 
-                // Promise.all([
-                //     funcGetOnlyTotals,
-                //     funcGetTotalByToday(),
-                //     funcTotalByStatus0,
-                //     funcTotalByStatus1,
-                //     funcTotalByStatus2
-                // ]).then(async data => {
+                Promise.all([
+                    funcGetOnlyTotals,
+                    funcGetTotalByToday(),
+                    funcDailySync(),
+                    funcTotalByCanceledTrue,
+                    funcTotalByCanceledFalse
+                ]).then(async data => {
 
-                //     objAux.error = false
-                //     objAux.mensagem = "Coleta dos dados estatísticos concluído com sucesso!"
+                    objAux.error = false
+                    objAux.mensagem = "Coleta dos dados estatísticos concluído com sucesso!"
 
-                //     const objTotalNumVeiculos = { entidade: 'VEICULOS', categoria: "NUMERO_TOTAL_VEICULOS", quantidade: data[0][0]?.count }
-                //     const objTotalDiarioNumVeiculos = { entidade: 'VEICULOS', categoria: "NUMERO_DIARIO_TOTAL_VEICULOS", quantidade: data[1][0]?.count }
-                //     const objTotalStatusVeiculos0 = { entidade: 'VEICULOS', categoria: "NUMERO_STATUS_VEICULOS_ATIVO", quantidade: data[2][0]?.qtd }
-                //     const objTotalStatusVeiculos1 = { entidade: 'VEICULOS', categoria: "NUMERO_STATUS_VEICULOS_VENCIDO", quantidade: data[3][0]?.qtd }
-                //     const objTotalStatusVeiculos2 = { entidade: 'VEICULOS', categoria: "NUMERO_STATUS_VEICULOS_BLOQUEADO", quantidade: data[4][0]?.qtd }
+                    const objTotalNumViagens = { entidade: 'VIAGENS', categoria: "NUMERO_TOTAL_VIAGENS", quantidade: data[0][0]?.count }
+                    const objTotalDiarioNumViagens = { entidade: 'VIAGENS', categoria: "NUMERO_DIARIO_TOTAL_VIAGENS", quantidade: data[1][0]?.count }
+                    const objTotalDailySyncViagens = { entidade: 'VIAGENS', categoria: "NUMERO_DAILY_SYNC_VIAGENS", quantidade: data[2].length.toString() }
+                    const objTotalByCanceledTrue = { entidade: 'VIAGENS', categoria: "NUMERO_VIAGENS_CANCELADAS", quantidade: data[3].length.toString() }
+                    const objTotalByCanceledFalse = { entidade: 'VIAGENS', categoria: "NUMERO_VIAGENS_NAO_CANCELADAS", quantidade: data[4].length.toString() }
 
-                //     await fnGerarLogs({ ...objTotalNumVeiculos, ...objAux })
-                //     await fnGerarLogs({ ...objTotalDiarioNumVeiculos, ...objAux })
-                //     await fnGerarLogs({ ...objTotalStatusVeiculos0, ...objAux })
-                //     await fnGerarLogs({ ...objTotalStatusVeiculos1, ...objAux })
-                //     await fnGerarLogs({ ...objTotalStatusVeiculos2, ...objAux })
+                    await fnGerarLogs({ ...objTotalNumViagens, ...objAux })
+                    await fnGerarLogs({ ...objTotalDiarioNumViagens, ...objAux })
+                    await fnGerarLogs({ ...objTotalDailySyncViagens, ...objAux })
+                    await fnGerarLogs({ ...objTotalByCanceledTrue, ...objAux });
+                    await fnGerarLogs({ ...objTotalByCanceledFalse, ...objAux })
 
-                //     console.log({
-                //         objTotalNumVeiculos,
-                //         objTotalDiarioNumVeiculos,
-                //         objTotalStatusVeiculos0,
-                //         objTotalStatusVeiculos1,
-                //         objTotalStatusVeiculos2,
-                //     });
-                //     resolve(true)
+                    console.log({
+                      objTotalNumViagens,
+                      objTotalDiarioNumViagens,
+                      objTotalDailySyncViagens,
+                      objTotalByCanceledTrue,
+                      objTotalByCanceledFalse,
+                    });
+                    resolve(true)
 
-                // }).catch(async error => {
+                }).catch(async error => {
 
-                //     objAux.error = true
-                //     objAux.mensagem = "Coleta dos dados estatísticos concluído com erro!"
+                    objAux.error = true
+                    objAux.mensagem = "Coleta dos dados estatísticos concluído com erro!"
 
-                //     await fnGerarLogs({ ...objTotalNumVeiculos, ...objAux })
-                //     resolve({ error: true, message: error?.message && JSON.stringify(error?.message) });
-                // })
+                    await fnGerarLogs({ ...objTotalNumViagens, ...objAux })
+                    resolve({ error: true, message: error?.message && JSON.stringify(error?.message) });
+                })
 
             } catch (error) {
-                await fnGerarLogs({ ...objTotalNumVeiculos, ...objAux })
+                await fnGerarLogs({ ...objTotalNumViagens, ...objAux })
                 resolve({ error: true, message: error?.message && JSON.stringify(error?.message) });
             }
         });
