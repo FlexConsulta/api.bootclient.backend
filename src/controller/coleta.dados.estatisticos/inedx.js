@@ -8,50 +8,58 @@ const Viagens = require("./viagens.js");
 const moment = require("moment");
 const { CNPJ } = process.env;
 
- const ColetaDadosEstatisticos = async (req, res) => {
-   try {
-     const { dbObjectConnection, data_empresa } = await getInfoCompany();
-     if (!data_empresa) res.status(404).send("Nenhuma empresa foi cadastrada!");
+const ColetaDadosEstatisticos = async (req, res) => {
+  try {
+    const { dbObjectConnection, data_empresa } = await getInfoCompany();
+    if (!data_empresa) res.status(404).send("Nenhuma empresa foi cadastrada!");
 
-     const logs = await apiFlex.get(`/bootclient/log/last/estatistico?cnpj=${CNPJ}`);
-     const { motoristas, proprietarios, veiculos, viagens } = logs.data;
+    const logs = await apiFlex.get(`/bootclient/log/last/estatistico?cnpj=${CNPJ}`);
+    const { motoristas, proprietarios, veiculos, viagens } = logs.data;
 
-     Promise.all([
-       await new Motoristas({dbObjectConnection,cnpj_empresa: data_empresa.cnpj_empresa,dbSQL: data_empresa.sql_motoristas,log: motoristas,}),
-       await new Proprietarios({dbObjectConnection,cnpj_empresa: data_empresa.cnpj_empresa,dbSQL: data_empresa.sql_proprietarios, log: proprietarios}),
-       await new Veiculos({dbObjectConnection,cnpj_empresa: data_empresa.cnpj_empresa,dbSQL: data_empresa.sql_veiculos, log: veiculos}),
-       await new Viagens({dbObjectConnection,cnpj_empresa: data_empresa.cnpj_empresa,dbSQL: data_empresa.sql_viagens, log: viagens}),
-     ])
-       .then(() => {
-         if (res) res.status(202).send();
-       })
-       .catch(async (error) => {
-         const rsltLogsRegister = await fnGerarLogs({
-           cnpj_cliente: CNPJ,
-           nome_arquivo: null,
-           error: true,
-           entidade: null,
-           quantidade: null,
-           categoria: "dados_estatisticos_erro_promisses",
-           data: moment().format("YYYY-MM-DD HH:mm:ss"),
-           mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
-         });
-         console.log({ rsltLogsRegister });
-       });
-   } catch (error) {
-     const rsltLogsRegister = await fnGerarLogs({
-       cnpj_cliente: CNPJ,
-       nome_arquivo: null,
-       error: true,
-       entidade: null,
-       quantidade: null,
-       categoria: "dados_estatisticos_erro_geral",
-       data: moment().format("YYYY-MM-DD HH:mm:ss"),
-       mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
-     });
-     console.log({ rsltLogsRegister });
-   }
- };   
+    Promise.all([
+      await new Motoristas({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_motoristas, log: motoristas, }),
+      await new Proprietarios({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_proprietarios, log: proprietarios }),
+      await new Veiculos({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_veiculos, log: veiculos }),
+      await new Viagens({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_viagens, log: viagens }),
+    ])
+      .then((data) => {
+        // throw new Error("Error manual");
+
+        console.log({ data });
+
+        if (res) res.status(202).send();
+        console.log("Coleta de dados estatisticos concluída com sucesso!");
+      })
+      .catch(async (error) => {
+
+        console.log({ error });
+        //  const rsltLogsRegister = await fnGerarLogs({
+        //    cnpj_cliente: CNPJ,
+        //    nome_arquivo: null,
+        //    error: true,
+        //    entidade: null,
+        //    quantidade: null,
+        //    categoria: "dados_estatisticos_erro_promisses",
+        //    data: moment().format("YYYY-MM-DD HH:mm:ss"),
+        //    mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
+        //  });
+        //  console.log({ rsltLogsRegister });
+      });
+  } catch (error) {
+    console.log({ error });
+    //  const rsltLogsRegister = await fnGerarLogs({
+    //    cnpj_cliente: CNPJ,
+    //    nome_arquivo: null,
+    //    error: true,
+    //    entidade: null,
+    //    quantidade: null,
+    //    categoria: "dados_estatisticos_erro_geral",
+    //    data: moment().format("YYYY-MM-DD HH:mm:ss"),
+    //    mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
+    //  });
+    //  console.log({ rsltLogsRegister });
+  }
+};
 
 
 module.exports = ColetaDadosEstatisticos;
