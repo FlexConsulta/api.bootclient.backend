@@ -1,15 +1,20 @@
 const express = require('express')
 const cors = require('cors');
 
+const { NODE_ENV } = process.env
+
 const RouteLogin = require('./routes/login.routes')
 const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
 
+if( NODE_ENV == "PROD"){
+    const SystemUpdateAuto = require("./controller/auto.update");
+    new SystemUpdateAuto();
+}
 
 const ColetaDadosEstatisticosAutomatica = require('./controller/coleta.dados.estatisticos.automatica');
-const SystemUpdateAuto = require("./controller/auto.update");
 const MonitoramentoArquivos = require('./controller/monitoramento')
 const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
 const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
@@ -40,7 +45,6 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 new ColetaDadosEstatisticosAutomatica();
-new SystemUpdateAuto();
 
 new MonitoramentoArquivos(new Date());
 new SincronizacaoAutomatica();

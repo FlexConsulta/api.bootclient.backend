@@ -1,0 +1,55 @@
+const { fnGerarLogs } = require("../../utils/gerarLogs.js");
+const getInfoCompany = require("../../utils/get.info.company.js");
+const { apiFlex } = require("../../API/api.js");
+const Motoristas = require("./motoristas.js");
+const Proprietarios = require("./proprietarios.js");
+const Veiculos = require("./veiculos.js");
+const Viagens = require("./viagens.js");
+const moment = require("moment");
+const { CNPJ } = process.env;
+
+const ColetaDadosEstatisticos = async (req, res) => {
+
+    const objAux = {
+        cnpj_cliente: CNPJ,
+        nome_arquivo: null,
+        data: moment().format("YYYY-MM-DD HH:mm:ss"),
+    }
+
+    try {
+        const { dbObjectConnection, data_empresa } = await getInfoCompany();
+        if (!data_empresa) res.status(404).send("Nenhuma empresa foi cadastrada!");
+
+        const logs = await apiFlex.get(`/bootclient/log/last/estatistico?cnpj=${CNPJ}`);
+        const { motoristas, proprietarios, veiculos, viagens } = logs.data;
+
+        Promise.all([
+            await new Motoristas({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_motoristas, log: motoristas, }),
+            await new Proprietarios({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_proprietarios, log: proprietarios }),
+            await new Veiculos({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_veiculos, log: veiculos }),
+            await new Viagens({ dbObjectConnection, cnpj_empresa: data_empresa.cnpj_empresa, dbSQL: data_empresa.sql_viagens, log: viagens }),
+        ])
+            .then((data) => {
+
+                if (res) res.status(202).send();
+                console.log("Coleta de dados estatisticos concluída com sucesso!");
+            })
+            .catch(async (error) => {
+
+                objAux.error = true
+                objAux.mensagem = JSON.stringify(String(error))
+                objAux.categoria = "dados_estatisticos_erro_promisses"
+                await fnGerarLogs({ ...objTotalNumMotoristas, ...objAux })
+
+            });
+    } catch (error) {
+        objAux.error = true
+        objAux.mensagem = JSON.stringify(String(error))
+        objAux.categoria = "dados_estatisticos_erro_geral"
+        await fnGerarLogs({ ...objTotalNumMotoristas, ...objAux })
+    }
+};
+
+
+module.exports = ColetaDadosEstatisticos;
+

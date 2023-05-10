@@ -9,13 +9,16 @@ module.exports = async function () {
     await apiFlex
       .get(`/connection/?cnpj=${CNPJ}`)
       .then(async (response) => {
+        
         data_empresa = decryptApiResponse(response.data.data);
         await createInfo(data_empresa);
-        // console.log("VIM DO REQUEST");
+        console.log("VIM DO REQUEST");
       })
       .catch(async () => {
         ({ data_empresa } = await getInfo());
-        // console.log("VIM DO DBLOCAL")
+
+        console.log(data_empresa);
+        console.log("VIM DO DBLOCAL")
       });
     
     if (!data_empresa) {
