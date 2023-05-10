@@ -19,7 +19,7 @@ class Viagens {
         // throw new Error("Error manual");
 
         const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
-        const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.getOne);
+        const arrayDados = await resultadoSequelize.obterDados(this.dbSQL.working_table);
 
         let rsltLogsRegister;
 
