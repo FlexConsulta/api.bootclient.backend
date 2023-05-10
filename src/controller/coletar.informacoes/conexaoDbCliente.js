@@ -16,10 +16,10 @@ class ConexaoDbCliente {
 
             const { dbObjectConnection, data_empresa } = await getInfoCompany();
             let sqls = {
-              getOne_motoristas: JSON.parse(data_empresa.sql_motoristas).getOne,
-              getOne_proprietarios: JSON.parse(data_empresa.sql_proprietarios).getOne,
-              getOne_veiculos: JSON.parse(data_empresa.sql_veiculos).getOne,
-              getOne_viagens: JSON.parse(data_empresa.sql_viagens).getOne,
+              motoristas: JSON.parse(data_empresa.sql_motoristas).working_table,
+              proprietarios: JSON.parse(data_empresa.sql_proprietarios).working_table,
+              veiculos: JSON.parse(data_empresa.sql_veiculos).working_table,
+              viagens: JSON.parse(data_empresa.sql_viagens).working_table,
             };
             const arraySqls = [];
             
