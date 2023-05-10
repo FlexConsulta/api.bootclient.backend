@@ -1,6 +1,6 @@
 const moment = require("moment");
 const schedule = require("node-schedule");
-const ColetaDadosEstatisticos = require("../coleta.dados.estatisticos/inedx.js");
+const ColetaDadosEstatisticos = require("../coleta.dados.estatisticos/index.js");
 
 moment.locale("pt-br");
 const { JOB_COLETA_AUTO } = process.env;

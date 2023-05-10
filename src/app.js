@@ -9,15 +9,15 @@ const RouteLogs = require('./routes/logs.routes')
 
 
 const ColetaDadosEstatisticosAutomatica = require('./controller/coleta.dados.estatisticos.automatica');
-// const SystemUpdateAuto = require("./controller/auto.update");
-// const MonitoramentoArquivos = require('./controller/monitoramento')
-// const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
-// const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
-// const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
-// const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
-// const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
-// const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
-// const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
+const SystemUpdateAuto = require("./controller/auto.update");
+const MonitoramentoArquivos = require('./controller/monitoramento')
+const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
+const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
+const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
+const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
+const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
+const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
+const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
 
 const app = express()
 
@@ -40,15 +40,15 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 new ColetaDadosEstatisticosAutomatica();
-// new SystemUpdateAuto();
+new SystemUpdateAuto();
 
-// new MonitoramentoArquivos(new Date());
-// new SincronizacaoAutomatica();
-// new MonitoramentoArquivosNaoEnviadosAutomatico();
-// new FuncionamentoBootclientAutomatico();
-// new VerificacaoEntidadesAutomatica();
-// new ConexaoDbClienteAutomatico();
-// new SincronizacaoAutomaticaBackup(new Date());
-// new LimpezaLogsSistema(new Date());
+new MonitoramentoArquivos(new Date());
+new SincronizacaoAutomatica();
+new MonitoramentoArquivosNaoEnviadosAutomatico();
+new FuncionamentoBootclientAutomatico();
+new VerificacaoEntidadesAutomatica();
+new ConexaoDbClienteAutomatico();
+new SincronizacaoAutomaticaBackup(new Date());
+new LimpezaLogsSistema(new Date());
 
 module.exports = app;
