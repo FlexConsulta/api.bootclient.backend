@@ -36,17 +36,30 @@ const ColetaDadosEstatisticos = async (req, res) => {
             })
             .catch(async (error) => {
 
+                const objAux = {
+                  cnpj_cliente: CNPJ,
+                  nome_arquivo: null,
+                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                };
+
                 objAux.error = true
                 objAux.mensagem = JSON.stringify(String(error))
                 objAux.categoria = "dados_estatisticos_erro_promisses"
-                await fnGerarLogs({ ...objTotalNumMotoristas, ...objAux })
+                await fnGerarLogs({ ...objAux, ...objAux });
 
             });
     } catch (error) {
-        objAux.error = true
-        objAux.mensagem = JSON.stringify(String(error))
-        objAux.categoria = "dados_estatisticos_erro_geral"
-        await fnGerarLogs({ ...objTotalNumMotoristas, ...objAux })
+
+      const objAux = {
+        cnpj_cliente: CNPJ,
+        nome_arquivo: null,
+        data: moment().format("YYYY-MM-DD HH:mm:ss"),
+      };
+
+      objAux.error = true;
+      objAux.mensagem = JSON.stringify(String(error));
+      objAux.categoria = "dados_estatisticos_erro_geral";
+      await fnGerarLogs({ ...objAux, ...objAux });
     }
 };
 
