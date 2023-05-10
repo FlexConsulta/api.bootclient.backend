@@ -70,13 +70,6 @@ class Viagens {
                     await fnGerarLogs({ ...objTotalByCanceledTrue, ...objAux });
                     await fnGerarLogs({ ...objTotalByCanceledFalse, ...objAux })
 
-                    console.log({
-                      objTotalNumViagens,
-                      objTotalDiarioNumViagens,
-                      objTotalDailySyncViagens,
-                      objTotalByCanceledTrue,
-                      objTotalByCanceledFalse,
-                    });
                     resolve(true)
 
                 }).catch(async error => {
