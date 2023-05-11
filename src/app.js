@@ -45,7 +45,6 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 new ColetaDadosEstatisticosAutomatica();
-
 new MonitoramentoArquivos(new Date());
 new SincronizacaoAutomatica();
 new MonitoramentoArquivosNaoEnviadosAutomatico();
