@@ -49,7 +49,6 @@ class Veiculos extends GerarArquivo {
                 
                 SQL = SQL.replace(";", " ");
                 const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
-                console.log({ _sql });
 
                 const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
                 const arrayDados = await resultadoSequelize.obterDados(_sql);
