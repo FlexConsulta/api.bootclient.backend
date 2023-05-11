@@ -34,7 +34,7 @@ class Motoristas extends GerarArquivo {
 
                 let SQL;
                 if (this.lastSyncDate) {
-                  SQL = this.dbSQL.total_by_date;
+                  SQL = this.dbSQL.daily_sync;
                   const lastDateLog = moment(this.lastSyncDate).format("YYYY/MM/DD HH:mm");
                   const data_query = moment(lastDateLog, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
                   SQL = SQL.replace("[$]", data_query);
@@ -46,6 +46,7 @@ class Motoristas extends GerarArquivo {
                   
                   SQL = SQL.replace(';', ' ');
                   const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
+                  console.log({ _sql });
 
                   const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
                   const arrayDados = await resultadoSequelize.obterDados(_sql);
