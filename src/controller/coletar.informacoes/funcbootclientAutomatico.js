@@ -13,7 +13,7 @@ class FuncionamentoBootclientAutomatico {
           schedule.gracefulShutdown().then(() => process.exit(0));
         });
         const fn = () => {
-          console.log(`[i] Funcionamento do bootclient AUTO: ${moment().format("LLLL")}`);
+          console.log(`[i] Funcionamento do bootclient AUTO: ${moment().tz('America/Sao_Paulo').format("LLLL")}`);
           new FuncionamentoBootclient();
         };
 

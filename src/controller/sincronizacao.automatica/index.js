@@ -15,7 +15,7 @@ class SincronizacaoAutomatica {
         
         const fn = () => {
           sincronizacao();
-          console.log(`[i] Sincronizando AUTO: ${moment().format("LLL")}`);
+          console.log(`[i] Sincronizando AUTO: ${moment().tz('America/Sao_Paulo').format("LLL")}`);
         };
 
         fn()

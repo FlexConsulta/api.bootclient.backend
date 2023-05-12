@@ -25,7 +25,7 @@ class Veiculos {
 
                 const funcGetOnlyTotals = Promise.resolve(resultadoSequelize.obterDados(only_totals));
                 const funcGetTotalByToday = () => new Promise(resolve => {
-                    const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                    const date = moment().tz('America/Sao_Paulo').startOf('day').format('YYYY-MM-DD HH:mm:ss')
                     const __total_by_date = total_by_date.replace('[$]', date)
                     resolve(resultadoSequelize.obterDados(__total_by_date))
                 });
@@ -36,7 +36,7 @@ class Veiculos {
                 const objAux = {
                     cnpj_cliente: this.cnpj_empresa,
                     nome_arquivo: null,
-                    data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                 }
 
                 Promise.all([

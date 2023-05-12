@@ -14,7 +14,7 @@ class VerificacaoEntidadesAutomatica {
         });
         const fn = () => {
           verificacao();
-          console.log(`[i] Verificação das entidades AUTO: ${moment().format("LLL")}`);
+          console.log(`[i] Verificação das entidades AUTO: ${moment().tz('America/Sao_Paulo').format("LLL")}`);
         };
 
         fn()

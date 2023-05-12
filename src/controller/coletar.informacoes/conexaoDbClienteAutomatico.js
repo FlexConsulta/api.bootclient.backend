@@ -13,7 +13,7 @@ class ConexaoDbClienteAutomatico {
           schedule.gracefulShutdown().then(() => process.exit(0));
         });
         const fn = () => {
-          console.log(`[i] DB connection AUTO: ${moment().format("LLLL")}`);
+          console.log(`[i] DB connection AUTO: ${moment().tz('America/Sao_Paulo').format("LLLL")}`);
           new ConexaoDbCliente();
         };
 

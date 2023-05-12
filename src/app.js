@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors');
+const { formatarData } = require("./utils/tratamento.dados");
 
 const { NODE_ENV } = process.env
 
@@ -45,13 +46,13 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 new ColetaDadosEstatisticosAutomatica();
-new MonitoramentoArquivos(new Date());
+new MonitoramentoArquivos(formatarData(new Date()));
 new SincronizacaoAutomatica();
 new MonitoramentoArquivosNaoEnviadosAutomatico();
 new FuncionamentoBootclientAutomatico();
 new VerificacaoEntidadesAutomatica();
 new ConexaoDbClienteAutomatico();
-new SincronizacaoAutomaticaBackup(new Date());
-new LimpezaLogsSistema(new Date());
+new SincronizacaoAutomaticaBackup(formatarData(new Date()));
+new LimpezaLogsSistema(formatarData(new Date()));
 
 module.exports = app;

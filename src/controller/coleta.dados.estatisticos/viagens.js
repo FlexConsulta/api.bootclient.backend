@@ -29,12 +29,12 @@ class Viagens {
 
                 const funcGetOnlyTotals = Promise.resolve(resultadoSequelize.obterDados(only_totals));
                 const funcGetTotalByToday = () => new Promise(resolve => {
-                    const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                    const date = moment().tz('America/Sao_Paulo').startOf('day').format('YYYY-MM-DD HH:mm:ss')
                     const __total_by_date = total_by_date.replace('[$]', date)
                     resolve(resultadoSequelize.obterDados(__total_by_date))
                 });
                 const funcDailySync = () => new Promise(resolve => {
-                    const date = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                    const date = moment().tz('America/Sao_Paulo').startOf('day').format('YYYY-MM-DD HH:mm:ss')
                     const __daily_sync = daily_sync.replace("[$]", date);
                     resolve(resultadoSequelize.obterDados(__daily_sync));
                 });
@@ -44,7 +44,7 @@ class Viagens {
                 const objAux = {
                     cnpj_cliente: this.cnpj_empresa,
                     nome_arquivo: null,
-                    data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                 }
 
                 Promise.all([

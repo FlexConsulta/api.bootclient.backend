@@ -28,7 +28,7 @@ class SincronizacaoAutomatica {
                         const fn = async () => {
                               if (!empresa) return;
 
-                              const dataAnterior = moment().set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).utcOffset(0, true).format()
+                              const dataAnterior = moment().tz('America/Sao_Paulo').set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).utcOffset(0, true).format()
 
                               Promise.all([
                                     await new Motoristas(dataAnterior),
@@ -36,11 +36,11 @@ class SincronizacaoAutomatica {
                                     await new Veiculos(dataAnterior),
                                     await new Viagens(dataAnterior),
                               ]).then(data => {
-                                    console.log(`Concluido com sucesso às: [${moment().format('LLLL')}]`);
+                                    console.log(`Concluido com sucesso às: [${moment().tz('America/Sao_Paulo').format('LLLL')}]`);
                               }).catch(error => console.log(error))
 
 
-                              console.log(`[i] Sincronização de backup!: ${moment().format('LLL')}`);
+                              console.log(`[i] Sincronização de backup!: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
                         }
 
                         schedule.scheduleJob('0 0 * * *', fn);

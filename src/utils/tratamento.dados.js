@@ -73,7 +73,7 @@ function funcReadFiles(urlFile) {
 }
 
 const formatarData = (date) => {
-  return moment(date).format("YYYY-MM-DD HH:mm:ss");
+  return moment(date).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss");
 }; 
 
 

@@ -26,9 +26,9 @@ class MonitoramentoArquivosNaoEnviados {
                 const stats = fs.statSync(filePath);
 
                 const { size, birthtime } = stats
-                const dateNow = moment().utcOffset(0).valueOf()
+                const dateNow = moment().tz('America/Sao_Paulo').utcOffset(0).valueOf()
                 if (size > 0) {
-                    const dateDue = moment(birthtime).utcOffset(0).add(1, "hour").valueOf()
+                    const dateDue = moment(birthtime).tz('America/Sao_Paulo').utcOffset(0).add(1, "hour").valueOf()
                     if (dateNow > dateDue) arrayListFiles.push({ file, size, birthtime })
                 }
             }
@@ -37,7 +37,7 @@ class MonitoramentoArquivosNaoEnviados {
                 cnpj_cliente: __CNPJ_EMPRESA,
                 quantidade_arquivos: arrayListFiles.length,
                 nomes_arquivos: arrayListFiles,
-                data: moment().format("YYYY-MM-DD HH:mm:ss")
+                data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss")
             })
             
         } catch (error) {
@@ -48,7 +48,7 @@ class MonitoramentoArquivosNaoEnviados {
             entidade: null,
             quantidade: null,
             categoria: "ARQUIVOS_PENDENDTES_ERRO",
-            data: moment().format("YYYY-MM-DD HH:mm:ss"),
+            data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
             mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
           });
           console.log({ rsltLogsRegister });

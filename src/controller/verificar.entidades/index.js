@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
           entidade: null,
           quantidade: null,
           categoria: "VERIFICACAO_ENTIDADE_GERAL_ERRO",
-          data: moment().format("YYYY-MM-DD HH:mm:ss"),
+          data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
           mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         });
         console.log({ rsltLogsRegister });

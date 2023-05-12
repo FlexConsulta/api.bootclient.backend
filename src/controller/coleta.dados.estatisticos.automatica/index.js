@@ -14,7 +14,7 @@ class ColetaDadosEstatisticosAutomatica {
         });
         const fn = () => {
           console.log(
-            `[i] Coleta de dados estatísticos AUTO: ${moment().format("LLL")}`
+            `[i] Coleta de dados estatísticos AUTO: ${moment().tz('America/Sao_Paulo').format("LLL")}`
           );
           ColetaDadosEstatisticos();
         };

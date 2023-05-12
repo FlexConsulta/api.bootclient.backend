@@ -13,7 +13,7 @@ class MonitoramentoArquivosNaoEnviadosAutomatico {
           schedule.gracefulShutdown().then(() => process.exit(0));
         });
         const fn = () => {
-          console.log(`[i] Monitoramento de arquivos não enviados AUTO: ${moment().format("LLLL")}`);
+          console.log(`[i] Monitoramento de arquivos não enviados AUTO: ${moment().tz('America/Sao_Paulo').format("LLLL")}`);
           new MonitoramentoArquivosNaoEnviados();
         };
 

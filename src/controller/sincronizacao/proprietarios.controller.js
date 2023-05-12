@@ -36,8 +36,8 @@ class Proprietarios extends GerarArquivo {
               let SQL;
               if (this.lastSyncDate) {
                 SQL = this.dbSQL.daily_sync;
-                const lastDateLog = moment(this.lastSyncDate).format("YYYY/MM/DD HH:mm");
-                const data_query = moment(lastDateLog, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
+                const lastDateLog = moment(this.lastSyncDate).tz('America/Sao_Paulo').format("YYYY/MM/DD HH:mm");
+                const data_query = moment(lastDateLog, ["DD/MM/YYY HH:mm","YYYY/MM/DD HH:mm"]).tz('America/Sao_Paulo').subtract(4, 'hours').format("YYYY/MM/DD HH:mm");
                 SQL = SQL.replace("[$]", data_query);
               } else SQL = this.dbSQL.initial_sync;
 
@@ -54,7 +54,7 @@ class Proprietarios extends GerarArquivo {
                 const dataEncriptado = await encryptedData(arrayDados);
 
                 const convertedCNPJ = String(this.cnpj_empresa).replaceAll(/\D/g, '');
-                const fileName = `${filePrefix}_PROPRIETARIOS_${convertedCNPJ}_${moment().valueOf()}`;
+                const fileName = `${filePrefix}_PROPRIETARIOS_${convertedCNPJ}_${moment().tz('America/Sao_Paulo').valueOf()}`;
                 if (arrayDados?.length > 0) {
                   await this.fnGeradorArquivo(
                     FOLDER_SYNC_SUCCESS,fileName,dataEncriptado
@@ -68,7 +68,7 @@ class Proprietarios extends GerarArquivo {
                   entidade: "proprietarios",
                   quantidade: String(arrayDados.length),
                   categoria: "SINCRONIZACAO_DADOS",
-                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                  data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                   mensagem: "Sincronização dos dados do proprietários concluídos com sucesso!",
                 });
 
@@ -86,7 +86,7 @@ class Proprietarios extends GerarArquivo {
                 entidade: "proprietarios",
                 quantidade: null,
                 categoria: "SINCRONIZACAO_DADOS_PROPRIETARIOS_ERRO",
-                data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                 mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
               });
               console.log({ rsltLogsRegister });

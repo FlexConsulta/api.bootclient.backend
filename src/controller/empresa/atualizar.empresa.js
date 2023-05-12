@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
             if (emailDeNotificacao) Validation.email(emailDeNotificacao, 'O Email de notificação é inválido!')
 
             if (datasincronizacao) {
-                  if (!moment(datasincronizacao, ["MM/DD/YYYY HH:mm", "DD/MM/YYYY HH:mm"]).isValid()) throw new Error("O formato da data de sincronização está incorreta!")
+                  if (!moment(datasincronizacao, ["MM/DD/YYYY HH:mm", "DD/MM/YYYY HH:mm"]).tz('America/Sao_Paulo').isValid()) throw new Error("O formato da data de sincronização está incorreta!")
             }
 
             const resultado = await Company.asyncFindOne({})

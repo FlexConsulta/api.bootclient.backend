@@ -19,7 +19,7 @@ class FuncionamentoBootclient {
               entidade: null,
               quantidade: null,
               categoria: "FUNCIONAMENTO_BOOTCLIENT",
-              data: moment().format("YYYY-MM-DD HH:mm:ss"),
+              data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
               mensagem: "O sistema está funcionando normal.",
             });
 
@@ -31,7 +31,7 @@ class FuncionamentoBootclient {
             entidade: null,
             quantidade: null,
             categoria: "FUNCIONAMENTO_BOOTCLIENT_ERRO",
-            data: moment().format("YYYY-MM-DD HH:mm:ss"),
+            data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
             mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
           });
           console.log({ rsltLogsRegister });

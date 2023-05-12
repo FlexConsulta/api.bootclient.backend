@@ -23,7 +23,7 @@ class SystemUpdateAuto {
 
                 const fn = () => {
 
-                    console.log(`[i] Verificando atualizações: ${moment().format('LLL')}`);
+                    console.log(`[i] Verificando atualizações: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     gitRepository.pull((err, atualizacao) => {

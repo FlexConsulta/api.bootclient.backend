@@ -8,7 +8,7 @@ const createInfo = async (data_empresa) => {
   const newInfo = await tabInformacoes
     .create({
       _id: 1,
-      data: `${moment().format("LLL")}`,
+      data: `${moment().tz("America/Sao_Paulo").format("LLL")}`,
       data_empresa,
     })
     .save();

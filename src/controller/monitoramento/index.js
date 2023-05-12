@@ -14,7 +14,7 @@ class MonitoramentoArquivosDeDados {
 
     constructor(data) {
         this.Inicio()
-        console.log(`[:] Monitoramento arquivos sincronização: ${moment(data).format('LLL')}`)
+        console.log(`[:] Monitoramento arquivos sincronização: ${moment(data).tz('America/Sao_Paulo').format('LLL')}`)
     }
 
 

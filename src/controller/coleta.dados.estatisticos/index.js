@@ -11,10 +11,10 @@ const { CNPJ } = process.env;
 const ColetaDadosEstatisticos = async (req, res) => {
 
     const objAux = {
-        cnpj_cliente: CNPJ,
-        nome_arquivo: null,
-        data: moment().format("YYYY-MM-DD HH:mm:ss"),
-    }
+      cnpj_cliente: CNPJ,
+      nome_arquivo: null,
+      data: moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss"),
+    };
 
     try {
         const { dbObjectConnection, data_empresa } = await getInfoCompany();
@@ -39,7 +39,7 @@ const ColetaDadosEstatisticos = async (req, res) => {
                 const objAux = {
                   cnpj_cliente: CNPJ,
                   nome_arquivo: null,
-                  data: moment().format("YYYY-MM-DD HH:mm:ss"),
+                  data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                 };
 
                 objAux.error = true
@@ -53,7 +53,7 @@ const ColetaDadosEstatisticos = async (req, res) => {
       const objAux = {
         cnpj_cliente: CNPJ,
         nome_arquivo: null,
-        data: moment().format("YYYY-MM-DD HH:mm:ss"),
+        data: moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss"),
       };
 
       objAux.error = true;

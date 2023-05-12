@@ -43,10 +43,10 @@ module.exports = async (req, res) => {
             if (segurancaftp !== 'false' && segurancaftp !== 'true') throw new Error('O formato da especificidade da segurança está incorreta!')
 
             if (datasincronizacao) {
-                  if (!moment(datasincronizacao, ["MM/DD/YYYY HH:mm", "DD/MM/YYYY HH:mm"]).isValid()) throw new Error("O formato da data de sincronização está incorreta!")
+                  if (!moment(datasincronizacao, ["MM/DD/YYYY HH:mm", "DD/MM/YYYY HH:mm"]).tz('America/Sao_Paulo').isValid()) throw new Error("O formato da data de sincronização está incorreta!")
             }
 
-            datasincronizacao = moment(datasincronizacao, ["MM/DD/YYYY HH:mm", "DD/MM/YYYY HH:mm"]).format("YYYY/MM/DD HH:mm")
+            datasincronizacao = moment(datasincronizacao, ["MM/DD/YYYY HH:mm", "DD/MM/YYYY HH:mm"]).tz('America/Sao_Paulo').format("YYYY/MM/DD HH:mm")
 
             if (emailDeNotificacao) Validation.email(emailDeNotificacao, 'O Email de notificação é inválido!')
 
