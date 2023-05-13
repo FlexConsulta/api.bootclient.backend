@@ -5,6 +5,6 @@ WORKDIR /bootclient.sat.default
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 3000
+EXPOSE 6000
 
 CMD ["npm", "start"]
