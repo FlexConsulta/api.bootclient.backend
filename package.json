@@ -50,6 +50,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.18.0",
     "simple-git": "^3.17.0",
+    "sinon": "^15.0.4",
     "time-number": "^1.1.0",
     "upath": "^2.0.1"
   },
