@@ -1,5 +1,5 @@
 const crypto = require("crypto")
-CryptoJS = require("crypto-js");
+const CryptoJS = require("crypto-js");
 const { KEY_CRIPT_LOCAL, IV_CRIPT } = process.env;
 const key = crypto.createHash('sha256').update(String(KEY_CRIPT_LOCAL)).digest('base64').substr(0, 32);
 
