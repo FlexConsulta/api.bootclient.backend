@@ -21,9 +21,9 @@ class Viagens {
 
 
                 let { only_totals, daily_sync, total_by_date, total_by_canceled_true, total_by_canceled_false } = this.dbSQL
-                only_totals = only_totals.replace('[$]', DATAINICIAL);
-                total_by_canceled_true = total_by_canceled_true.replace('[$]', DATAINICIAL);
-                total_by_canceled_false = total_by_canceled_false.replace('[$]', DATAINICIAL);
+                only_totals = only_totals.replace('[$]', DATAINICIAL || '2021-01-01 00:00:00');
+                total_by_canceled_true = total_by_canceled_true.replace('[$]', DATAINICIAL || '2021-01-01 00:00:00');
+                total_by_canceled_false = total_by_canceled_false.replace('[$]', DATAINICIAL || '2021-01-01 00:00:00');
 
                 const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
 

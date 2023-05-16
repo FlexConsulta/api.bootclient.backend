@@ -46,7 +46,7 @@ class Proprietarios extends GerarArquivo {
               for (let i = 0; ; i++) {
                 
                 SQL = SQL.replace(";", " ");
-                const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
+                const _sql = `${SQL} LIMIT ${SQL_LIMIT || 500} OFFSET ${offset};`;
 
                 const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
                 const arrayDados = await resultadoSequelize.obterDados(_sql);
@@ -73,8 +73,8 @@ class Proprietarios extends GerarArquivo {
                 });
 
                 console.log(`[PROPRIETARIOS X] || ${arrayDados?.length || 0} ${arrayDados?.length > 0 ? '|| ' + fileName : ''}`);
-                if (arrayDados.length < SQL_LIMIT) break;
-                offset += SQL_LIMIT;
+                if (arrayDados.length < SQL_LIMIT || 500) break;
+                offset += SQL_LIMIT || 500;
               }
 
               resolve(true);
