@@ -14,7 +14,7 @@
     "start": "node  --max-old-space-size=2048 ./src/index.js --throw-deprecations  --unhandled-rejections",
     "dev": "nodemon  --max-old-space-size=2048 ./src/index.js --throw-deprecations --unhandled-rejections",
     "build": "pkg . --max-old-space-size=2048",
-    "test": "vitest"
+    "test": "jest"
   },
   "bin": "src/index.js",
   "pkg": {
