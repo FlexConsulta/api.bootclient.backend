@@ -45,7 +45,7 @@ class Proprietarios extends GerarArquivo {
 
               for (let i = 0; ; i++) {
                 
-                if (SQL.includes(":")) {
+                if (SQL.includes(";")) {
                   SQL = SQL.replace(";", " ");
                 }
                 
