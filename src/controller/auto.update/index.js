@@ -62,4 +62,4 @@ class SystemUpdateAuto {
     }
 }
 
-module.exports = SystemUpdateAuto;
+module.exports = ()=> new SystemUpdateAuto();

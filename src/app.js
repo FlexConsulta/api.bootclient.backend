@@ -10,10 +10,9 @@ const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
 
-if( NODE_ENV == "PROD"){
+if (NODE_ENV == "PROD") {
     console.log('==== Rodando em produção ====');
-    const SystemUpdateAuto = require("./controller/auto.update");
-    new SystemUpdateAuto();
+    require("./controller/auto.update")();
 }
 
 const ColetaDadosEstatisticosAutomatica = require('./controller/coleta.dados.estatisticos.automatica');
