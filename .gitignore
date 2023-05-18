@@ -6,4 +6,5 @@ DATA/*
 keys/*
 /data
 /databases
-/tests
+/src
+/settings
