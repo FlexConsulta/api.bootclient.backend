@@ -29,6 +29,7 @@ class Motoristas {
                     const __total_by_date = total_by_date.replace('[$]', date)
                     resolve(resultadoSequelize.obterDados(__total_by_date))
                 });
+                
                 const funcTotalByStatus0 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_0));
                 const funcTotalByStatus1 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_1));
                 const funcTotalByStatus2 = Promise.resolve(resultadoSequelize.obterDados(total_by_status_2));
@@ -73,6 +74,7 @@ class Motoristas {
                 })
 
             } catch (error) {
+                console.log({ error });
                 await fnGerarLogs({ ...objTotalNumMotoristas, ...objAux })
                 resolve({ error: true, message: error?.message && JSON.stringify(error?.message) });
             }

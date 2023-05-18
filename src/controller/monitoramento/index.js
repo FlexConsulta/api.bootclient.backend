@@ -17,7 +17,6 @@ class MonitoramentoArquivosDeDados {
         console.log(`[:] Monitoramento arquivos sincronização: ${moment(data).tz('America/Sao_Paulo').format('LLL')}`)
     }
 
-
     async Inicio() {
 
         try {

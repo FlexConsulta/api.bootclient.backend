@@ -16,7 +16,7 @@ const createInfo = async (data_empresa) => {
 };
 
 const getInfo = async () => {
-  const data = await tabInformacoes.findOne({_id: 1});
+  const data = await tabInformacoes.findOne({ _id: 1 });
   if (!data || data?.length == 0) return null;
   data.data_empresa = await decryptLocal(data.data_empresa);
   return data;

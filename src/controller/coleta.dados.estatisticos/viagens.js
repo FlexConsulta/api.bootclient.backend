@@ -60,13 +60,11 @@ class Viagens {
 
                     const objTotalNumViagens = { entidade: 'VIAGENS', categoria: "NUMERO_TOTAL_VIAGENS", quantidade: data[0][0]?.count }
                     const objTotalDiarioNumViagens = { entidade: 'VIAGENS', categoria: "NUMERO_DIARIO_TOTAL_VIAGENS", quantidade: data[1][0]?.count }
-                    const objTotalDailySyncViagens = { entidade: 'VIAGENS', categoria: "NUMERO_DAILY_SYNC_VIAGENS", quantidade: data[2].length.toString() }
                     const objTotalByCanceledTrue = { entidade: 'VIAGENS', categoria: "NUMERO_VIAGENS_CANCELADAS", quantidade: data[3].length.toString() }
                     const objTotalByCanceledFalse = { entidade: 'VIAGENS', categoria: "NUMERO_VIAGENS_NAO_CANCELADAS", quantidade: data[4].length.toString() }
 
                     await fnGerarLogs({ ...objTotalNumViagens, ...objAux })
                     await fnGerarLogs({ ...objTotalDiarioNumViagens, ...objAux })
-                    await fnGerarLogs({ ...objTotalDailySyncViagens, ...objAux })
                     await fnGerarLogs({ ...objTotalByCanceledTrue, ...objAux });
                     await fnGerarLogs({ ...objTotalByCanceledFalse, ...objAux })
 
