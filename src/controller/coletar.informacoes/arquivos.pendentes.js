@@ -12,7 +12,6 @@ class MonitoramentoArquivosNaoEnviados {
 
     async start() {
         try {
-            // throw new Error("Error manual");
 
             const pathFiles = process.env.FOLDER_SYNC_SUCCESS
             const __CNPJ_EMPRESA = process.env.CNPJ
@@ -32,26 +31,26 @@ class MonitoramentoArquivosNaoEnviados {
                     if (dateNow > dateDue) arrayListFiles.push({ file, size, birthtime })
                 }
             }
-            
-            const rsltLogsRegister = await gerarLogsArquivos({
+
+           return await gerarLogsArquivos({
                 cnpj_cliente: __CNPJ_EMPRESA,
                 quantidade_arquivos: arrayListFiles.length,
                 nomes_arquivos: arrayListFiles,
                 data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss")
             })
-            
+
         } catch (error) {
-          const rsltLogsRegister = await fnGerarLogs({
-            cnpj_cliente: CNPJ,
-            nome_arquivo: null,
-            error: true,
-            entidade: null,
-            quantidade: null,
-            categoria: "ARQUIVOS_PENDENDTES_ERRO",
-            data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
-            mensagem: error && error.message ? JSON.stringify({ error: error.message }): null,
-          });
-          console.log({ rsltLogsRegister });
+
+            return await fnGerarLogs({
+                cnpj_cliente: CNPJ,
+                nome_arquivo: null,
+                error: true,
+                entidade: null,
+                quantidade: null,
+                categoria: "ARQUIVOS_PENDENDTES_ERRO",
+                data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
+                mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
+            });
         }
     }
 }
