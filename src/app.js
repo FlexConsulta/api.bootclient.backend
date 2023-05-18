@@ -16,6 +16,7 @@ if (NODE_ENV == "PROD") {
 
 const ColetaDadosEstatisticosAutomatica = require('./controller/coleta.dados.estatisticos.automatica');
 const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
+const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
 
 
 // const MonitoramentoArquivos = require('./controller/monitoramento')
@@ -23,7 +24,6 @@ const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar
 // const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
 // const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
 // const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
-// const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
 // const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
 
 const app = express()
@@ -48,13 +48,13 @@ app.use(RouteLogs)
 
 new ColetaDadosEstatisticosAutomatica();
 new MonitoramentoArquivosNaoEnviadosAutomatico();
+new FuncionamentoBootclientAutomatico();
 
 
 
 
 // new MonitoramentoArquivos(formatarData(new Date()));
 // new SincronizacaoAutomatica();
-// new FuncionamentoBootclientAutomatico();
 // new VerificacaoEntidadesAutomatica();
 // new ConexaoDbClienteAutomatico();
 // new SincronizacaoAutomaticaBackup(formatarData(new Date()));
