@@ -19,7 +19,7 @@ class ColetaDadosEstatisticosAutomatica {
           ColetaDadosEstatisticos();
         };
 
-        // fn();
+        fn();
         schedule.scheduleJob(JOB_COLETA_AUTO || "/5 * * ", () => fn());
       } catch (error) {
         console.log({ error });
