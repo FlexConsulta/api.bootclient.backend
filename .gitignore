@@ -8,3 +8,4 @@ keys/*
 /databases
 /src
 /settings
+/tests/mock
