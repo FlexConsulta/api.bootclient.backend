@@ -35,7 +35,7 @@ class SystemUpdateAuto {
                         if (atualizacao && atualizacao.summary.changes) {
                             
                             console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
-                            exec('pm2 restart 11', (err, stdout, stderr) => {
+                            exec('pm2 restart 90', (err, stdout, stderr) => {
                                 if (err) {
                                     console.error(`Erro ao reiniciar aplicação: ${err}`);
                                     return;
