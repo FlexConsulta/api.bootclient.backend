@@ -41,7 +41,7 @@ class SystemUpdateAuto {
                                     return;
                                 }
                                 console.log(`stdout: ${stdout}`);
-                                console.error(`stderr: ${stderr}`);
+                                console.error(`stderr: ${JSON.stringify(stderr)}`);
                             });
 
 
