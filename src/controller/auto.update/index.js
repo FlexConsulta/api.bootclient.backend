@@ -8,21 +8,13 @@ const { JOB_SINCRONIZACAO_AUTO } = process.env
 
 class SystemUpdateAuto {
     constructor() {
+
         (async () => {
-
             try {
-
-                const options = {
-                    baseDir: process.cwd(),
-                    binary: "git",
-                    maxConcurrentProcesses: 6,
-                    trimmed: false,
-                };
-
-                schedule.gracefulShutdown();
-
+                process.on("SIGINT", function () {
+                    schedule.gracefulShutdown().then(() => process.exit(0));
+                });
                 const fn = () => {
-
                     console.log('=========================================================');
                     console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
                     console.log('=========================================================');
@@ -54,13 +46,13 @@ class SystemUpdateAuto {
                 };
 
                 fn();
-                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || "*/2 * * * *", fn);
-
+                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || "* 4 * * *", () => fn());
             } catch (error) {
                 console.log({ error });
             }
-
         })();
+
+
     }
 }
 
