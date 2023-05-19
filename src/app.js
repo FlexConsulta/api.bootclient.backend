@@ -9,7 +9,6 @@ const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
-// const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
 // const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
 // const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
 
@@ -38,7 +37,6 @@ Events.execute();
 
 
 
-// new SincronizacaoAutomatica();
 // new SincronizacaoAutomaticaBackup(formatarData(new Date()));
 // new LimpezaLogsSistema(formatarData(new Date()));
 

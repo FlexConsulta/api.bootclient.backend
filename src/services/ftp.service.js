@@ -36,7 +36,7 @@ class FTPClient {
                         const contagem = porcentagem(info)
                     });
 
-                    // self.client.ftp.verbose = true
+                    self.client.ftp.verbose = true
 
                     let access = await self.client.access(self.settings);
                     await self.client.ensureDir(self.settings.remote_dir)

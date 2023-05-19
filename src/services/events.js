@@ -7,6 +7,8 @@ const FuncionamentoBootclientAutomatico = require("../controller/coletar.informa
 const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
 const SystemUpdateAuto = require("../controller/auto.update");
 const MonitoramentoArquivos = require('../controller/monitoramento')
+const SincronizacaoAutomatica = require('../controller/sincronizacao.automatica')
+
 
 const { NODE_ENV } = process.env
 
@@ -43,7 +45,9 @@ let tasks = [
     new MonitoramentoArquivosNaoEnviadosAutomatico(),
     new FuncionamentoBootclientAutomatico(),
     new VerificacaoEntidadesAutomatica(),
-    new MonitoramentoArquivos(new Date())
+    new MonitoramentoArquivos(new Date()),
+    new SincronizacaoAutomatica()
+
 ]
 
 if (NODE_ENV == "PROD") {
