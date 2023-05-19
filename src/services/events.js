@@ -59,7 +59,6 @@ executor.on('taskFailed', (task, error) => {
     console.log('=========================================================');
     console.log({ error });
     console.log('=========================================================');
-    // console.error(`Erro na tarefa "${task}":`, error.message);
 });
 
 executor.on('allTasksCompleted', () => {
