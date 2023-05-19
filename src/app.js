@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors');
 const { formatarData } = require("./utils/tratamento.dados");
 
-const { NODE_ENV } = process.env
 
 const Task = require('./services/events')
 const RouteLogin = require('./routes/login.routes')
