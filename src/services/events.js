@@ -45,7 +45,7 @@ const tasks = [
 
 if (NODE_ENV == "PROD") {
     console.log('==== Rodando em produção ====');
-    tasks.push(UpdateApp())
+    tasks.push(new UpdateApp())
 }
 
 

@@ -42,9 +42,6 @@ app.use(RouteLogs)
 
 
 
-
-
-
 // new MonitoramentoArquivos(formatarData(new Date()));
 // new SincronizacaoAutomatica();
 // new SincronizacaoAutomaticaBackup(formatarData(new Date()));
