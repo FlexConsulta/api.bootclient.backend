@@ -95,7 +95,6 @@ class Viagens extends GerarArquivo {
                 data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                 mensagem: error && error.message ? JSON.stringify({ error: error.message }) : null,
               });
-              console.log({ rsltLogsRegister });
               resolve({ error: true, message: error.message });
             }
         })

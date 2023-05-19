@@ -1,4 +1,7 @@
 const fs = require('fs');
+const util = require('util');
+
+const unlinkPromise = util.promisify(fs.unlink);
 
 class GerarArquivo {
 
@@ -13,13 +16,20 @@ class GerarArquivo {
             });
       }
 
-      async fnRemoverArquivo(caminho) {
-            fs.unlink(caminho, (err) => {
-                  if (err) throw err
-            })
 
+      async fnRemoverArquivo(caminho) {
+            try {
+                  await unlinkPromise(caminho);
+                  console.log('O arquivo foi excluído com sucesso.');
+            } catch (error) {
+                  console.log('Ocorreu um erro ao excluir o arquivo:', error);
+            }
       }
 }
 
 
 module.exports = GerarArquivo
+
+
+
+
