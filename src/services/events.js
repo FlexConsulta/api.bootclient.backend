@@ -5,7 +5,7 @@ const ColetaDadosEstatisticosAutomatica = require('../controller/coleta.dados.es
 const MonitoramentoArquivosNaoEnviadosAutomatico = require("../controller/coletar.informacoes/arquivosPendentesAutomatico");
 const FuncionamentoBootclientAutomatico = require("../controller/coletar.informacoes/funcbootclientAutomatico.js");
 const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
-const UpdateApp = require("../controller/auto.update");
+const SystemUpdateAuto = require("../controller/auto.update");
 const { NODE_ENV } = process.env
 
 
@@ -45,7 +45,7 @@ const tasks = [
 
 if (NODE_ENV == "PROD") {
     console.log('==== Rodando em produção ====');
-    tasks = [...tasks, new UpdateApp()]
+    tasks = [...tasks, new SystemUpdateAuto()]
 }
 
 
