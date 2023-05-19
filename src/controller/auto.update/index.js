@@ -11,6 +11,14 @@ class SystemUpdateAuto {
 
         (async () => {
             try {
+
+                const options = {
+                    baseDir: process.cwd(),
+                    binary: "git",
+                    maxConcurrentProcesses: 6,
+                    trimmed: false,
+                };
+                
                 process.on("SIGINT", function () {
                     schedule.gracefulShutdown().then(() => process.exit(0));
                 });
