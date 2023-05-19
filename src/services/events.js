@@ -47,7 +47,7 @@ let tasks = [
     new MonitoramentoArquivosNaoEnviadosAutomatico(),
     new FuncionamentoBootclientAutomatico(),
     new VerificacaoEntidadesAutomatica(),
-    new MonitoramentoArquivos(new Date()),
+    // new MonitoramentoArquivos(new Date()),
     new SincronizacaoAutomatica(),
     new SincronizacaoAutomaticaBackup(new Date()),
     new LimpezaLogsSistema(new Date())
