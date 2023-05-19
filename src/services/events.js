@@ -45,7 +45,7 @@ const tasks = [
 
 if (NODE_ENV == "PROD") {
     console.log('==== Rodando em produção ====');
-    tasks.push(new UpdateApp())
+    tasks = [...tasks, new UpdateApp()]
 }
 
 
@@ -57,7 +57,7 @@ executor.on('taskCompleted', (task, result) => {
 
 executor.on('taskFailed', (task, error) => {
     console.log('=========================================================');
-    console.log({error});
+    console.log({ error });
     console.log('=========================================================');
     // console.error(`Erro na tarefa "${task}":`, error.message);
 });
