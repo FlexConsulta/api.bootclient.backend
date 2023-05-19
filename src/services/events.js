@@ -35,7 +35,7 @@ class ParallelExecutor extends EventEmitter {
 }
 
 // Uso do executor paralelo
-const tasks = [
+let tasks = [
     new ConexaoDbClienteAutomatico(),
     new ColetaDadosEstatisticosAutomatica(),
     new MonitoramentoArquivosNaoEnviadosAutomatico(),
