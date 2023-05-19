@@ -4,25 +4,18 @@ const { formatarData } = require("./utils/tratamento.dados");
 
 const { NODE_ENV } = process.env
 
+const Task = require('./services/events')
 const RouteLogin = require('./routes/login.routes')
 const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
 
-if (NODE_ENV == "PROD") {
-    console.log('==== Rodando em produção ====');
-    require("./controller/auto.update")();
-}
 
-const ConexaoDbClienteAutomatico = require('./controller/coletar.informacoes/conexaoDbClienteAutomatico');
-const ColetaDadosEstatisticosAutomatica = require('./controller/coleta.dados.estatisticos.automatica');
-const MonitoramentoArquivosNaoEnviadosAutomatico = require("./controller/coletar.informacoes/arquivosPendentesAutomatico");
-const FuncionamentoBootclientAutomatico = require("./controller/coletar.informacoes/funcbootclientAutomatico.js");
+
 
 
 // const MonitoramentoArquivos = require('./controller/monitoramento')
 // const SincronizacaoAutomatica = require('./controller/sincronizacao.automatica')
-// const VerificacaoEntidadesAutomatica = require("./controller/verificacao.automatica");
 // const SincronizacaoAutomaticaBackup = require('./controller/sincronizacao.automatica/sincronizacao.backup')
 // const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
 
@@ -46,18 +39,26 @@ app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
-new ConexaoDbClienteAutomatico();
-new ColetaDadosEstatisticosAutomatica();
-new MonitoramentoArquivosNaoEnviadosAutomatico();
-new FuncionamentoBootclientAutomatico();
+
+
+
 
 
 
 
 // new MonitoramentoArquivos(formatarData(new Date()));
 // new SincronizacaoAutomatica();
-// new VerificacaoEntidadesAutomatica();
 // new SincronizacaoAutomaticaBackup(formatarData(new Date()));
 // new LimpezaLogsSistema(formatarData(new Date()));
 
 module.exports = app;
+
+
+
+
+
+
+
+
+
+
