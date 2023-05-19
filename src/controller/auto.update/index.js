@@ -4,12 +4,12 @@ const { exec } = require('child_process');
 
 const moment = require("moment");
 moment.locale("pt-br");
-const { JOB_SINCRONIZACAO_AUTO } = process.env
+const { JOB_SINCRONIZACAO_AUTO, PM2_PROCESS_RUNNING } = process.env
 
 class SystemUpdateAuto {
     constructor() {
-        (async () => {
 
+        (async () => {
             try {
 
                 const options = {
@@ -19,11 +19,14 @@ class SystemUpdateAuto {
                     trimmed: false,
                 };
 
-                schedule.gracefulShutdown();
-
+                process.on("SIGINT", function () {
+                    schedule.gracefulShutdown().then(() => process.exit(0));
+                });
                 const fn = () => {
-
-                    console.log(`[i] Verificando atualizações: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
+                    
+                    console.log('=========================================================');
+                    console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
+                    console.log('=========================================================');
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     gitRepository.pull((err, atualizacao) => {
@@ -33,15 +36,15 @@ class SystemUpdateAuto {
                         }
 
                         if (atualizacao && atualizacao.summary.changes) {
-                            
+
                             console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
-                            exec('pm2 restart 11', (err, stdout, stderr) => {
+                            exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
                                 if (err) {
                                     console.error(`Erro ao reiniciar aplicação: ${err}`);
                                     return;
                                 }
                                 console.log(`stdout: ${stdout}`);
-                                console.error(`stderr: ${stderr}`);
+                                console.error(`stderr: ${JSON.stringify(stderr)}`);
                             });
 
 
@@ -52,13 +55,13 @@ class SystemUpdateAuto {
                 };
 
                 fn();
-                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || "*/2 * * * *", fn);
-
+                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || "* 4 * * *", () => fn());
             } catch (error) {
                 console.log({ error });
             }
-
         })();
+
+
     }
 }
 
