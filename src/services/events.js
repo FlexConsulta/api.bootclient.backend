@@ -5,7 +5,7 @@ const ColetaDadosEstatisticosAutomatica = require('../controller/coleta.dados.es
 const MonitoramentoArquivosNaoEnviadosAutomatico = require("../controller/coletar.informacoes/arquivosPendentesAutomatico");
 const FuncionamentoBootclientAutomatico = require("../controller/coletar.informacoes/funcbootclientAutomatico.js");
 const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
-const UpdateApp = require("./controller/auto.update");
+const UpdateApp = require("../controller/auto.update");
 
 // Função que executa uma tarefa assíncrona
 function executeTask(task) {
