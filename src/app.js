@@ -3,7 +3,7 @@ const cors = require('cors');
 const { formatarData } = require("./utils/tratamento.dados");
 
 
-const Task = require('./services/events')
+const Events = require('./services/events')
 const RouteLogin = require('./routes/login.routes')
 const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
@@ -39,6 +39,7 @@ app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
 
+Events.execute();
 
 
 

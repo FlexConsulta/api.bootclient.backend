@@ -66,4 +66,5 @@ executor.on('allTasksCompleted', () => {
     console.log('Todas as tarefas foram concluídas.');
 });
 
-executor.execute();
+
+module.exports = executor
