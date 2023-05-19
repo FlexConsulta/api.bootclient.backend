@@ -3,7 +3,7 @@ const schedule = require("node-schedule");
 const sincronizacao = require("../sincronizacao");
 
 moment.locale("pt-br");
-const { JOB_SINCRONIZACAO_AUTO } = process.env;
+const { JOB_SINCRONIZACAO_AUTOMATICA } = process.env;
 
 class SincronizacaoAutomatica {
     constructor() {
@@ -19,7 +19,7 @@ class SincronizacaoAutomatica {
                 };
 
                 fn()
-                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || '* 4 * * *', () => fn());
+                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTOMATICA || '* 4 * * *', () => fn());
             } catch (error) {
                 console.log({ error });
             }

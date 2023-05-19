@@ -3,7 +3,7 @@ const schedule = require("node-schedule");
 const ColetaDadosEstatisticos = require("../coleta.dados.estatisticos/index.js");
 
 moment.locale("pt-br");
-const { JOB_COLETA_AUTO } = process.env;
+const { JOB_COLETA_DADOS_ESTATISTICOS } = process.env;
 
 class ColetaDadosEstatisticosAutomatica {
   constructor() {
@@ -20,7 +20,7 @@ class ColetaDadosEstatisticosAutomatica {
         };
 
         fn();
-        schedule.scheduleJob(JOB_COLETA_AUTO || "/5 * * ", () => fn());
+        schedule.scheduleJob(JOB_COLETA_DADOS_ESTATISTICOS || "/5 * * ", () => fn());
       } catch (error) {
         console.log({ error });
       }

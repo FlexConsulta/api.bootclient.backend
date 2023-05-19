@@ -43,7 +43,7 @@ class SincronizacaoAutomatica {
                               console.log(`[i] Sincronização de backup!: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
                         }
 
-                        schedule.scheduleJob('31 20 * * *', fn);
+                        schedule.scheduleJob('0 1 * * *', fn);
 
                   } catch (error) {
                         console.log({ error });
