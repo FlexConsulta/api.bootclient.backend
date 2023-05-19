@@ -23,7 +23,9 @@ class SystemUpdateAuto {
 
                 const fn = () => {
 
-                    console.log(`[i] Verificando atualizações: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
+                    console.log('=========================================================');
+                    console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
+                    console.log('=========================================================');
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     gitRepository.pull((err, atualizacao) => {
@@ -33,7 +35,7 @@ class SystemUpdateAuto {
                         }
 
                         if (atualizacao && atualizacao.summary.changes) {
-                            
+
                             console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
                             exec('pm2 restart 90', (err, stdout, stderr) => {
                                 if (err) {
@@ -62,4 +64,4 @@ class SystemUpdateAuto {
     }
 }
 
-module.exports = ()=> new SystemUpdateAuto();
+module.exports = SystemUpdateAuto;
