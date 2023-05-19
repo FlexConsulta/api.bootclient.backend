@@ -4,7 +4,7 @@ const { exec } = require('child_process');
 
 const moment = require("moment");
 moment.locale("pt-br");
-const { JOB_SINCRONIZACAO_AUTO } = process.env
+const { JOB_SINCRONIZACAO_AUTO, PM2_PROCESS_RUNNING } = process.env
 
 class SystemUpdateAuto {
     constructor() {
@@ -38,7 +38,7 @@ class SystemUpdateAuto {
                         if (atualizacao && atualizacao.summary.changes) {
 
                             console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
-                            exec('pm2 restart 90', (err, stdout, stderr) => {
+                            exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
                                 if (err) {
                                     console.error(`Erro ao reiniciar aplicação: ${err}`);
                                     return;
