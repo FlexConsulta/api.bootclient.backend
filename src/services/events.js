@@ -9,6 +9,7 @@ const SystemUpdateAuto = require("../controller/auto.update");
 const MonitoramentoArquivos = require('../controller/monitoramento')
 const SincronizacaoAutomatica = require('../controller/sincronizacao.automatica')
 const SincronizacaoAutomaticaBackup = require('../controller/sincronizacao.automatica/sincronizacao.backup')
+const LimpezaLogsSistema = require('../controller/log.sincronizacoes/limpeza.automatica.logs')
 
 
 const { NODE_ENV } = process.env
@@ -49,13 +50,13 @@ let tasks = [
     new MonitoramentoArquivos(new Date()),
     new SincronizacaoAutomatica(),
     new SincronizacaoAutomaticaBackup(new Date()),
+    new LimpezaLogsSistema(new Date())
 ]
 
 if (NODE_ENV == "PROD") {
     console.log('==== Rodando em produção ====');
     tasks = [...tasks, new SystemUpdateAuto()]
 }
-
 
 const executor = new ParallelExecutor(tasks);
 

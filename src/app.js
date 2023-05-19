@@ -1,15 +1,11 @@
 const express = require('express')
 const cors = require('cors');
-const { formatarData } = require("./utils/tratamento.dados");
-
 
 const Events = require('./services/events')
 const RouteLogin = require('./routes/login.routes')
 const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
-
-// const LimpezaLogsSistema = require('./controller/log.sincronizacoes/limpeza.automatica.logs')
 
 const app = express()
 
@@ -33,20 +29,4 @@ app.use(RouteLogs)
 
 
 Events.execute();
-
-
-
-
-// new LimpezaLogsSistema(formatarData(new Date()));
-
 module.exports = app;
-
-
-
-
-
-
-
-
-
-
