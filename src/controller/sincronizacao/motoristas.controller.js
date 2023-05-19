@@ -3,9 +3,8 @@ const sequelizePostgres = require('../../services/sequelize.service');
 const { encryptedData } = require('../../utils/encriptacao');
 const { fnGerarLogs } = require("../../utils/gerarLogs.js");
 const moment = require("moment");
-const { formatarData } = require('../../utils/tratamento.dados.js');
 const filePrefix = process.env.FILE_VERSION
-const { SQL_LIMIT, FOLDER_SYNC_SUCCESS, DATAINICIAL } = process.env;
+let { SQL_LIMIT, FOLDER_SYNC_SUCCESS } = process.env;
 
 class Motoristas extends GerarArquivo {
     constructor({
@@ -30,7 +29,6 @@ class Motoristas extends GerarArquivo {
     async sincronizar() {
         return new Promise(async (resolve) => {
             try {
-                // throw new Error("Error manual");
 
                 let SQL;
                 if (this.lastSyncDate) {
@@ -40,7 +38,9 @@ class Motoristas extends GerarArquivo {
                     SQL = SQL.replace("[$]", data_query);
                 } else SQL = this.dbSQL.initial_sync;
 
+
                 let offset = 0;
+                if (!SQL_LIMIT || SQL_LIMIT == 0) SQL_LIMIT = 500
 
                 for (let i = 0; ; i++) {
 
@@ -48,7 +48,8 @@ class Motoristas extends GerarArquivo {
                         SQL = SQL.replace(";", " ");
                     }
 
-                    const _sql = `${SQL} LIMIT ${SQL_LIMIT || 500} OFFSET ${offset};`;
+                    SQL_LIMIT = +SQL_LIMIT
+                    const _sql = `${SQL} LIMIT ${SQL_LIMIT} OFFSET ${offset};`;
 
                     const resultadoSequelize = await new sequelizePostgres(this.dbObjectConnection);
                     const arrayDados = await resultadoSequelize.obterDados(_sql);
@@ -75,12 +76,16 @@ class Motoristas extends GerarArquivo {
                     });
 
                     console.log(`[MOTORISTAS X] || ${arrayDados?.length || 0} ${arrayDados?.length > 0 ? '|| ' + fileName : ''}`);
-                    if (arrayDados.length < SQL_LIMIT || 500) break;
-                    offset += SQL_LIMIT || 500;
+                    if (arrayDados.length < SQL_LIMIT) break;
+                    offset = offset + SQL_LIMIT;
+
                 }
 
+
                 resolve(true);
+
             } catch (error) {
+
                 const rsltLogsRegister = await fnGerarLogs({
                     cnpj_cliente: this.cnpj_empresa,
                     nome_arquivo: null,
