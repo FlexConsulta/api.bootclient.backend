@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 
 })
 
+
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,6 +28,6 @@ app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
 
-
+console.log("[MENSAGEM] A aplicação startou: ", new Date());
 Events.execute();
 module.exports = app;
