@@ -9,8 +9,8 @@ class GerarArquivo {
 
       async fnGeradorArquivo(dir, file, data) {
 
-            if (!fs.existsSync(dir)) await fs.mkdirSync(dir);
-            await fs.writeFileSync(`${dir}${file}.txt`, data, (err) => {
+            if (!fs.existsSync(dir)) await fs.mkdir(dir);
+            await fs.writeFile(`${dir}${file}.txt`, data, (err) => {
                   if (err) throw err;
                   console.log(`Arquivo [${file}] gerado com sucesso.`);
             });
