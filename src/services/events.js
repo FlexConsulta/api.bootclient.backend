@@ -38,13 +38,12 @@ class ParallelExecutor extends EventEmitter {
 
 // Uso do executor paralelo
 let tasks = [
-    new ConexaoDbClienteAutomatico(),
-    new ColetaDadosEstatisticosAutomatica(),
-    new MonitoramentoArquivosNaoEnviadosAutomatico(),
-    new FuncionamentoBootclientAutomatico(),
-    new VerificacaoEntidadesAutomatica(),
+    // new ConexaoDbClienteAutomatico(),
+    // new ColetaDadosEstatisticosAutomatica(),
+    // new MonitoramentoArquivosNaoEnviadosAutomatico(),
+    // new FuncionamentoBootclientAutomatico(),
+    // new VerificacaoEntidadesAutomatica(),
     new MonitoramentoArquivos(new Date())
-
 ]
 
 if (NODE_ENV == "PROD") {
