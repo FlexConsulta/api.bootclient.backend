@@ -34,7 +34,6 @@ class MonitoramentoArquivosDeDados {
 
                 // Monitoramento pasta dados corretos
                 await chokidar.watch(FOLDER_SYNC_SUCCESS, { persistent: true, paths: '//' }).on('add', (pathUrl, path) => {
-                    console.log(pathUrl);
                     event.emit('sendFiles', pathUrl);
                 }).on('error', error => console.log(`Watcher error: ${error}`))
 
