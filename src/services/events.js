@@ -48,9 +48,9 @@ let tasks = [
     // new FuncionamentoBootclientAutomatico(),
     // new VerificacaoEntidadesAutomatica(),
     // new MonitoramentoArquivos(new Date()),
-    // new SincronizacaoAutomaticaBackup(new Date()),
+    // new SincronizacaoAutomatica(),
+    new SincronizacaoAutomaticaBackup(new Date()),
     // new LimpezaLogsSistema(new Date())
-    new SincronizacaoAutomatica(),
 ]
 
 if (NODE_ENV == "PROD") {
