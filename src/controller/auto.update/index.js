@@ -18,11 +18,12 @@ class SystemUpdateAuto {
                     maxConcurrentProcesses: 6,
                     trimmed: false,
                 };
-                
+
                 process.on("SIGINT", function () {
                     schedule.gracefulShutdown().then(() => process.exit(0));
                 });
                 const fn = () => {
+                    
                     console.log('=========================================================');
                     console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
                     console.log('=========================================================');

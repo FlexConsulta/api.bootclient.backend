@@ -6,6 +6,8 @@ const MonitoramentoArquivosNaoEnviadosAutomatico = require("../controller/coleta
 const FuncionamentoBootclientAutomatico = require("../controller/coletar.informacoes/funcbootclientAutomatico.js");
 const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
 const SystemUpdateAuto = require("../controller/auto.update");
+const MonitoramentoArquivos = require('../controller/monitoramento')
+
 const { NODE_ENV } = process.env
 
 
@@ -40,7 +42,9 @@ let tasks = [
     new ColetaDadosEstatisticosAutomatica(),
     new MonitoramentoArquivosNaoEnviadosAutomatico(),
     new FuncionamentoBootclientAutomatico(),
-    new VerificacaoEntidadesAutomatica()
+    new VerificacaoEntidadesAutomatica(),
+    new MonitoramentoArquivos(new Date())
+
 ]
 
 if (NODE_ENV == "PROD") {
