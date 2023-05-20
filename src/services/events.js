@@ -65,9 +65,7 @@ executor.on('taskCompleted', (task, result) => {
 });
 
 executor.on('taskFailed', (task, error) => {
-    console.log('=========================================================');
     console.log({ error });
-    console.log('=========================================================');
 });
 
 executor.on('allTasksCompleted', () => {
