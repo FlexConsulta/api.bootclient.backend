@@ -47,7 +47,7 @@ let tasks = [
     new MonitoramentoArquivosNaoEnviadosAutomatico(),
     new FuncionamentoBootclientAutomatico(),
     new VerificacaoEntidadesAutomatica(),
-    // new MonitoramentoArquivos(new Date()),
+    new MonitoramentoArquivos(new Date()),
     new SincronizacaoAutomatica(),
     new SincronizacaoAutomaticaBackup(new Date()),
     new LimpezaLogsSistema(new Date())
@@ -65,9 +65,7 @@ executor.on('taskCompleted', (task, result) => {
 });
 
 executor.on('taskFailed', (task, error) => {
-    console.log('=========================================================');
     console.log({ error });
-    console.log('=========================================================');
 });
 
 executor.on('allTasksCompleted', () => {

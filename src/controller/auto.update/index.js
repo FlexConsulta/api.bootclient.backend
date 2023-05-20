@@ -4,7 +4,7 @@ const { exec } = require('child_process');
 
 const moment = require("moment");
 moment.locale("pt-br");
-const { JOB_SINCRONIZACAO_AUTO, PM2_PROCESS_RUNNING } = process.env
+const { JOB_ATUALIZACAO_AUTOMATICA_CODIGO, PM2_PROCESS_RUNNING } = process.env
 
 class SystemUpdateAuto {
     constructor() {
@@ -55,7 +55,7 @@ class SystemUpdateAuto {
                 };
 
                 fn();
-                schedule.scheduleJob(JOB_SINCRONIZACAO_AUTO || "* 4 * * *", () => fn());
+                schedule.scheduleJob(JOB_ATUALIZACAO_AUTOMATICA_CODIGO || "* 4 * * *", () => fn());
             } catch (error) {
                 console.log({ error });
             }
