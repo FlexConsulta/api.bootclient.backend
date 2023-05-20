@@ -15,6 +15,8 @@ module.exports = async function () {
         // console.log("VIM DO REQUEST");
       })
       .catch(async () => {
+
+        
         ({ data_empresa } = await getInfo());
 
         // console.log("VIM DO DBLOCAL")

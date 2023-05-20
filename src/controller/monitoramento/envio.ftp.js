@@ -20,8 +20,11 @@ function envioFtp(value) {
                   if (!data_ftp?.FTP_HOST || !data_ftp?.FTP_PORT || !data_ftp?.FTP_USER || !data_ftp?.FTP_PASSWORD) throw new Error("Os parâmetros FTP estão incompletos!")
 
                   const client = new ftp(data_ftp);
-                  const fileName = value.split('/')[1]
+                  
+                  let fileName = value.split('/')
+                  fileName = fileName[fileName.length - 1]
                   value = String(value).replace(/\\/g, "/");
+
                   const data = await client.upload(value, fileName, 755);
                   resolve({ data, client });
 

@@ -36,13 +36,19 @@ class FTPClient {
                         const contagem = porcentagem(info)
                     });
 
+
                     // self.client.ftp.verbose = true
 
                     let access = await self.client.access(self.settings);
-                    await self.client.ensureDir(self.settings.remote_dir)
-                    let upload = await self.client.uploadFrom(fs.createReadStream(sourcePath), remotePath);
-                    self.client.close()
-                    resolve(upload)
+                    const dataStream = fs.createReadStream(sourcePath);
+                    dataStream.on('error', (err) => {
+                        reject(err);
+                    });
+
+                    let upload = await self.client.uploadFrom(dataStream, remotePath);
+                    self.client.close();
+                    resolve(upload);
+
 
                 } catch (err) {
 
@@ -53,6 +59,7 @@ class FTPClient {
 
         })
     }
+
 
     close() {
         this.client.close();
@@ -66,3 +73,5 @@ class FTPClient {
 }
 
 module.exports = FTPClient;
+
+
