@@ -14,8 +14,7 @@ const tratamentoArquivos = async ({ values, destination }) => {
 
             await criarLogEnvioArquivos(data)
             console.log('O arquivo foi excluído com sucesso.');
-            return await unlinkPromise(destination);
-
+            if (!fs.existsSync(destination)) await unlinkPromise(destination);
       } catch (error) {
             console.log(error?.message);
             return

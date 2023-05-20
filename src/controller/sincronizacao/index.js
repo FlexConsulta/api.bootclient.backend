@@ -7,6 +7,7 @@ const { apiFlex } = require('../../API/api');
 const { fnGerarLogs } = require('../../utils/gerarLogs');
 const moment = require("moment");
 const { CNPJ } = process.env;
+const  MonitoramentoArquivos = require('../monitoramento')
 
 module.exports = async (req, res) => {
 
@@ -34,7 +35,13 @@ module.exports = async (req, res) => {
             categoria: "SINCRONIZACAO_ERRO_GERAL",
             data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
             mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
-        });
+        })
 
+    }).finally(()=>{
+        console.log('============================================================');
+        console.log('============================================================');
+        console.log('============================================================');
+        console.log('============================================================');
+        new MonitoramentoArquivos(new Date())
     });
 }
