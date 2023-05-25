@@ -14,34 +14,35 @@ class ConexaoDbCliente {
         try {
 
             const { dbObjectConnection, data_empresa } = await getInfoCompany();
-            let sqls = {
-                motoristas: JSON.parse(data_empresa.sql_motoristas).working_table,
-                proprietarios: JSON.parse(data_empresa.sql_proprietarios).working_table,
-                veiculos: JSON.parse(data_empresa.sql_veiculos).working_table,
-                viagens: JSON.parse(data_empresa.sql_viagens).working_table,
-            };
-            const arraySqls = [];
-
             const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
             const query_result = await resultadoSequelize.testarConexao()
-            console.log({ query_result });
-            // for (const key in sqls) {
-            //     let sql = sqls[key]
-            //     const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
-            //     const query_result = await resultadoSequelize.obterDados(sql)
-            //     arraySqls.push({ [key]: query_result?.length });
-            // }
 
-            return await fnGerarLogs({
-                cnpj_cliente: data_empresa.cnpj_empresa,
-                nome_arquivo: null,
-                error: false,
-                entidade: null,
-                quantidade: null,
-                categoria: "CONEXAO_DB_VALIDACAO",
-                data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
-                mensagem: "conexão ao db cliente concluída com sucesso!",
-            });
+            query_result
+              ? await fnGerarLogs({
+                  cnpj_cliente: data_empresa.cnpj_empresa,
+                  nome_arquivo: null,
+                  error: false,
+                  entidade: null,
+                  quantidade: null,
+                  categoria: "CONEXAO_DB_VALIDACAO",
+                  data: moment()
+                    .tz("America/Sao_Paulo")
+                    .format("YYYY-MM-DD HH:mm:ss"),
+                  mensagem: "conexão ao db cliente concluída com sucesso!",
+                })
+              : await fnGerarLogs({
+                  cnpj_cliente: data_empresa.cnpj_empresa,
+                  nome_arquivo: null,
+                  error: true,
+                  entidade: null,
+                  quantidade: null,
+                  categoria: "CONEXAO_DB_VALIDACAO",
+                  data: moment()
+                    .tz("America/Sao_Paulo")
+                    .format("YYYY-MM-DD HH:mm:ss"),
+                  mensagem: "conexão ao db cliente não está funcionando!",
+                });
+            
 
         } catch (error) {
             return await fnGerarLogs({
