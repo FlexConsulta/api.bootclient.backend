@@ -1,5 +1,5 @@
-process.env = { ...process.env, ...require('../.env.js') }
-// require('dotenv').config({path: './.env'})
+// process.env = { ...process.env, ...require('../.env.js') }
+require('dotenv').config({path: './.env'})
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true;
 
@@ -17,10 +17,8 @@ const normalizePort = val => {
 
 const HOST = '0.0.0.0'
 
-const PORT = normalizePort('4001')
-app.set('port', PORT)
-
-
+const PORT = normalizePort(process.env.PORT);
+app.set("port", PORT);
 
 const server = http.createServer(app)
 
