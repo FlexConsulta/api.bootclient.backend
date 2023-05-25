@@ -22,19 +22,22 @@ class ConexaoDbCliente {
             };
             const arraySqls = [];
 
-            for (const key in sqls) {
-                let sql = sqls[key]
-                const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
-                const query_result = await resultadoSequelize.obterDados(sql)
-                arraySqls.push({ [key]: query_result?.length });
-            }
+            const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
+            const query_result = await resultadoSequelize.testarConexao()
+            console.log({ query_result });
+            // for (const key in sqls) {
+            //     let sql = sqls[key]
+            //     const resultadoSequelize = await new sequelizePostgres(dbObjectConnection);
+            //     const query_result = await resultadoSequelize.obterDados(sql)
+            //     arraySqls.push({ [key]: query_result?.length });
+            // }
 
             return await fnGerarLogs({
                 cnpj_cliente: data_empresa.cnpj_empresa,
                 nome_arquivo: null,
                 error: false,
                 entidade: null,
-                quantidade: JSON.stringify(arraySqls),
+                quantidade: null,
                 categoria: "CONEXAO_DB_VALIDACAO",
                 data: moment().tz('America/Sao_Paulo').format("YYYY-MM-DD HH:mm:ss"),
                 mensagem: "conexão ao db cliente concluída com sucesso!",
