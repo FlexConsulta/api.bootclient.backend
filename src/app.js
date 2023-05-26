@@ -30,6 +30,7 @@ app.use(RouteLogs)
 
 console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 console.log("[MENSAGEM] A aplicação startou: ", new Date());
+console.log("OIOIOIOIOIOIOIOI");
 console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n');
 
 Events.execute();
