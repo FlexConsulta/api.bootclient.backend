@@ -11,9 +11,7 @@ const SincronizacaoAutomatica = require('../controller/sincronizacao.automatica'
 const SincronizacaoAutomaticaBackup = require('../controller/sincronizacao.automatica/sincronizacao.backup')
 const LimpezaLogsSistema = require('../controller/log.sincronizacoes/limpeza.automatica.logs')
 
-
 const { NODE_ENV } = process.env
-
 
 // Classe que representa um executor paralelo
 class ParallelExecutor extends EventEmitter {
