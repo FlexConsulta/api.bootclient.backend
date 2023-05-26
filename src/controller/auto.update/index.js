@@ -39,32 +39,31 @@ class SystemUpdateAuto {
                         await gitRepository.checkout(BRANCH_PROD);
                         fn();
                         return;
-                    } else console.log({ branchAtual });
-                    console.log({ branchAtual });
+                    } 
 
-                    // gitRepository.pull((err, atualizacao) => {
-                    //     if (err) {
-                    //         console.log(err);
-                    //         return;
-                    //     }
+                    gitRepository.pull((err, atualizacao) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
 
-                    //     if (atualizacao && atualizacao.summary.changes) {
+                        if (atualizacao && atualizacao.summary.changes) {
 
-                    //         console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
-                    //         exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
-                    //             if (err) {
-                    //                 console.error(`Erro ao reiniciar aplicação: ${err}`);
-                    //                 return;
-                    //             }
-                    //             console.log(`stdout: ${stdout}`);
-                    //             console.error(`stderr: ${JSON.stringify(stderr)}`);
-                    //         });
+                            console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
+                            exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
+                                if (err) {
+                                    console.error(`Erro ao reiniciar aplicação: ${err}`);
+                                    return;
+                                }
+                                console.log(`stdout: ${stdout}`);
+                                console.error(`stderr: ${JSON.stringify(stderr)}`);
+                            });
 
 
-                    //     } else {
-                    //         console.log("Nenhuma atualização disponível.");
-                    //     }
-                    // });
+                        } else {
+                            console.log("Nenhuma atualização disponível.");
+                        }
+                    });
                 };
 
                 fn();
