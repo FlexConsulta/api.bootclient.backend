@@ -1,0 +1,16 @@
+SELECT 
+mot.codmotorista, 
+coalesce(mot.dataatual, mot.datainclusao) AS dataatual, 
+mot.cpf, 
+mot.liberado, 
+mot.nome, 
+mot.celular, 
+mot.fone, 
+mot.bloqueadoadm, 
+mot.obsbloq, 
+mb.descricao AS motivobloqueio 
+
+
+
+
+FROM motorista mot LEFT OUTER JOIN motivobloqueio mb ON(mot.codmotivobloqueio = mb.codmotivobloqueio) WHERE coalesce(mot.dataatual, mot.datainclusao) >= '[$]' ORDER BY coalesce(mot.dataatual, mot.datainclusao) ASC;",

@@ -1,0 +1,8 @@
+SELECT
+
+coalesce(prop.dataatual, prop.datainclusao) AS dataatual, 
+prop.cgccpf, prop.nome, 
+prop.liberado, prop.bloqueadoadm, 
+prop.obsbloq, mb.descricao AS MotivoBloqueio 
+
+FROM proprietario prop LEFT OUTER JOIN motivobloqueio mb ON (prop.codmotivobloqueio = mb.codmotivobloqueio) WHERE coalesce(prop.dataatual, prop.datainclusao) >= '[$]' ORDER BY coalesce(prop.dataatual, prop.datainclusao) ASC;",

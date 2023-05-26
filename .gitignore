@@ -1,4 +1,9 @@
-.env.js
+.env*
+*.exe
 node_modules
-data/*
 settings/*
+DATA/*
+keys/*
+/data
+/databases
+/tests

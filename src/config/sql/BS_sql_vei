@@ -1,0 +1,9 @@
+SELECT 
+
+coalesce(veic.dataatual, veic.datainclusao) AS dataatual, 
+veic.placa, veic.liberado, 
+veic.bloqueadoadm, 
+veic.obsbloq, 
+mb.descricao AS MotivoBloqueio 
+
+FROM veiculo veic LEFT OUTER JOIN motivobloqueio mb ON (veic.codmotivobloqueio = mb.codmotivobloqueio) WHERE coalesce(veic.dataatual, veic.datainclusao) >= '[$]' ORDER BY coalesce(veic.dataatual, veic.datainclusao) ASC;
