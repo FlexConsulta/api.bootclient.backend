@@ -30,7 +30,7 @@ class SystemUpdateAuto {
                     console.log('=========================================================');
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
-                    // await gitRepository.fetch(['--all'])
+                    await gitRepository.fetch(['--all'])
 
                     const branchs = await gitRepository.branch()
                     const branchAtual = branchs.current;
