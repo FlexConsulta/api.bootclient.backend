@@ -49,21 +49,21 @@ class SystemUpdateAuto {
 
                         if (atualizacao && atualizacao.summary.changes) {
 
-                            console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
-                            exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
-                                if (err) {
-                                    console.error(`Erro ao reiniciar aplicação: ${err}`);
-                                    return;
-                                }
-                                console.log(`stdout: ${stdout}`);
-                                console.error(`stderr: ${JSON.stringify(stderr)}`);
-                            });
-
                             // Executa o 'npm install' para instalar as dependências
                             exec('npm install', (error, stdout, stderr) => {
                                 if (error) {
                                 console.error('Erro ao executar npm install:', error);
                                 return;
+                                }
+                                console.log(`stdout: ${stdout}`);
+                                console.error(`stderr: ${JSON.stringify(stderr)}`);
+                            });
+
+                            console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
+                            exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
+                                if (err) {
+                                    console.error(`Erro ao reiniciar aplicação: ${err}`);
+                                    return;
                                 }
                                 console.log(`stdout: ${stdout}`);
                                 console.error(`stderr: ${JSON.stringify(stderr)}`);
