@@ -36,7 +36,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 console.log(`[MENSAGEM] A aplicação startou: ${ moment().tz('America/Sao_Paulo').format('LLL')}`);
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n');
+console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ oi \n');
 
 Events.execute();
 module.exports = app;
