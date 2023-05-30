@@ -59,6 +59,15 @@ class SystemUpdateAuto {
                                 console.error(`stderr: ${JSON.stringify(stderr)}`);
                             });
 
+                            // Executa o 'npm install' para instalar as dependências
+                            exec('npm install', (error, stdout, stderr) => {
+                                if (error) {
+                                console.error('Erro ao executar npm install:', error);
+                                return;
+                                }
+                                console.log(`stdout: ${stdout}`);
+                                console.error(`stderr: ${JSON.stringify(stderr)}`);
+                            });
 
                         } else {
                             console.log("Nenhuma atualização disponível.");
