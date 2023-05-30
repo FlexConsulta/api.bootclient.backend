@@ -26,9 +26,9 @@ class SystemUpdateAuto {
                 
                 const fn = async () => {
                     
-                    console.log('=================================================================');
+                    console.log('================================================================');
                     console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
-                    console.log('=================================================================');
+                    console.log('================================================================');
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     await gitRepository.fetch()
@@ -43,41 +43,6 @@ class SystemUpdateAuto {
                       return;
                     } 
 
-                    // const diffSummary = await gitRepository.diffSummary([`${branchAtual}...origin/${BRANCH_PROD}`]);
-                    // if (diffSummary.files.length > 0) {
-                    //     console.log(`[i] Há atualizações na branch '${BRANCH_PROD}'. Realizando o pull...`);
-                    //     gitRepository.pull("origin", BRANCH_PROD, async (err, atualizacao) => {
-                    //         if (err) {
-                    //             console.log(err);
-                    //             return;
-                    //         }
-
-                    //         if (atualizacao && atualizacao.summary.changes) {
-                                
-                    //             exec('npm install', (error, stdout, stderr) => {
-                    //                 if (error) {
-                    //                     console.error('Erro ao executar npm install:', error);
-                    //                     return;
-                    //                 }
-                    //                 console.log(`stdout: ${stdout}`);
-                    //                 console.error(`stderr: ${JSON.stringify(stderr)}`);
-                    //             });
-                                
-                    //             exec(`pm2 restart ${PM2_PROCESS_RUNNING}`, (err, stdout, stderr) => {
-                    //                 if (err) {
-                    //                     console.error(`Erro ao reiniciar aplicação: ${err}`);
-                    //                     return;
-                    //                 }
-                    //                 console.log(`stdout: ${stdout}`);
-                    //                 console.error(`stderr: ${JSON.stringify(stderr)}`);
-                    //             });
-                    //             console.log(`[i] O sistema foi atualizado com sucesso: ${atualizacao.summary.changes}`);
-                    //         } else {
-                    //             console.log("Nenhuma atualização disponível.");
-                    //         }
-                    //     });
-                    // };
-
                     gitRepository.pull("origin", BRANCH_PROD, async (err, atualizacao) => {
                         if (err) {
                             console.log(err);
@@ -85,8 +50,7 @@ class SystemUpdateAuto {
                         }
 
                         if (atualizacao && atualizacao.summary.changes) {
-
-                            // Executa o 'npm install' para instalar as dependências
+                            
                             exec('npm install', (error, stdout, stderr) => {
                                 if (error) {
                                 console.error('Erro ao executar npm install:', error);
