@@ -1,11 +1,16 @@
 const express = require('express')
 const cors = require('cors');
+const fs = require("fs");
+const YAML = require("yaml");
 
-const Events = require('./services/events')
+// const Events = require('./services/events')
 const RouteLogin = require('./routes/login.routes')
 const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = YAML.parse(fs.readFileSync("./swagger.yaml", "utf8"));
 
 const app = express()
 
@@ -19,7 +24,6 @@ app.use((req, res, next) => {
 
 })
 
-
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,10 +31,11 @@ app.use(RouteLogin)
 app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 console.log("[MENSAGEM] A aplicação startou: ", new Date());
 console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n');
 
-Events.execute();
+// Events.execute();
 module.exports = app;
