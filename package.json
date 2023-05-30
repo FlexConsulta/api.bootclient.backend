@@ -54,6 +54,7 @@
     "swagger-ui-express": "^4.6.3",
     "time-number": "^1.1.0",
     "upath": "^2.0.1",
+    "validator": "^13.9.0",
     "yaml": "^2.3.1"
   },
   "devDependencies": {
