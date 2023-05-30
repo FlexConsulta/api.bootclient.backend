@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: Esta é uma API responsável por fazer requisições ao Banco de Dados de um cliente para coletar informações úteis e salvá-las no Banco de Dados Flex-Consulta. Além de gerar logs para monitoramento de todas as funcionalidades desta API. É válido ressaltar que os logs são gerados a partir de cada controller da seção Controllers e são feitos através de requisições a uma outra API que, por sua vez, processa e registra os logs no banco de dados da flex.
-  version: 2.0.0
+  version: 3.0.0
   title: Bootclient SAT API
   contact:
     email: suporte@flexconsulta.com.br
