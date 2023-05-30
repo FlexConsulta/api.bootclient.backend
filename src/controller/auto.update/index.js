@@ -35,13 +35,14 @@ class SystemUpdateAuto {
                     const branchs = await gitRepository.branch()
                     const branchAtual = branchs.current;
 
-                    if(branchAtual != BRANCH_PROD){
-                        await gitRepository.checkout(BRANCH_PROD);
-                        fn();
-                        return;
+                    if (branchAtual !== BRANCH_PROD) {
+                      console.log(`[i] Mudando para a branch ${BRANCH_PROD}`);
+                      await gitRepository.checkout(BRANCH_PROD);
+                      fn();
+                      return;
                     } 
 
-                    gitRepository.pull((err, atualizacao) => {
+                    gitRepository.pull("origin", BRANCH_PROD, (err, atualizacao) => {
                         if (err) {
                             console.log(err);
                             return;
