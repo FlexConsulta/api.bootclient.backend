@@ -25,9 +25,9 @@ class SystemUpdateAuto {
                 });
                 const fn = async () => {
                     
-                    console.log('=========================================================');
+                    console.log('=============================================================');
                     console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
-                    console.log('=========================================================');
+                    console.log('=============================================================');
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     await gitRepository.fetch()
