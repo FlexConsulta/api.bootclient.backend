@@ -25,9 +25,9 @@ class SystemUpdateAuto {
                 });
                 const fn = async () => {
                     
-                    console.log('=============================================================');
+                    console.log('=================================================================');
                     console.log(`[i] Verificando atualizações do App: ${moment().tz('America/Sao_Paulo').format('LLL')}`);
-                    console.log('=============================================================');
+                    console.log('=================================================================');
                     const gitRepository = simpleGit(process.env.GIT_PATH, options).clean(CleanOptions.FORCE);
 
                     await gitRepository.fetch()
@@ -41,6 +41,9 @@ class SystemUpdateAuto {
                       fn();
                       return;
                     } 
+
+                    gitRepository.add('.');
+                    gitRepository.commit('up');
 
                     gitRepository.pull("origin", BRANCH_PROD, (err, atualizacao) => {
                         if (err) {
@@ -74,6 +77,9 @@ class SystemUpdateAuto {
                             console.log("Nenhuma atualização disponível.");
                         }
                     });
+
+                    gitRepository.add('.');
+                    gitRepository.commit('up');
                 };
 
                 fn();
