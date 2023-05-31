@@ -37,8 +37,7 @@ module.exports = async (req, res) => {
             mensagem: (error && error.message) ? JSON.stringify({ error: error.message }) : null,
         })
 
-    })
-    // .finally(()=>{
-    //     new MonitoramentoArquivos(new Date())
-    // });
+    }).finally(()=>{
+        new MonitoramentoArquivos(new Date())
+    });
 }

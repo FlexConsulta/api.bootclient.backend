@@ -6,7 +6,7 @@ const MonitoramentoArquivosNaoEnviadosAutomatico = require("../controller/coleta
 const FuncionamentoBootclientAutomatico = require("../controller/coletar.informacoes/funcbootclientAutomatico.js");
 const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
 const SystemUpdateAuto = require("../controller/auto.update");
-// const MonitoramentoArquivos = require('../controller/monitoramento')
+const MonitoramentoArquivos = require('../controller/monitoramento')
 const SincronizacaoAutomatica = require('../controller/sincronizacao.automatica')
 const SincronizacaoAutomaticaBackup = require('../controller/sincronizacao.automatica/sincronizacao.backup')
 const LimpezaLogsSistema = require('../controller/log.sincronizacoes/limpeza.automatica.logs')
@@ -48,7 +48,7 @@ let tasks = [
     new SincronizacaoAutomatica(),
     new SincronizacaoAutomaticaBackup(new Date()),
     new LimpezaLogsSistema(new Date()),
-    // new MonitoramentoArquivos(new Date()),
+    new MonitoramentoArquivos(new Date()),
 ]
 
 if (NODE_ENV == "PROD") {
