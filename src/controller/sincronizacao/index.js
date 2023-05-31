@@ -7,7 +7,7 @@ const { apiFlex } = require('../../API/api');
 const { fnGerarLogs } = require('../../utils/gerarLogs');
 const moment = require("moment");
 const { CNPJ } = process.env;
-// const  MonitoramentoArquivos = require('../monitoramento')
+const  MonitoramentoArquivos = require('../monitoramento')
 
 module.exports = async (req, res) => {
 
