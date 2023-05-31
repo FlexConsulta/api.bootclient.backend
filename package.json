@@ -11,9 +11,9 @@
     "delay": "2"
   },
   "scripts": {
-    "start": "node  --max-old-space-size=2048 ./src/index.js --throw-deprecations  --unhandled-rejections",
-    "dev": "nodemon  --max-old-space-size=2048 ./src/index.js --throw-deprecations --unhandled-rejections",
-    "build": "pkg . --max-old-space-size=2048",
+    "start": "node --max-old-space-size=2048 ./src/index.js",
+    "dev": "nodemon  --max-old-space-size=2048 ./src/index.js",
+    "build": "pkg  --debug ./src/index.js --options max-old-space-size=2048,tls-min-v1.0,expose-gc -o dist/",
     "test": "jest"
   },
   "bin": "src/index.js",
@@ -49,6 +49,7 @@
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
+    "pkg": "^5.8.1",
     "sequelize": "^6.18.0",
     "simple-git": "^3.18.0",
     "swagger-ui-express": "^4.6.3",
