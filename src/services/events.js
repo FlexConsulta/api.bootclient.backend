@@ -1,15 +1,15 @@
 const EventEmitter = require('events');
 
-const ConexaoDbClienteAutomatico = require('../controller/coletar.informacoes/conexaoDbClienteAutomatico');
-const ColetaDadosEstatisticosAutomatica = require('../controller/coleta.dados.estatisticos.automatica');
-const MonitoramentoArquivosNaoEnviadosAutomatico = require("../controller/coletar.informacoes/arquivosPendentesAutomatico");
-const FuncionamentoBootclientAutomatico = require("../controller/coletar.informacoes/funcbootclientAutomatico.js");
-const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
-const SystemUpdateAuto = require("../controller/auto.update");
+// const ConexaoDbClienteAutomatico = require('../controller/coletar.informacoes/conexaoDbClienteAutomatico');
+// const ColetaDadosEstatisticosAutomatica = require('../controller/coleta.dados.estatisticos.automatica');
+// const MonitoramentoArquivosNaoEnviadosAutomatico = require("../controller/coletar.informacoes/arquivosPendentesAutomatico");
+// const FuncionamentoBootclientAutomatico = require("../controller/coletar.informacoes/funcbootclientAutomatico.js");
+// const VerificacaoEntidadesAutomatica = require("../controller/verificacao.automatica");
+// // const SystemUpdateAuto = require("../controller/auto.update");
 // const MonitoramentoArquivos = require('../controller/monitoramento')
-const SincronizacaoAutomatica = require('../controller/sincronizacao.automatica')
-const SincronizacaoAutomaticaBackup = require('../controller/sincronizacao.automatica/sincronizacao.backup')
-const LimpezaLogsSistema = require('../controller/log.sincronizacoes/limpeza.automatica.logs')
+// const SincronizacaoAutomatica = require('../controller/sincronizacao.automatica')
+// const SincronizacaoAutomaticaBackup = require('../controller/sincronizacao.automatica/sincronizacao.backup')
+// const LimpezaLogsSistema = require('../controller/log.sincronizacoes/limpeza.automatica.logs')
 
 const { NODE_ENV } = process.env
 
@@ -40,21 +40,21 @@ class ParallelExecutor extends EventEmitter {
 
 // Uso do executor paralelo
 let tasks = [
-    new ConexaoDbClienteAutomatico(),
-    new ColetaDadosEstatisticosAutomatica(),
-    new MonitoramentoArquivosNaoEnviadosAutomatico(),
-    new FuncionamentoBootclientAutomatico(),
-    new VerificacaoEntidadesAutomatica(),
-    new SincronizacaoAutomatica(),
-    new SincronizacaoAutomaticaBackup(new Date()),
-    new LimpezaLogsSistema(new Date()),
+    // new ConexaoDbClienteAutomatico(),
+    // new ColetaDadosEstatisticosAutomatica(),
+    // new MonitoramentoArquivosNaoEnviadosAutomatico(),
+    // new FuncionamentoBootclientAutomatico(),
+    // new VerificacaoEntidadesAutomatica(),
+    // new SincronizacaoAutomatica(),
+    // new SincronizacaoAutomaticaBackup(new Date()),
+    // new LimpezaLogsSistema(new Date()),
     // new MonitoramentoArquivos(new Date()),
 ]
 
-if (NODE_ENV == "PROD") {
-    console.log('==== Rodando em produção ====');
-    tasks = [...tasks, new SystemUpdateAuto()]
-}
+// if (NODE_ENV == "PROD") {
+//     console.log('==== Rodando em produção ====');
+//     tasks = [...tasks, new SystemUpdateAuto()]
+// }
 
 const executor = new ParallelExecutor(tasks);
 
