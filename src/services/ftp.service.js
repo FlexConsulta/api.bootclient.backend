@@ -27,25 +27,31 @@ class FTPClient {
 
                 try {
 
+
+                    
+                    
+                    
+                    console.log('==>  ',  `${this.settings.remote_dir}/${remotePath}`);
+                    
                     const arquivo = fs.statSync(sourcePath)
                     const tamanhoArquivo = arquivo.size
-
+                    
                     const porcentagem = (info) => ((info.bytes * 100) / tamanhoArquivo).toFixed(0)
-
+                    
                     self.client.trackProgress(info => {
                         const contagem = porcentagem(info)
                     });
-
-
-                    // self.client.ftp.verbose = true
-
+                    
+                    
+                    self.client.ftp.verbose = true
+                    
                     let access = await self.client.access(self.settings);
                     const dataStream = fs.createReadStream(sourcePath);
                     dataStream.on('error', (err) => {
                         reject(err);
                     });
 
-                    let upload = await self.client.uploadFrom(dataStream, remotePath);
+                    let upload = await self.client.uploadFrom(dataStream, `${this.settings.remote_dir}/${remotePath}`);
                     self.client.close();
                     resolve(upload);
 

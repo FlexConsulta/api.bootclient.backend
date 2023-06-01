@@ -1,6 +1,6 @@
-process.env = { ...process.env, ...require('../.env.js') }
-
 // require('dotenv').config({path: './.env'})
+process.env = { ...process.env, ...require('./.env.js') }
+
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true;
 

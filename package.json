@@ -1,5 +1,5 @@
 {
-  "name": "app_bootclient_sat_v3",
+  "name": "bootclient_backend_postgres",
   "version": "2.0.0",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,9 @@
     "delay": "2"
   },
   "scripts": {
-    "start": "node --max-old-space-size=2048 ./src/index.js",
-    "dev": "nodemon  --max-old-space-size=2048 ./src/index.js",
-    "build": "pkg  --debug ./src/index.js --options max-old-space-size=2048,tls-min-v1.0,expose-gc -o dist/",
+    "start": "node  --max-old-space-size=2048 ./src/index.js --throw-deprecations  --unhandled-rejections",
+    "dev": "nodemon  --max-old-space-size=2048 ./src/index.js --throw-deprecations --unhandled-rejections",
+    "build": "pkg --debug ./src/index.js --options max-old-space-size=2048,tls-min-v1.0,expose-gc -o ./build/bootclient_backend_postgres.exe",
     "test": "jest"
   },
   "bin": "src/index.js",

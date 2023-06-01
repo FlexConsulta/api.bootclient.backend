@@ -1,7 +1,5 @@
 const express = require('express')
 const cors = require('cors');
-const fs = require("fs");
-const YAML = require("yaml");
 const moment = require("moment");
 
 const Events = require('./services/events')
@@ -9,9 +7,6 @@ const RouteLogin = require('./routes/login.routes')
 const RouteEmpresa = require('./routes/empresas.routes')
 const RouteSincronizacao = require('./routes/sincronizacao.routes')
 const RouteLogs = require('./routes/logs.routes')
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = YAML.parse(fs.readFileSync("./swagger.yaml", "utf8"));
 
 const app = express()
 
@@ -32,7 +27,6 @@ app.use(RouteLogin)
 app.use(RouteEmpresa)
 app.use(RouteSincronizacao)
 app.use(RouteLogs)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 console.log(`[MENSAGEM] A aplicação startou: ${ moment().tz('America/Sao_Paulo').format('LLL')}`);
