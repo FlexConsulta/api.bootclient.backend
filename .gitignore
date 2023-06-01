@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .env*
 *.exe
 node_modules
@@ -7,3 +8,15 @@ keys/*
 /data
 /databases
 /tests
+=======
+.env*
+*.exe
+node_modules
+settings/*
+DATA/*
+keys/*
+/data
+/databases
+/tests
+.github
+>>>>>>> joey.flex

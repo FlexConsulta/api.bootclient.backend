@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 BOOTCLIENT VERSION: [3.0.0];
 DATE UPDATE: [2023-04-08];
 LIST UPDATES:
@@ -10,3 +11,18 @@ LIST UPDATES:
 -      Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1);
 -      Total viagens cancelados  (Diariamente -1);
 ]
+=======
+BOOTCLIENT VERSION: [3.0.0];
+VERSION FILE: SYNCZ;
+DATE UPDATE: [2023-04-08];
+LIST UPDATES:
+[
+- Sincronização Automática dos dados;
+- Verificar o funcionamento do Bootclient;
+- Verificar a conexão com o banco de dados do cliente;
+- Coletar dados estatísticos dos dados do clientes;
+-      Total registros das tabelas (Diariamente -1);
+-      Total Status das entidades (Motoristas, Proprietários, Veículos) (Diariamente -1);
+-      Total viagens cancelados  (Diariamente -1);
+]
+>>>>>>> joey.flex

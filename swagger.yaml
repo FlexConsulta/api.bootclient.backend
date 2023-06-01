@@ -1,0 +1,612 @@
+openapi: 3.0.0
+info:
+  description: Esta é uma API responsável por fazer requisições ao Banco de Dados de um cliente para coletar informações úteis e salvá-las no Banco de Dados Flex-Consulta. Além de gerar logs para monitoramento de todas as funcionalidades desta API. É válido ressaltar que os logs são gerados a partir de cada controller da seção Controllers e são feitos através de requisições a uma outra API que, por sua vez, processa e registra os logs no banco de dados da flex.
+  version: 3.0.0
+  title: Bootclient SAT API
+  contact:
+    email: suporte@flexconsulta.com.br
+tags:
+  - name: Usuário
+    description: Rotas/endpoints que o usuário terá acesso.
+  - name: Controllers
+    description: Rotas/endpoints fictícias criadas apenas na documentação para ilustrar e explicar as funcionalidades do Bootclient. Cada funcionalidade ('rota') é disparada de tempos em tempos de acordo com cada usuário do sistema.
+  - name: Jobs
+    description: Rotas/endpoints fictícias criadas apenas na documentação para ilustrar e explicar como uma funcionalidade do Bootclient é ativada. 
+paths:
+
+# User
+  /_api/login:
+    post:
+      tags:
+        - Usuário
+      summary: Acesso do usuário ao sistema
+      description: Nesse endpoint o usuário deferá por sua senha para ter acesso ao sistema.
+      parameters:
+        - in: query
+          name: senha
+          description: Parâmetro obrigatório para o login. 
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Login efeutado com sucesso
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: bad input parameter
+  /_api/trocarsenha:
+    post:
+      tags:
+        - Usuário
+      summary: Trocar senha do usuário
+      description: Com esse endpoint é possível que o usuário altere a sua senha. Para isso é preciso o preenchimento dos 3 campos (senhaatual, senhanova e senharepetida). Onde senhaatual refere-se a senha a ser trocada, senhanova a nova senha e a senharepetida a nova senha repetida.
+      parameters:
+        - in: query
+          name: senhaatual
+          description: Parâmetro obrigatório para o trocar a senha, corresponde a senha atual do usuário. 
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: senhanova
+          description: Parâmetro obrigatório para o trocar a senha, corresponde a nova senha do usuário. 
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: senharepetida
+          description: Parâmetro obrigatório para o trocar a senha, corresponde a nova senha do usuário. 
+          required: true
+          schema:
+            type: string
+            items:
+              $ref: '#/components/schemas/TrocarSenha'
+      responses:
+        '200':
+          description: Quando o processo for bem-sucedido
+          content:
+            application/json:
+              example:
+                status: "success"
+                message: "Operação concluída com sucesso"
+        '400':
+          description: Quando a senha antiga não for fornecida corretamente
+          content:
+            application/json:
+              examples:
+                senhaAntigaIncorreta:
+                  value:
+                    status: "error"
+                    message: "Senha antiga incorreta!"
+                novaSenhaInvalida:
+                  value:
+                    status: "error"
+                    message: "A nova senha não corresponde à senha repetida"
+  /_api/sincronizar:
+    post:
+      tags: 
+        - Usuário
+      summary: Sincronização de dados. (Motoristas, Proprietários, veículos e viagens)
+      description: Através da ativação dessse endPoint o controller de sincronização é ativado fazendo com que a aplicação busque dados no banco de dados do cliente. (Para uma melhor explicação de como funciona o controler de sincronização, verificar a documnetação específica na tag controllers)
+      responses:
+        '202':
+          description: Quando o processo for bem sucessido
+          content:
+            application/json:
+              example:
+                status: "success"
+                message: "Sincronização concluída com sucesso!"
+        '404':
+          description: Quando o CNPJ fornecido na aplicação não se relacionar com nenhum CNPJ cadastrado no Banco de Dados da Flex
+          content:
+            application/json:
+              example:
+                status: "Not Found"
+                message: "Nenhuma empresa foi cadastrada!"
+        '500':
+          description: Quando ocorrer algum erro interno
+          content:
+            application/json:
+              example:
+                status: "error"
+  /_api/log_sincronizacao:
+    get:
+      tags:
+        - Usuário
+      responses:
+        '200':
+          description: Quando o processo for bem sucessido
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/LogsResponse'
+        '400':
+          description: Quando o processo for acionado de uma forma errada
+          content:
+            application/json:
+              example:
+                status: "Bad Request"
+    delete:
+      tags:
+        - Usuário
+      responses:
+        '202':
+          description: Quando o processo for bem sucessido
+          content:
+            application/json:
+              example:
+                status: "success"
+        '400':
+          description: Quando o processo for acionado de uma forma errada
+          content:
+            application/json:
+              example:
+                status: "Bad Request"
+
+# Controllers
+  /auto.update:
+    get:
+      description: Este controller é responsável por verificar atualizações no código fonte do bootclient na bracnh de produção localizada no github. Ele é acionado de tempos em tempos (que é definido em variável de ambiente ou por padrão toda hora do dia, exemplo = 8 hrs, 9 hrs...). Ele irá mudar a branch local para a de produção (caso não esteja nela) e se houver atualizacões atualizará o código local e imprimirá um console dizendo que o sistema foi atualizdo, senão imprimirá um console informado que não há atualizções. Depois de atualizado ele irá restartar a aplicação. Caso ocorra algum erro durante o processo de restart o console irá imprimir =  Erro ao reiniciar aplicação.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: Quando o controller terminar sua execução corretamente
+          content:
+            application/json:
+              examples:
+                Há atualizações na Brach:
+                  value:
+                    status: "success"
+                    message:  '[i] O sistema foi atualizado com sucesso'
+                Não há atualizações na Brach:
+                  value:
+                    status: "success"
+                    message:  'Nenhuma atualização disponível.'
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              examples:
+                Erro ao atualizar a a branch:
+                  value:
+                    status: 'error'
+                    message: 'Erro ao reiniciar aplicação'
+                Erro no controller:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /ConexaoDbCliente:
+    get:
+      description: Este controller é responsável por testar a conexão da aplicação com o banco de dados do cliente. Ao ser acionado ele abre uma conexão com o banco de dados do cliente e se a conexão for bem sucedida gera um log de sucesso, se não for gera um log de erro, ambos os registros de logs são feitos no banco de dados da flex para o monitoramento dessa conexão.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /ColetaDadosEstatisticos:
+    get:
+      description: Este controller é responsável por coletar informções das entidades Motoristas, Porprietários, Veículos e Viagens do Banco de dados do cliente. Ele apenas faz querys que retornarão a quantidade total das entiades, a quantiade total que cada entidade tem de liberados, não liberados e bloqueados além dos dados criados nas últimas 24 horas no banco de dados do cliente. Ao terminar ele irá gerar os logs com as informações coletadas para o banco da flex.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /MonitoramentoArquivosNaoEnviados:
+    get:
+      description: Este controller é responsável por verificar se há arquivos de sincronização que não foram enviados ou devidaemnte processados pelo BootServer da flex.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /FuncionamentoBootclient:
+    get:
+      description: Este controller é responsável por verificar se o Bootclient está funcionando corretamente. Assim caso ele esteja rodando ele irá gerar um log de sucesso.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /VerificacaoEntidades:
+    get:
+      description: Este controller é responsável por verificar o funcionamento das entidaes do clientes, ou seja, ele irá fazer uma query sql em cada entidade (motorista, proprietario,  veiculo e viagens) do banco de dados do cliente e avaliar se a entidade está funcionado corretamente e gerando o log conforme o resultado.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /MonitoramentoArquivos:
+    get:
+      description: Este controller é responsável por fazer o monitoramento dos arquivos a serem enviados por FTP do bootcliente que está sendo hospedado na máquina do cliente para o servidor ftp da flex. Esse controller só é ativado nos cliente que o bootclient não ficam no servidor da flex.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /Sincronizacao:
+    get:
+      description:  |
+        Este controller é responsável por realizar a sincronização de dados das 4 entidades. Ao ser iniciado pelo primeira vez para determinado cliente faz a busca dos dados das entidades:
+          
+        1 - motoristas (dados = codmotorista, coalesce(dataatual, datainclusao), cpf, liberado, nome, celular, fone, bloqueadoadm, obsbloq, descricao) independente da data.
+        
+        2 - proprietarios (coalesce(dataatual, datainclusao), cgccpf, nome, liberado, bloqueadoadm, obsbloq, descricao ) independente da data.
+        
+        3 - veiculos (coalesce(dataatual, datainclusao), placa, liberado, bloqueadoadm, obsbloq, descricao) independente da data.
+        
+        4 - viagens ( data, coalesce(dataatual, datadigitacao), numero, cancelado, placacarreta,placacarreta2, placacarreta3, placacarreta4, descrica, nome, uf, nome, uf, coalesce(mot.dataatual, mot.datainclusao), mot.cpf, mot.nome, mot.liberado, mot.bloqueadoadm,mot.obsbloq, mot.celular, mot.fone, coalesce(prop.dataatual, prop.datainclusao), prop.cgccpf, prop.nome, prop.liberado, prop.bloqueadoadm, prop.obsbloq, coalesce(veic.dataatual, veic.datainclusao), veic.placa, veic.liberado, veic.bloqueadoadm, veic.obsbloq ) de 01/01/2021 até o presente momento.
+        
+        Ao ser acionado pela segunda vez e todas as outras vezes que for acionado buscará os por novos registros nas entidades desde a última sincronzação (- 4 horas) até o momento acioando.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /SincronizacaoBackup:
+    get:
+      description:  |
+        Este controller é responsável por realizar a sincronização de dados das 4 entidades. Ao ser iniciado pelo primeira vez para determinado cliente faz a busca dos dados das entidades:
+          
+        1 - motoristas (dados = codmotorista, coalesce(dataatual, datainclusao), cpf, liberado, nome, celular, fone, bloqueadoadm, obsbloq, descricao) independente da data.
+        
+        2 - proprietarios (coalesce(dataatual, datainclusao), cgccpf, nome, liberado, bloqueadoadm, obsbloq, descricao ) independente da data.
+        
+        3 - veiculos (coalesce(dataatual, datainclusao), placa, liberado, bloqueadoadm, obsbloq, descricao) independente da data.
+        
+        4 - viagens ( data, coalesce(dataatual, datadigitacao), numero, cancelado, placacarreta,placacarreta2, placacarreta3, placacarreta4, descrica, nome, uf, nome, uf, coalesce(mot.dataatual, mot.datainclusao), mot.cpf, mot.nome, mot.liberado, mot.bloqueadoadm,mot.obsbloq, mot.celular, mot.fone, coalesce(prop.dataatual, prop.datainclusao), prop.cgccpf, prop.nome, prop.liberado, prop.bloqueadoadm, prop.obsbloq, coalesce(veic.dataatual, veic.datainclusao), veic.placa, veic.liberado, veic.bloqueadoadm, veic.obsbloq ) de 01/01/2021 até o presente momento.
+        
+        Ao ser acionado pela segunda vez e todas as outras vezes que for acionado buscará os por novos registros nas entidades desde a última sincronzação (- 4 horas) até o momento acioando.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /LimpezaLogsSistema:
+    get:
+      description: Este controller é responsável por apagar o registro dos logs criados do repositório em memória local a cad 48 horas.
+      tags:
+        - Controllers
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+          
+# Jobs
+  /ConexaoDbClienteAutomatico:
+    get:
+      description: Este Job é responsável por acionar o controller ConexaoDbCliente. Por padrão ele é acionado a 4 horas do dia, mas pode ser modificado conforme o cliente desejar.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /ColetaDadosEstatisticosAutomatica:
+    get:
+      description: Este Job é responsável por acionar o controller ColetaDadosEstatisticos. Por padrão ele é acionado a cada 5 horas do dia, mas pode ser modificado conforme o cliente desejar.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /MonitoramentoArquivosNaoEnviadosAutomatico:
+    get:
+      description: Este Job é responsável por acionar o controller MonitoramentoArquivosNaoEnviados. Por padrão ele é acionado a cada 4 horas do dia, mas pode ser modificado conforme o cliente desejar.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /FuncionamentoBootclientAutomatico:
+    get:
+      description: Este Job é responsável por acionar o controller FuncionamentoBootclient. Por padrão ele é acionado a cada 4 horas do dia, mas pode ser modificado conforme o cliente desejar.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /VerificacaoEntidadesAutomatica:
+    get:
+      description: Este Job é responsável por acionar o controller VerificacaoEntidades. Por padrão ele é acionado a cada 4 horas do dia, mas pode ser modificado conforme o cliente desejar.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /SincronizacaoAutomatica:
+    get:
+      description: Este Job é responsável por acionar o controller Sincronizacao. Por padrão ele é acionado a cada 4 horas do dia, mas pode ser modificado conforme o cliente desejar.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+  /SincronizacaoAutomaticaBackup:
+    get:
+      description: Este Job é responsável por acionar o controller SincronizacaoBackup. Por padrão ele é acionado a cada hora do dia.
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: 'Quando o controller terminar sua execução corretamente'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'success'
+                    message:  ''
+        '500':
+          description: 'Quando ocorrer um erro'
+          content:
+            application/json:
+              example:
+                  value:
+                    status: 'error'
+                    message: 'Internal Server Error'
+
+components:
+  schemas:
+    LoginResponse:
+      type: object
+      required:
+        - iat
+        - exp
+        - token
+      properties:
+        iat:
+          type: string
+          format: date
+          example: Math.floor(Date.now() / 1000)
+        exp:
+          type: string
+          format: date
+          example: now + (60 * 60 * 24 * 2)
+        token:
+          type: string
+          example: 'hda9mehdehhf18mhm4yt1085y0...'
+    TrocarSenha:
+      type: object
+      required:
+        - senhaatual
+        - senhanova
+        - senharepetida
+      properties:
+        senhaatual:
+            type: string
+            format: stirng
+            example: 'my_old_secret_password_123_!'
+        senhanova:
+            type: string
+            format: stirng
+            example: 'my_NEW_secret_password_123_@'
+        senharepetida:
+            type: string
+            format: stirng
+            example: 'my_NEW_secret_password_123_@'
+    LogsResponse:
+      type: object
+      properties:
+        sinc:
+            type: array
+            items:
+              format: stirng
+              example: 'arrayFinalSincronizacoes'
+        envio:
+            type: array
+            items:
+              format: stirng
+              example: 'arrayFinalEnvioArquivos'
