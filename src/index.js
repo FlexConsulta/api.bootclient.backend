@@ -16,7 +16,6 @@ const normalizePort = val => {
 }
 
 const HOST = '0.0.0.0'
-
 const PORT = normalizePort(process.env.PORT);
 app.set("port", PORT);
 
