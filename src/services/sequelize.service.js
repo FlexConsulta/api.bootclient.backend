@@ -1,4 +1,5 @@
 const { Sequelize, QueryTypes } = require('sequelize');
+
 class SequelizeFunctions {
 
 
@@ -13,8 +14,7 @@ class SequelizeFunctions {
 
             this.objSequelize = await new Sequelize(nome_banco, usuario_banco, senha_banco, {
                   host: host_banco, dialect: dialect, port: porta_banco,
-                  dialectOptions: {},
-                  logging: false
+                  // logging: console.log,
             });
       }
 

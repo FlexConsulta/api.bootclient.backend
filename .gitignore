@@ -9,3 +9,5 @@ keys/*
 /tests
 .github
 /build
+*-linux
+*-macos

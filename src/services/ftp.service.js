@@ -43,7 +43,7 @@ class FTPClient {
                     });
                     
                     
-                    self.client.ftp.verbose = true
+                    // self.client.ftp.verbose = true
                     
                     let access = await self.client.access(self.settings);
                     const dataStream = fs.createReadStream(sourcePath);

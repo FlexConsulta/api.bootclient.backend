@@ -1,25 +1,22 @@
 {
   "name": "bootclient_backend_postgres",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "main": "index.js",
-  "nodemonConfig": {
-    "ext": "js",
-    "ignore": [
-      "databases/*"
-    ],
-    "delay": "2"
-  },
   "scripts": {
     "start": "node  --max-old-space-size=2048 ./src/index.js --throw-deprecations  --unhandled-rejections",
     "dev": "nodemon  --max-old-space-size=2048 ./src/index.js --throw-deprecations --unhandled-rejections",
-    "build": "pkg --debug ./src/index.js --options max-old-space-size=2048,tls-min-v1.0,expose-gc -o ./build/bootclient_backend_postgres.exe",
+    "build": "pkg . --debug --options max-old-space-size=2048",
     "test": "jest"
   },
   "bin": "src/index.js",
   "targets": [
     "node18-win-x64",
-    { "node": "current", "platform": "win", "arch": "x64" }
+    {
+      "node": "current",
+      "platform": "win",
+      "arch": "x64"
+    }
   ],
   "keywords": [],
   "author": "",
@@ -46,9 +43,9 @@
     "node-schedule": "^2.1.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "pg": "^8.7.3",
+    "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.18.0",
+    "sequelize": "^6.32.0",
     "simple-git": "^3.18.0",
     "swagger-ui-express": "^4.6.3",
     "time-number": "^1.1.0",
