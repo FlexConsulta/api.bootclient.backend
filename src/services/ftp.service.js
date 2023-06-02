@@ -26,12 +26,6 @@ class FTPClient {
             (async () => {
 
                 try {
-
-
-                    
-                    
-                    
-                    console.log('==>  ',  `${this.settings.remote_dir}/${remotePath}`);
                     
                     const arquivo = fs.statSync(sourcePath)
                     const tamanhoArquivo = arquivo.size
@@ -50,6 +44,7 @@ class FTPClient {
                     dataStream.on('error', (err) => {
                         reject(err);
                     });
+                    
 
                     let upload = await self.client.uploadFrom(dataStream, `${this.settings.remote_dir}/${remotePath}`);
                     self.client.close();

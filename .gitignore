@@ -11,3 +11,4 @@ keys/*
 /build
 *-linux
 *-macos
+dev.env*

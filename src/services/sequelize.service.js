@@ -14,7 +14,7 @@ class SequelizeFunctions {
 
             this.objSequelize = await new Sequelize(nome_banco, usuario_banco, senha_banco, {
                   host: host_banco, dialect: dialect, port: porta_banco,
-                  // logging: console.log,
+                  logging: false,
             });
       }
 
